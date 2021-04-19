@@ -83,7 +83,6 @@ assert.ArrayEquals(a, b);
  - 배열 A와 B가 일치함을 확인한다.
 
 
-
 assert.Equals(a, b);
 
  - 객체 A와 B가 일치함을 확인한다.
@@ -180,7 +179,8 @@ public class JacocoController {
 JacocoControllerTest.java
 
 ```java
-package com.example.jacocotest; 
+package com.example.jacocotest;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get; 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content; 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status; 
