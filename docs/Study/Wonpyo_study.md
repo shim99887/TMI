@@ -19,8 +19,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 ```
 
-
-
 Docker를 통한 Jenkins를 실행하고, Container에서 Docker를 실행하기 위해서 privileged를 true로 선언하고 docker socket을 바인딩해준다.
 
 
