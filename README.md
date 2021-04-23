@@ -24,7 +24,7 @@
 <details>
     <summary> Architecture </summary>
     <ul>
-![architecture.png](docs/Wireframe/architecture.png)
+![architecture.png](docs/Architecture/architecture.png)
     </ul>
 </details>
 <details>
