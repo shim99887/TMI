@@ -38,6 +38,6 @@
 <details>
     <summary> Milestone</summary>
     <ul>
-![MileStone](Document/Milestone/MileStone.png)
+![MileStone](docs/MileStone/MileStone.png)
     </ul>
 </details>
