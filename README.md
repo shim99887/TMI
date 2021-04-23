@@ -15,8 +15,8 @@
 <details>
     <summary> Wireframe</summary>
     <ul>
+![ProjectList.png](docs/Wireframe/ProjectList.png)
 ![ProjectDetail.png](docs/Wireframe/ProjectDetail.png)
-![ProjectList.png](docs/Wireframe/ProjectDetail.png)
 ![Test Detail.png](docs/Wireframe/Test Detail.png)
 ![TestJobList.png](docs/Wireframe/TestJobList.png)
     </ul>
