@@ -1,4 +1,4 @@
-package com.tmi.configuration;
+package com.tmi.tmi.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
