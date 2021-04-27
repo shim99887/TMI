@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import clsx from "clsx";
-import { lighten, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -10,9 +9,9 @@ import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
+import Input from "@material-ui/core/Input";
 import Paper from "@material-ui/core/Paper";
+import SearchBar from "material-ui-search-bar";
 
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/EditOutlined";
@@ -23,7 +22,7 @@ function createData(id, title, descrptionTag) {
   return { id, title, descrptionTag, isEditMode: false };
 }
 
-const rows = [
+const originalRows = [
   createData(1, "A", "z"),
   createData(2, "B", "y"),
   createData(3, "C", "x"),
@@ -81,17 +80,16 @@ function stableSort(array, comparator) {
 const headCells = [
   {
     id: "id",
-    numeric: true,
     disablePadding: false,
     label: "ID",
   },
-  { id: "title", numeric: false, disablePadding: false, label: "Title" },
+  { id: "title", disablePadding: false, label: "Title" },
   {
     id: "descrptionTag",
-    numeric: false,
     disablePadding: false,
     label: "Descrption / Tag",
   },
+  { id: "edit", disablePadding: false, label: "" },
 ];
 
 function ProjectHead(props) {
@@ -106,7 +104,7 @@ function ProjectHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
+            align="left"
             padding={headCell.disablePadding ? "none" : "default"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -131,51 +129,9 @@ function ProjectHead(props) {
 
 ProjectHead.propTypes = {
   classes: PropTypes.object.isRequired,
-  numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
   order: PropTypes.oneOf(["asc", "desc"]).isRequired,
   orderBy: PropTypes.string.isRequired,
-};
-
-const useToolbarStyles = makeStyles((theme) => ({
-  root: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
-  },
-  highlight:
-    theme.palette.type === "light"
-      ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
-      : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
-  title: {
-    flex: "1 1 100%",
-  },
-}));
-
-const ProjectToolbar = (props) => {
-  const classes = useToolbarStyles();
-
-  return (
-    <Toolbar className={clsx(classes.root)}>
-      <Typography
-        className={classes.title}
-        variant="h6"
-        id="tableTitle"
-        component="div"
-      >
-        Search Input Area
-      </Typography>
-    </Toolbar>
-  );
-};
-
-ProjectToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -188,6 +144,17 @@ const useStyles = makeStyles((theme) => ({
   },
   table: {
     minWidth: 750,
+  },
+  selectTableCell: {
+    width: 60,
+  },
+  tableCell: {
+    width: 130,
+    height: 40,
+  },
+  input: {
+    width: 130,
+    height: 40,
   },
   visuallyHidden: {
     border: 0,
@@ -202,42 +169,34 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const CustomTableCell = ({ row, name, onChange }) => {
+  const classes = useStyles();
+  const { isEditMode } = row;
+  return (
+    <TableCell align="left" className={classes.tableCell}>
+      {isEditMode ? (
+        <Input
+          value={row[name]}
+          name={name}
+          onChange={(e) => onChange(e, row)}
+          className={classes.input}
+        />
+      ) : (
+        row[name]
+      )}
+    </TableCell>
+  );
+};
+
 export default function Project() {
   const classes = useStyles();
-  const [rows, setRows] = React.useState([
-    createData(1, "A", "z"),
-    createData(2, "B", "y"),
-    createData(3, "C", "x"),
-    createData(4, "D", "w"),
-    createData(5, "E", "v"),
-    createData(6, "F", "u"),
-    createData(7, "G", "t"),
-    createData(8, "H", "s"),
-    createData(9, "I", "r"),
-    createData(10, "J", "q"),
-    createData(11, "K", "p"),
-    createData(12, "L", "o"),
-    createData(13, "M", "n"),
-    createData(14, "N", "m"),
-    createData(15, "O", "l"),
-    createData(16, "P", "k"),
-    createData(17, "Q", "j"),
-    createData(18, "R", "i"),
-    createData(19, "S", "h"),
-    createData(20, "T", "g"),
-    createData(21, "U", "f"),
-    createData(22, "V", "e"),
-    createData(23, "W", "d"),
-    createData(24, "X", "c"),
-    createData(25, "Y", "b"),
-    createData(26, "Z", "a"),
-  ]);
+  const [rows, setRows] = React.useState(originalRows);
   const [order, setOrder] = React.useState("desc");
   const [orderBy, setOrderBy] = React.useState("id");
-  const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [previous, setPrevious] = React.useState([]);
+  const [previous, setPrevious] = React.useState({});
+  const [searched, setSearched] = React.useState("");
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -246,21 +205,7 @@ export default function Project() {
   };
 
   const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelected(newSelected);
+    console.log(name);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -271,8 +216,6 @@ export default function Project() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
-  const isSelected = (name) => selected.indexOf(name) !== -1;
 
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
@@ -319,10 +262,30 @@ export default function Project() {
     onToggleEditMode(id);
   };
 
+  const requestSearch = (searchedVal) => {
+    const filteredRows = rows.filter((row) => {
+      return (
+        (row.id == searchedVal) +
+        row.title.toLowerCase().includes(searchedVal.toLowerCase()) +
+        row.descrptionTag.toLowerCase().includes(searchedVal.toLowerCase())
+      );
+    });
+    setRows(filteredRows);
+  };
+
+  const cancelSearch = () => {
+    setSearched("");
+    requestSearch(searched);
+  };
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <ProjectToolbar numSelected={selected.length} />
+        <SearchBar
+          value={searched}
+          onChange={(searchVal) => requestSearch(searchVal)}
+          onCancelSearch={() => cancelSearch()}
+        />
         <TableContainer>
           <Table
             className={classes.table}
@@ -332,7 +295,6 @@ export default function Project() {
           >
             <ProjectHead
               classes={classes}
-              numSelected={selected.length}
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
@@ -341,21 +303,18 @@ export default function Project() {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.id);
-
                   return (
                     <TableRow
                       hover
                       onClick={(event) => handleClick(event, row.id)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
                       tabIndex={-1}
                       key={row.id}
-                      selected={isItemSelected}
                     >
-                      <TableCell align="right">{row.id}</TableCell>
-                      <TableCell align="left">{row.title}</TableCell>
-                      <TableCell align="left">{row.descrptionTag}</TableCell>
+                      <TableCell>{row.id}</TableCell>
+                      <CustomTableCell {...{ row, name: "title", onChange }} />
+                      <CustomTableCell
+                        {...{ row, name: "descrptionTag", onChange }}
+                      />
                       <TableCell className={classes.selectTableCell}>
                         {row.isEditMode ? (
                           <>
