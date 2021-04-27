@@ -1,6 +1,5 @@
 import React from "react";
 import { useParams } from "react-router";
-import Breadcrumbs from "../../components/Breadcrumbs";
 import ProjectDetailGraphs from "../../components/project/ProjectDetailGraphs";
 import ProjectDetailTestJobList from "../../components/project/ProjectDetailTestJobList";
 
