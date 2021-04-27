@@ -1,12 +1,21 @@
 import React from "react";
 import { useParams } from "react-router";
+import Breadcrumbs from "../../components/Breadcrumbs";
+import ProjectDetailGraphs from "../../components/project/ProjectDetailGraphs";
+import ProjectDetailTestJobList from "../../components/project/ProjectDetailTestJobList";
 
 export default function ProjectDetail() {
-  const path = useParams();
+  const params = useParams();
   return (
-    <div>
-      ProjectDetail
-      {path.id} project
-    </div>
+    <>
+      <h2>{params.id} PJT</h2>
+      <div>
+        <ProjectDetailGraphs />
+      </div>
+      <div>
+        <h2>Test Job List</h2>
+        <ProjectDetailTestJobList />
+      </div>
+    </>
   );
 }
