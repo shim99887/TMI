@@ -1,10 +1,7 @@
-// fail, error는 눌렀을 때 원인까지 보여주기
-// Type, Message, Contents, ResultType
-// message에 따라 색깔 바꾸기
-
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
+import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
@@ -24,8 +21,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// open하는 부분 accordion으로 바꾸면 더 좋을듯
+{
+  /* <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          <Typography className={classes.heading}>Accordion 1</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
+            sit amet blandit leo lobortis eget.
+          </Typography>
+        </AccordionDetails>
+      </Accordion> */
+}
+
 export default function TestJobDetailItem(props) {
-  // method?? 변수명 생각해볼 것
   const styles = useStyles();
 
   const [open, setOpen] = React.useState(false);
@@ -39,20 +54,17 @@ export default function TestJobDetailItem(props) {
   };
 
   return (
-    // 1. 색칠하는 부분 4가지로 나누기
-    // 2. Fail, Error일 때 DropDown 버튼 or OnClick 추가하기
-    // 네모 칸만 만들면 된다
     <ClickAwayListener onClickAway={handleClickAway}>
-      <div>
+      <Box>
         <Paper>
-          <div
+          <Box
             style={{
               borderLeft: props.color,
               paddingBottom: "1%",
             }}
           >
-            <div className={styles.container}>
-              <div
+            <Box className={styles.container}>
+              <Box
                 style={{
                   fontSize: "150%",
                   color: "#444444",
@@ -60,16 +72,16 @@ export default function TestJobDetailItem(props) {
                 }}
               >
                 {props.name}
-              </div>
+              </Box>
 
-              <div
+              <Box
                 style={{
                   fontSize: "125%",
                   color: "#444444",
                 }}
               >
                 ({props.time} ms)
-              </div>
+              </Box>
 
               {(props.resultType === "Error" ||
                 props.resultType === "Fail") && (
@@ -78,7 +90,7 @@ export default function TestJobDetailItem(props) {
                 </Button>
               )}
 
-              <div
+              <Box
                 style={{
                   flexGrow: 1,
                   fontSize: "75%",
@@ -87,11 +99,11 @@ export default function TestJobDetailItem(props) {
                 }}
               >
                 Case History
-              </div>
-            </div>
+              </Box>
+            </Box>
 
             {open === true ? (
-              <div
+              <Box
                 style={{
                   borderLeft: props.secondColor,
                   marginLeft: "3%",
@@ -116,11 +128,11 @@ export default function TestJobDetailItem(props) {
                   name="ResultType"
                   content={props.resultType}
                 ></TestJobErrorContainer>
-              </div>
+              </Box>
             ) : null}
-          </div>
+          </Box>
         </Paper>
-      </div>
+      </Box>
     </ClickAwayListener>
   );
 }
