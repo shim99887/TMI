@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import io.swagger.annotations.ApiOperation;
@@ -31,8 +32,26 @@ public class DataXmlController {
 				NodeList reportList = document.getElementsByTagName("report");
 				
 				//프로젝트 이름
-				System.out.println(reportList.item(0).getAttributes().getNamedItem("name").getNodeValue());
-				
+//				System.out.println(reportList.item(0).getAttributes().getNamedItem("name").getNodeValue());
+				NodeList packageList = document.getElementsByTagName("package");
+//				System.out.println(packageList.item(1).getAttributes().getNamedItem("name").getNodeValue());
+				for(int i=0; i < packageList.getLength();i++) {
+//					System.out.println(packageList.item(i));
+					Node node = packageList.item(i);
+					System.out.println(node.getAttributes().getNamedItem("name"));
+					System.out.println(node.getChildNodes().getLength());
+					for(int j=0; j < node.getChildNodes().getLength(); j++) {
+						if(node.getChildNodes().item(j) == null) {
+							continue;
+						}
+						Node classList = node.getChildNodes().item(j);
+						if(classList.hasAttributes()) {
+							System.out.println(classList.toString());
+							
+						}
+					}
+//					System.out.println(node.hasChildNodes());
+				}
 				//
 //				NodeList list = document.getElementsByTagName("package");
 //				List<Coverage> cList = new ArrayList<>();
