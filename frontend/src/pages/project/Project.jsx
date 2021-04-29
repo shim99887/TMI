@@ -19,6 +19,7 @@ import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import Alert from "@material-ui/lab/Alert";
+import { useHistory } from "react-router-dom";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -88,6 +89,7 @@ function Project() {
   //for error handling
   const [iserror, setIserror] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
+  const history = useHistory();
 
   const handleRowUpdate = (newData, oldData, resolve) => {
     //validation
@@ -181,6 +183,9 @@ function Project() {
                   handleRowDelete(oldData, resolve);
                 }),
             }}
+            onRowClick={(evt, selectedRow) =>
+              history.push("/project/" + selectedRow.id)
+            }
             options={{
               actionsColumnIndex: -1,
             }}
