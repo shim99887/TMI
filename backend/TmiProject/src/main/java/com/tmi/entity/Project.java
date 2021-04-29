@@ -15,7 +15,7 @@ import javax.persistence.Id;
 @ToString
 public class Project {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private String title;
     private String description;

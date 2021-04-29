@@ -1,7 +1,6 @@
 package com.tmi.configuration;
 
 import com.tmi.repository.ProjectRepository;
-import com.tmi.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
