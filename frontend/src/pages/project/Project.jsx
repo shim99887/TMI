@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { forwardRef } from "react";
-import Grid from "@material-ui/core/Grid";
 
+import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
 import MaterialTable from "material-table";
 import AddBox from "@material-ui/icons/AddBox";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
@@ -19,7 +20,12 @@ import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import Alert from "@material-ui/lab/Alert";
-import { useHistory } from "react-router-dom";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
+import { useHistory, Link } from "react-router-dom";
+import { ButtonBase } from "@material-ui/core";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -44,6 +50,11 @@ const tableIcons = {
   ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
+
+const cardStyles = makeStyles({
+  button: { width: "25%" },
+  card: { width: "100%" },
+});
 
 function createData(id, title, description) {
   return { id, title, description };
@@ -79,6 +90,7 @@ const originalRows = [
 ];
 
 function Project() {
+  const cardClass = cardStyles();
   var columns = [
     { title: "ID", field: "id" },
     { title: "Title", field: "title" },
@@ -89,6 +101,7 @@ function Project() {
   //for error handling
   const [iserror, setIserror] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
+
   const history = useHistory();
 
   const handleRowUpdate = (newData, oldData, resolve) => {
@@ -168,6 +181,78 @@ function Project() {
             title="Project List"
             columns={columns}
             data={data}
+            detailPanel={(rowData) => {
+              return (
+                <div>
+                  <Typography>Project ID: {rowData.id}</Typography>
+                  <Typography>Coverage: 99%</Typography>
+                  <br />
+                  <Typography>TestJob List</Typography>
+                  <Grid container spacing={0}>
+                    <ButtonBase
+                      className={cardClass.button}
+                      onClick={(event) => {
+                        history.push("/testjob/" + 1);
+                      }}
+                    >
+                      <Card className={cardClass.card}>
+                        <CardContent>
+                          <Typography>
+                            Status Icon&nbsp;&nbsp;&nbsp; ID
+                          </Typography>
+                          <Typography>login unit test</Typography>
+                        </CardContent>
+                      </Card>
+                    </ButtonBase>
+                    <ButtonBase
+                      className={cardClass.button}
+                      onClick={(event) => {
+                        history.push("/testjob/" + 2);
+                      }}
+                    >
+                      <Card className={cardClass.card}>
+                        <CardContent>
+                          <Typography>
+                            Status Icon&nbsp;&nbsp;&nbsp; ID
+                          </Typography>
+                          <Typography>join unit test</Typography>
+                        </CardContent>
+                      </Card>
+                    </ButtonBase>
+                    <ButtonBase
+                      className={cardClass.button}
+                      onClick={(event) => {
+                        history.push("/testjob/" + 3);
+                      }}
+                    >
+                      <Card className={cardClass.card}>
+                        <CardContent>
+                          <Typography>
+                            Status Icon&nbsp;&nbsp;&nbsp; ID
+                          </Typography>
+                          <Typography>edit unit test</Typography>
+                        </CardContent>
+                      </Card>
+                    </ButtonBase>
+                    <ButtonBase
+                      className={cardClass.button}
+                      onClick={(event) => {
+                        history.push("/testjob/" + 4);
+                      }}
+                    >
+                      <Card className={cardClass.card}>
+                        <CardContent>
+                          <Typography>
+                            Status Icon&nbsp;&nbsp;&nbsp; ID
+                          </Typography>
+                          <Typography>delete unit test</Typography>
+                        </CardContent>
+                      </Card>
+                    </ButtonBase>
+                  </Grid>
+                </div>
+              );
+            }}
             icons={tableIcons}
             editable={{
               onRowUpdate: (newData, oldData) =>
