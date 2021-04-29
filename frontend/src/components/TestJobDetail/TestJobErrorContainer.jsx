@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -19,15 +20,15 @@ export default function TestJobErrorContainer(props) {
     // 1. 색칠하는 부분 4가지로 나누기
     // 2. Fail, Error일 때 DropDown 버튼 or OnClick 추가하기
     // 네모 칸만 만들면 된다
-    <div
+    <Box
       style={{
         marginTop: "1%",
         marginBottom: "1%",
       }}
     >
       <Paper>
-        <div className={styles.container}>
-          <div
+        <Box className={styles.container}>
+          <Box
             style={{
               textAlign: "top",
               fontSize: "100%",
@@ -35,9 +36,9 @@ export default function TestJobErrorContainer(props) {
             }}
           >
             {props.name}
-          </div>
+          </Box>
 
-          <div
+          <Box
             style={{
               textAlign: "bottom",
               fontSize: "80%",
@@ -45,9 +46,9 @@ export default function TestJobErrorContainer(props) {
             }}
           >
             {props.content}
-          </div>
-        </div>
+          </Box>
+        </Box>
       </Paper>
-    </div>
+    </Box>
   );
 }
