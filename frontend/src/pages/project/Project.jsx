@@ -1,29 +1,66 @@
-import React from "react";
-import PropTypes from "prop-types";
-import clsx from "clsx";
-import { lighten, makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TablePagination from "@material-ui/core/TablePagination";
-import TableRow from "@material-ui/core/TableRow";
-import TableSortLabel from "@material-ui/core/TableSortLabel";
-import Toolbar from "@material-ui/core/Toolbar";
+import React, { useState, useEffect } from "react";
+import { forwardRef } from "react";
+
+import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import MaterialTable from "material-table";
+import AddBox from "@material-ui/icons/AddBox";
+import ArrowDownward from "@material-ui/icons/ArrowDownward";
+import Check from "@material-ui/icons/Check";
+import ChevronLeft from "@material-ui/icons/ChevronLeft";
+import ChevronRight from "@material-ui/icons/ChevronRight";
+import Clear from "@material-ui/icons/Clear";
+import DeleteOutline from "@material-ui/icons/DeleteOutline";
+import Edit from "@material-ui/icons/Edit";
+import FilterList from "@material-ui/icons/FilterList";
+import FirstPage from "@material-ui/icons/FirstPage";
+import LastPage from "@material-ui/icons/LastPage";
+import Remove from "@material-ui/icons/Remove";
+import SaveAlt from "@material-ui/icons/SaveAlt";
+import Search from "@material-ui/icons/Search";
+import ViewColumn from "@material-ui/icons/ViewColumn";
+import Alert from "@material-ui/lab/Alert";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
+import { useHistory, Link } from "react-router-dom";
+import { ButtonBase } from "@material-ui/core";
 
-import IconButton from "@material-ui/core/IconButton";
-import EditIcon from "@material-ui/icons/EditOutlined";
-import DoneIcon from "@material-ui/icons/DoneAllTwoTone";
-import RevertIcon from "@material-ui/icons/NotInterestedOutlined";
+const tableIcons = {
+  Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
+  Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
+  Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+  Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
+  DetailPanel: forwardRef((props, ref) => (
+    <ChevronRight {...props} ref={ref} />
+  )),
+  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
+  Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
+  Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
+  FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
+  LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
+  NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+  PreviousPage: forwardRef((props, ref) => (
+    <ChevronLeft {...props} ref={ref} />
+  )),
+  ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+  Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
+  SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
+  ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
+  ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
+};
 
-function createData(id, title, descrptionTag) {
-  return { id, title, descrptionTag, isEditMode: false };
+const cardStyles = makeStyles({
+  button: { width: "25%" },
+  card: { width: "100%" },
+});
+
+function createData(id, title, description) {
+  return { id, title, description };
 }
 
-const rows = [
+const originalRows = [
   createData(1, "A", "z"),
   createData(2, "B", "y"),
   createData(3, "C", "x"),
@@ -52,356 +89,197 @@ const rows = [
   createData(26, "Z", "a"),
 ];
 
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
+function Project() {
+  const cardClass = cardStyles();
+  var columns = [
+    { title: "ID", field: "id" },
+    { title: "Title", field: "title" },
+    { title: "Descrption", field: "description" },
+  ];
+  const [data, setData] = useState(originalRows); //table data
 
-function getComparator(order, orderBy) {
-  return order === "desc"
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
+  //for error handling
+  const [iserror, setIserror] = useState(false);
+  const [errorMessages, setErrorMessages] = useState([]);
 
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
+  const history = useHistory();
 
-const headCells = [
-  {
-    id: "id",
-    numeric: true,
-    disablePadding: false,
-    label: "ID",
-  },
-  { id: "title", numeric: false, disablePadding: false, label: "Title" },
-  {
-    id: "descrptionTag",
-    numeric: false,
-    disablePadding: false,
-    label: "Descrption / Tag",
-  },
-];
-
-function ProjectHead(props) {
-  const { classes, order, orderBy, onRequestSort } = props;
-  const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property);
-  };
-
-  return (
-    <TableHead>
-      <TableRow>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
-            padding={headCell.disablePadding ? "none" : "default"}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : "asc"}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <span className={classes.visuallyHidden}>
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
-                </span>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  );
-}
-
-ProjectHead.propTypes = {
-  classes: PropTypes.object.isRequired,
-  numSelected: PropTypes.number.isRequired,
-  onRequestSort: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(["asc", "desc"]).isRequired,
-  orderBy: PropTypes.string.isRequired,
-};
-
-const useToolbarStyles = makeStyles((theme) => ({
-  root: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
-  },
-  highlight:
-    theme.palette.type === "light"
-      ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
-      : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
-  title: {
-    flex: "1 1 100%",
-  },
-}));
-
-const ProjectToolbar = (props) => {
-  const classes = useToolbarStyles();
-
-  return (
-    <Toolbar className={clsx(classes.root)}>
-      <Typography
-        className={classes.title}
-        variant="h6"
-        id="tableTitle"
-        component="div"
-      >
-        Search Input Area
-      </Typography>
-    </Toolbar>
-  );
-};
-
-ProjectToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-};
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-  },
-  paper: {
-    width: "100%",
-    marginBottom: theme.spacing(2),
-  },
-  table: {
-    minWidth: 750,
-  },
-  visuallyHidden: {
-    border: 0,
-    clip: "rect(0 0 0 0)",
-    height: 1,
-    margin: -1,
-    overflow: "hidden",
-    padding: 0,
-    position: "absolute",
-    top: 20,
-    width: 1,
-  },
-}));
-
-export default function Project() {
-  const classes = useStyles();
-  const [rows, setRows] = React.useState([
-    createData(1, "A", "z"),
-    createData(2, "B", "y"),
-    createData(3, "C", "x"),
-    createData(4, "D", "w"),
-    createData(5, "E", "v"),
-    createData(6, "F", "u"),
-    createData(7, "G", "t"),
-    createData(8, "H", "s"),
-    createData(9, "I", "r"),
-    createData(10, "J", "q"),
-    createData(11, "K", "p"),
-    createData(12, "L", "o"),
-    createData(13, "M", "n"),
-    createData(14, "N", "m"),
-    createData(15, "O", "l"),
-    createData(16, "P", "k"),
-    createData(17, "Q", "j"),
-    createData(18, "R", "i"),
-    createData(19, "S", "h"),
-    createData(20, "T", "g"),
-    createData(21, "U", "f"),
-    createData(22, "V", "e"),
-    createData(23, "W", "d"),
-    createData(24, "X", "c"),
-    createData(25, "Y", "b"),
-    createData(26, "Z", "a"),
-  ]);
-  const [order, setOrder] = React.useState("desc");
-  const [orderBy, setOrderBy] = React.useState("id");
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [previous, setPrevious] = React.useState([]);
-
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
-  };
-
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
+  const handleRowUpdate = (newData, oldData, resolve) => {
+    //validation
+    let errorList = [];
+    if (!newData.id) {
+      errorList.push("Please enter id");
+    }
+    if (!newData.title) {
+      errorList.push("Please enter title");
+    }
+    if (!newData.description) {
+      errorList.push("Please enter description");
     }
 
-    setSelected(newSelected);
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const isSelected = (name) => selected.indexOf(name) !== -1;
-
-  const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-
-  const onToggleEditMode = (id) => {
-    setRows((state) => {
-      return rows.map((row) => {
-        if (row.id === id) {
-          return { ...row, isEditMode: !row.isEditMode };
-        }
-        return row;
-      });
-    });
-  };
-
-  const onChange = (e, row) => {
-    if (!previous[row.id]) {
-      setPrevious((state) => ({ ...state, [row.id]: row }));
+    if (errorList.length < 1) {
+      const dataUpdate = [...data];
+      const index = oldData.tableData.id;
+      dataUpdate[index] = newData;
+      setData([...dataUpdate]);
+      resolve();
+    } else {
+      setErrorMessages(errorList);
+      setIserror(true);
+      resolve();
     }
-    const value = e.target.value;
-    const name = e.target.name;
-    const { id } = row;
-    const newRows = rows.map((row) => {
-      if (row.id === id) {
-        return { ...row, [name]: value };
-      }
-      return row;
-    });
-    setRows(newRows);
   };
 
-  const onRevert = (id) => {
-    const newRows = rows.map((row) => {
-      if (row.id === id) {
-        return previous[id] ? previous[id] : row;
-      }
-      return row;
-    });
-    setRows(newRows);
-    setPrevious((state) => {
-      delete state[id];
-      return state;
-    });
-    onToggleEditMode(id);
+  const handleRowAdd = (newData, resolve) => {
+    //validation
+    let errorList = [];
+    if (!newData.id) {
+      errorList.push("Please enter id");
+    }
+    if (!newData.title) {
+      errorList.push("Please enter title");
+    }
+    if (!newData.description) {
+      errorList.push("Please enter description");
+    }
+
+    if (errorList.length < 1) {
+      let dataToAdd = [...data];
+      dataToAdd.push(newData);
+      setData(dataToAdd);
+      resolve();
+    } else {
+      setErrorMessages(errorList);
+      setIserror(true);
+      resolve();
+    }
+  };
+
+  const handleRowDelete = (oldData, resolve) => {
+    const dataDelete = [...data];
+    const index = oldData.tableData.id;
+    dataDelete.splice(index, 1);
+    setData([...dataDelete]);
+    resolve();
   };
 
   return (
-    <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <ProjectToolbar numSelected={selected.length} />
-        <TableContainer>
-          <Table
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            size="small"
-            aria-label="project table"
-          >
-            <ProjectHead
-              classes={classes}
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-            />
-            <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = isSelected(row.id);
-
-                  return (
-                    <TableRow
-                      hover
-                      onClick={(event) => handleClick(event, row.id)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.id}
-                      selected={isItemSelected}
-                    >
-                      <TableCell align="right">{row.id}</TableCell>
-                      <TableCell align="left">{row.title}</TableCell>
-                      <TableCell align="left">{row.descrptionTag}</TableCell>
-                      <TableCell className={classes.selectTableCell}>
-                        {row.isEditMode ? (
-                          <>
-                            <IconButton
-                              aria-label="done"
-                              onClick={() => onToggleEditMode(row.id)}
-                            >
-                              <DoneIcon />
-                            </IconButton>
-                            <IconButton
-                              aria-label="revert"
-                              onClick={() => onRevert(row.id)}
-                            >
-                              <RevertIcon />
-                            </IconButton>
-                          </>
-                        ) : (
-                          <IconButton
-                            aria-label="delete"
-                            onClick={() => onToggleEditMode(row.id)}
-                          >
-                            <EditIcon />
-                          </IconButton>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  );
+    <div>
+      <Grid container spacing={0}>
+        <Grid item xs={1}></Grid>
+        <Grid item xs={10}>
+          <div>
+            {iserror && (
+              <Alert severity="error">
+                {errorMessages.map((msg, i) => {
+                  return <div key={i}>{msg}</div>;
                 })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 33 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
-      </Paper>
+              </Alert>
+            )}
+          </div>
+          <MaterialTable
+            title="Project List"
+            columns={columns}
+            data={data}
+            detailPanel={(rowData) => {
+              return (
+                <div>
+                  <Typography>Project ID: {rowData.id}</Typography>
+                  <Typography>Coverage: 99%</Typography>
+                  <br />
+                  <Typography>TestJob List</Typography>
+                  <Grid container spacing={0}>
+                    <ButtonBase
+                      className={cardClass.button}
+                      onClick={(event) => {
+                        history.push("/testjob/" + 1);
+                      }}
+                    >
+                      <Card className={cardClass.card}>
+                        <CardContent>
+                          <Typography>
+                            Status Icon&nbsp;&nbsp;&nbsp; ID
+                          </Typography>
+                          <Typography>login unit test</Typography>
+                        </CardContent>
+                      </Card>
+                    </ButtonBase>
+                    <ButtonBase
+                      className={cardClass.button}
+                      onClick={(event) => {
+                        history.push("/testjob/" + 2);
+                      }}
+                    >
+                      <Card className={cardClass.card}>
+                        <CardContent>
+                          <Typography>
+                            Status Icon&nbsp;&nbsp;&nbsp; ID
+                          </Typography>
+                          <Typography>join unit test</Typography>
+                        </CardContent>
+                      </Card>
+                    </ButtonBase>
+                    <ButtonBase
+                      className={cardClass.button}
+                      onClick={(event) => {
+                        history.push("/testjob/" + 3);
+                      }}
+                    >
+                      <Card className={cardClass.card}>
+                        <CardContent>
+                          <Typography>
+                            Status Icon&nbsp;&nbsp;&nbsp; ID
+                          </Typography>
+                          <Typography>edit unit test</Typography>
+                        </CardContent>
+                      </Card>
+                    </ButtonBase>
+                    <ButtonBase
+                      className={cardClass.button}
+                      onClick={(event) => {
+                        history.push("/testjob/" + 4);
+                      }}
+                    >
+                      <Card className={cardClass.card}>
+                        <CardContent>
+                          <Typography>
+                            Status Icon&nbsp;&nbsp;&nbsp; ID
+                          </Typography>
+                          <Typography>delete unit test</Typography>
+                        </CardContent>
+                      </Card>
+                    </ButtonBase>
+                  </Grid>
+                </div>
+              );
+            }}
+            icons={tableIcons}
+            editable={{
+              onRowUpdate: (newData, oldData) =>
+                new Promise((resolve) => {
+                  handleRowUpdate(newData, oldData, resolve);
+                }),
+              onRowAdd: (newData) =>
+                new Promise((resolve) => {
+                  handleRowAdd(newData, resolve);
+                }),
+              onRowDelete: (oldData) =>
+                new Promise((resolve) => {
+                  handleRowDelete(oldData, resolve);
+                }),
+            }}
+            onRowClick={(evt, selectedRow) =>
+              history.push("/project/" + selectedRow.id)
+            }
+            options={{
+              actionsColumnIndex: -1,
+            }}
+          />
+        </Grid>
+        <Grid item xs={3}></Grid>
+      </Grid>
     </div>
   );
 }
+
+export default Project;
