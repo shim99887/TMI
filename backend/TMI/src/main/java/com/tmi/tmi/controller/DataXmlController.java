@@ -82,7 +82,9 @@ public class DataXmlController {
 							} else {
 								JSONArray classInnerMethods = pkgInnerClass.getJSONArray("method");
 								for (int j = 0; j < classInnerMethods.length(); j++) {
+									Method method = new Method();
 									System.out.println("Mehtod : " + classInnerMethods.getJSONObject(j).get("name"));
+									method.setName(classInnerMethods.getJSONObject(j).get("name").toString());
 									JSONArray methodInnerCounter = classInnerMethods.getJSONObject(j).getJSONArray("counter");
 									for(int k=0;k<methodInnerCounter.length();k++) {
 										JSONObject mCounter = methodInnerCounter.getJSONObject(k);
@@ -91,6 +93,16 @@ public class DataXmlController {
 										counter.setCovered(Integer.parseInt(mCounter.get("covered").toString()));
 										counter.setMissed(Integer.parseInt(mCounter.get("missed").toString()));
 										System.out.println(counter);
+										if(counter.getType().equals("INSTURCTION")) {
+											method.setInstruction(counter);
+										}else if(counter.getType().equals("LINE")) {
+											method.setLine(counter);
+										}else if(counter.getType().equals("COMPLEXITY")) {
+											method.setComplexity(counter);
+										}else {
+											method.setMethod(counter);
+										}
+										
 //										System.out.println("Type : " + mCounter.get("type"));
 //										System.out.println("missed : " + mCounter.get("missed"));
 //										System.out.println("covered : " + mCounter.get("covered"));
