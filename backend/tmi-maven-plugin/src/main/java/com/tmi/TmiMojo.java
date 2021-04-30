@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
@@ -70,7 +69,7 @@ public class TmiMojo extends AbstractMojo {
 			fileItem = new DiskFileItem("mainFile", Files.probeContentType(jacocoXmlFile.toPath()), false, jacocoXmlFile.getName(), (int) jacocoXmlFile.length(), jacocoXmlFile.getParentFile());
 
 		    InputStream input = new FileInputStream(jacocoXmlFile);
-		    OutputStream os = fileItem.getOutputStream();
+		    //OutputStream os = fileItem.getOutputStream();
 		    //IOUtils.copy(input, os);
 		    // Or faster..
 		     IOUtils.copy(input, fileItem.getOutputStream());
@@ -88,8 +87,8 @@ public class TmiMojo extends AbstractMojo {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 		
-		MultiValueMap<String, Object> body  = new LinkedMultiValueMap<>();
-		body.add("xmlFile", multipartFile.getResource());
+		//jacoco xml 파일 전송
+		
 		
 		HttpMessageConverter<Object> jackson = new MappingJackson2HttpMessageConverter();
 		HttpMessageConverter<Resource> resource = new ResourceHttpMessageConverter();
@@ -98,14 +97,40 @@ public class TmiMojo extends AbstractMojo {
 		formHttpMessageConverter.addPartConverter(resource); 
 
 		RestTemplate restTemplate = new RestTemplate(Arrays.asList(jackson, resource, formHttpMessageConverter));
-
-		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-		String serverUrl = "http://localhost:8080/api/data";
+		
+		MultiValueMap<String, Object> jacocoXmlBody = new LinkedMultiValueMap<>();
+		jacocoXmlBody.add("xmlFile", multipartFile.getResource());
+		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(jacocoXmlBody, headers);
+		String serverUrl = "http://localhost:8080/api/jacoco/data";
 		//RestTemplate restTemplate = new RestTemplate();
 		ResponseEntity<Boolean> response = restTemplate.exchange(serverUrl, HttpMethod.POST, requestEntity, Boolean.class);
+		getLog().info("jacoco xml response code: " + response.getStatusCode());
 		
-		getLog().info("response code: " + response.getStatusCode());
-		getLog().info("jacoco xml file name " + jacocoXmlFile.getAbsolutePath());
-		getLog().info("project directory: " + targetDir);
+		MultiValueMap<String, Object> junitTxtBody = new LinkedMultiValueMap<>();
+		//List<Resource> junitTxtResourceList = new ArrayList<>();
+		for (int i = 0; i < junitFileTextArr.length; i++) {
+			FileItem txtFileItem = null;
+			try {
+				txtFileItem = new DiskFileItem("mainFile", Files.probeContentType(junitFileTextArr[i].toPath()), false, junitFileTextArr[i].getName(), (int) junitFileTextArr[i].length(), junitFileTextArr[i].getParentFile());
+
+			    InputStream input = new FileInputStream(junitFileTextArr[i]);
+			    //IOUtils.copy(input, os);
+			    // Or faster..
+			     IOUtils.copy(input, txtFileItem.getOutputStream());
+			} catch (Exception e) {
+			    e.printStackTrace();
+			}
+			multipartFile = new CommonsMultipartFile(txtFileItem);
+			junitTxtBody.add("txtFiles", multipartFile.getResource());
+			//junitTxtResourceList.add(multipartFile.getResource());
+		}
+		
+		
+		restTemplate = new RestTemplate(Arrays.asList(jackson, resource, formHttpMessageConverter));
+		requestEntity = new HttpEntity<>(junitTxtBody, headers);
+		String junitServerUrl = "http://localhost:8080/api/junit/data";
+		response = restTemplate.exchange(junitServerUrl, HttpMethod.POST, requestEntity, Boolean.class);
+		
+		getLog().info("junit txt response code: " + response.getStatusCode());
 	}
 }
