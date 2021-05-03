@@ -101,7 +101,11 @@ public class TmiMojo extends AbstractMojo {
 		MultiValueMap<String, Object> jacocoXmlBody = new LinkedMultiValueMap<>();
 		jacocoXmlBody.add("xmlFile", multipartFile.getResource());
 		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(jacocoXmlBody, headers);
+<<<<<<< HEAD
+		String serverUrl = "http://k4a2011.p.ssafy.io:8080/api/data";
+=======
 		String serverUrl = "http://localhost:8080/api/data";
+>>>>>>> 2b7a01a3820118815ced33a3f1a0a23a3c2eee8f
 		//RestTemplate restTemplate = new RestTemplate();
 		ResponseEntity<String> jacocoResponse = restTemplate.exchange(serverUrl, HttpMethod.POST, requestEntity, String.class);
 		getLog().info("jacoco xml response code: " + jacocoResponse.getStatusCode());
@@ -128,8 +132,13 @@ public class TmiMojo extends AbstractMojo {
 		
 		restTemplate = new RestTemplate(Arrays.asList(jackson, resource, formHttpMessageConverter));
 		requestEntity = new HttpEntity<>(junitTxtBody, headers);
+<<<<<<< HEAD
+		String junitServerUrl = "http://k4a2011.p.ssafy.io:8080/api/junit/data";
+		response = restTemplate.exchange(junitServerUrl, HttpMethod.POST, requestEntity, Boolean.class);
+=======
 		String junitServerUrl = "http://localhost:8080/api/junit/data";
 		ResponseEntity<Boolean> junitResponse = restTemplate.exchange(junitServerUrl, HttpMethod.POST, requestEntity, Boolean.class);
+>>>>>>> 2b7a01a3820118815ced33a3f1a0a23a3c2eee8f
 		
 		getLog().info("junit txt response code: " + junitResponse.getStatusCode());
 	}
