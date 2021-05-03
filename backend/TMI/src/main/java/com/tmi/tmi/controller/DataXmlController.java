@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,17 +20,22 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.tmi.tmi.model.Counter;
+import com.tmi.tmi.model.Coverage;
 import com.tmi.tmi.model.Line;
 import com.tmi.tmi.model.Method;
 import com.tmi.tmi.model.Package;
 import com.tmi.tmi.model.PackageInnerClass;
 import com.tmi.tmi.model.Sourcefile;
+import com.tmi.tmi.repository.CoverageRepository;
 
 import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api")
 public class DataXmlController {
+	@Autowired
+	CoverageRepository coverageRepository;
+	
 	@PostMapping("/data")
 	@ApiOperation(value = "postXmlFile")
 	public ResponseEntity<List<Package>> postXmlFile(MultipartFile xmlFile) {
@@ -44,9 +50,11 @@ public class DataXmlController {
 
 				JSONObject report = xmlJsonObj.getJSONObject("report");
 				JSONArray packageArray = report.getJSONArray("package");
-
+				
+				Coverage coverage = new Coverage();
 				List<Package> packageList = new ArrayList<Package>();
-
+				coverage.setProjectName(report.getString("name"));
+				
 				for (int i = 0; i < packageArray.length(); i++) {
 					Package innerPackage = new Package();
 					innerPackage.setName(packageArray.getJSONObject(i).getString("name").replaceAll("/", "."));
@@ -162,7 +170,7 @@ public class DataXmlController {
 						}
 					}
 					innerPackage.setSourceFileList(sourceFileList);
-					packageList.add(innerPackage);
+					//packageList.add(innerPackage);
 					List<PackageInnerClass> classList = new ArrayList<PackageInnerClass>();
 					if (packageArray.getJSONObject(i).optJSONArray("class") == null) {
 						JSONObject pkgInnerClass = packageArray.getJSONObject(i).getJSONObject("class");
@@ -317,7 +325,10 @@ public class DataXmlController {
 					packageList.add(innerPackage);
 					System.out.println("────────────────────────────────────");
 				}
-				System.out.println(packageList);
+				//System.out.println(packageList);
+				
+				coverage.setPackageList(packageList);
+				coverageRepository.save(coverage);
 				return new ResponseEntity<List<Package>>(packageList, HttpStatus.ACCEPTED);
 
 			} catch (Exception e) {
