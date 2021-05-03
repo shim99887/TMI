@@ -21,11 +21,11 @@ import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import Alert from "@material-ui/lab/Alert";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import { useHistory, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { ButtonBase } from "@material-ui/core";
+import { ProjectAxios, TestJobAxios } from "../../utils/axios";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -56,53 +56,73 @@ const cardStyles = makeStyles({
   card: { width: "100%" },
 });
 
-function createData(id, title, description) {
-  return { id, title, description };
+function TestJobList(props) {
+  const { pid, history } = props;
+  const cardClass = cardStyles();
+
+  const [testJobData, setTestJobData] = useState([]);
+
+  useEffect(async () => {
+    const testJobAxios = new TestJobAxios();
+    try {
+      const testJobAxiosData = await testJobAxios.getOneProject(pid);
+      setTestJobData(testJobAxiosData);
+    } catch (error) {
+      console.error(error);
+    }
+    return () => {};
+  }, []);
+
+  return (
+    <>
+      <Grid container spacing={0}>
+        {testJobData.map((testJob) => (
+          <ButtonBase
+            className={cardClass.button}
+            onClick={(event) => {
+              history.push(`/testjob/${pid}/${testJob.testId}`);
+            }}
+          >
+            <Card className={cardClass.card}>
+              <CardContent>
+                <Typography align="left">Status: 😀</Typography>
+                <Typography align="left">ID: {testJob.testId}</Typography>
+                <Typography align="left">
+                  Name: {testJob.testSetName}
+                </Typography>
+              </CardContent>
+            </Card>
+          </ButtonBase>
+        ))}
+      </Grid>
+    </>
+  );
 }
 
-const originalRows = [
-  createData(1, "A", "z"),
-  createData(2, "B", "y"),
-  createData(3, "C", "x"),
-  createData(4, "D", "w"),
-  createData(5, "E", "v"),
-  createData(6, "F", "u"),
-  createData(7, "G", "t"),
-  createData(8, "H", "s"),
-  createData(9, "I", "r"),
-  createData(10, "J", "q"),
-  createData(11, "K", "p"),
-  createData(12, "L", "o"),
-  createData(13, "M", "n"),
-  createData(14, "N", "m"),
-  createData(15, "O", "l"),
-  createData(16, "P", "k"),
-  createData(17, "Q", "j"),
-  createData(18, "R", "i"),
-  createData(19, "S", "h"),
-  createData(20, "T", "g"),
-  createData(21, "U", "f"),
-  createData(22, "V", "e"),
-  createData(23, "W", "d"),
-  createData(24, "X", "c"),
-  createData(25, "Y", "b"),
-  createData(26, "Z", "a"),
-];
-
 function Project() {
-  const cardClass = cardStyles();
   var columns = [
     { title: "ID", field: "id" },
     { title: "Title", field: "title" },
     { title: "Descrption", field: "description" },
   ];
-  const [data, setData] = useState(originalRows); //table data
+  const [projectData, setProjectData] = useState();
 
   //for error handling
   const [iserror, setIserror] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
 
   const history = useHistory();
+
+  useEffect(async () => {
+    const projectAxios = new ProjectAxios();
+    try {
+      const projectAxiosData = await projectAxios.all();
+      setProjectData(projectAxiosData);
+    } catch (error) {
+      console.error(error);
+    }
+    return () => {};
+  }, []);
 
   const handleRowUpdate = (newData, oldData, resolve) => {
     //validation
@@ -118,10 +138,10 @@ function Project() {
     }
 
     if (errorList.length < 1) {
-      const dataUpdate = [...data];
+      const dataUpdate = [...projectData];
       const index = oldData.tableData.id;
       dataUpdate[index] = newData;
-      setData([...dataUpdate]);
+      setProjectData([...dataUpdate]);
       resolve();
     } else {
       setErrorMessages(errorList);
@@ -144,9 +164,9 @@ function Project() {
     }
 
     if (errorList.length < 1) {
-      let dataToAdd = [...data];
+      let dataToAdd = [...projectData];
       dataToAdd.push(newData);
-      setData(dataToAdd);
+      setProjectData(dataToAdd);
       resolve();
     } else {
       setErrorMessages(errorList);
@@ -156,10 +176,10 @@ function Project() {
   };
 
   const handleRowDelete = (oldData, resolve) => {
-    const dataDelete = [...data];
+    const dataDelete = [...projectData];
     const index = oldData.tableData.id;
     dataDelete.splice(index, 1);
-    setData([...dataDelete]);
+    setProjectData([...dataDelete]);
     resolve();
   };
 
@@ -180,76 +200,11 @@ function Project() {
           <MaterialTable
             title="Project List"
             columns={columns}
-            data={data}
+            data={projectData}
             detailPanel={(rowData) => {
               return (
                 <div>
-                  <Typography>Project ID: {rowData.id}</Typography>
-                  <Typography>Coverage: 99%</Typography>
-                  <br />
-                  <Typography>TestJob List</Typography>
-                  <Grid container spacing={0}>
-                    <ButtonBase
-                      className={cardClass.button}
-                      onClick={(event) => {
-                        history.push("/testjob/" + 1);
-                      }}
-                    >
-                      <Card className={cardClass.card}>
-                        <CardContent>
-                          <Typography>
-                            Status Icon&nbsp;&nbsp;&nbsp; ID
-                          </Typography>
-                          <Typography>login unit test</Typography>
-                        </CardContent>
-                      </Card>
-                    </ButtonBase>
-                    <ButtonBase
-                      className={cardClass.button}
-                      onClick={(event) => {
-                        history.push("/testjob/" + 2);
-                      }}
-                    >
-                      <Card className={cardClass.card}>
-                        <CardContent>
-                          <Typography>
-                            Status Icon&nbsp;&nbsp;&nbsp; ID
-                          </Typography>
-                          <Typography>join unit test</Typography>
-                        </CardContent>
-                      </Card>
-                    </ButtonBase>
-                    <ButtonBase
-                      className={cardClass.button}
-                      onClick={(event) => {
-                        history.push("/testjob/" + 3);
-                      }}
-                    >
-                      <Card className={cardClass.card}>
-                        <CardContent>
-                          <Typography>
-                            Status Icon&nbsp;&nbsp;&nbsp; ID
-                          </Typography>
-                          <Typography>edit unit test</Typography>
-                        </CardContent>
-                      </Card>
-                    </ButtonBase>
-                    <ButtonBase
-                      className={cardClass.button}
-                      onClick={(event) => {
-                        history.push("/testjob/" + 4);
-                      }}
-                    >
-                      <Card className={cardClass.card}>
-                        <CardContent>
-                          <Typography>
-                            Status Icon&nbsp;&nbsp;&nbsp; ID
-                          </Typography>
-                          <Typography>delete unit test</Typography>
-                        </CardContent>
-                      </Card>
-                    </ButtonBase>
-                  </Grid>
+                  <TestJobList pid={rowData.id} history={history} />
                 </div>
               );
             }}
