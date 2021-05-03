@@ -1,14 +1,13 @@
 package com.tmi.controller.jacoco;
 
-import com.tmi.controller.project.ProjectNotFoundException;
 import com.tmi.entity.Jacoco;
-import com.tmi.entity.Project;
 import com.tmi.repository.JacocoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/jacoco")
 public class JacocoController {
