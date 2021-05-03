@@ -32,7 +32,7 @@ public class TestDataController {
 
     @GetMapping("/{pid}/{id}")
     TestData getTestData(@PathVariable Long pid, @PathVariable Long id) {
-        TestData.TestNo testNo = null;
+        TestData.TestNo testNo = new TestData.TestNo();
         testNo.setTestId(id);
         testNo.setProjectId(pid);
         return repository.findById(testNo)
@@ -41,7 +41,7 @@ public class TestDataController {
 
     @PutMapping("/{pid}/{id}")
     TestData updateTestData(@RequestBody TestData newTestData, @PathVariable Long pid, @PathVariable Long id) {
-        TestData.TestNo testNo = null;
+        TestData.TestNo testNo = new TestData.TestNo();
         testNo.setTestId(id);
         testNo.setProjectId(pid);
         return repository.findById(testNo)
@@ -63,7 +63,7 @@ public class TestDataController {
 
     @DeleteMapping("/{pid}/{id}")
     void deleteTestData(@PathVariable Long pid, @PathVariable Long id) {
-        TestData.TestNo testNo = null;
+        TestData.TestNo testNo = new TestData.TestNo();
         testNo.setTestId(id);
         testNo.setProjectId(pid);
 

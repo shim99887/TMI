@@ -10,7 +10,6 @@ import java.io.Serializable;
 @ToString
 @Getter
 @Setter
-@IdClass(TestData.TestNo.class)
 public class TestData {
 
     @EmbeddedId
@@ -28,13 +27,16 @@ public class TestData {
     @Embeddable
     @Getter
     @Setter
-    public class TestNo implements Serializable {
+    public static class TestNo implements Serializable {
 
+        @Column(name="test_id")
         private Long testId;
+        @Column(name="project_id")
         private Long projectId;
 
         public TestNo(){
-
+            this.testId = Long.valueOf(0);
+            this.projectId = Long.valueOf(0);
         }
     }
 }
