@@ -1,6 +1,7 @@
 package com.tmi.controller.testdata;
 
 import com.tmi.entity.TestData;
+import com.tmi.entity.TestNo;
 import com.tmi.repository.TestDataRepository;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import java.util.Optional;
 
 @CrossOrigin("*")
 @RestController
+@CrossOrigin(origins = "*",allowedHeaders = "*")
 @RequestMapping("/testjob")
 public class TestDataController {
 
@@ -26,6 +28,11 @@ public class TestDataController {
         return repository.findAll();
     }
 
+    @GetMapping("/{pid}")
+    List<TestData> getTestDataListByProjectId(@PathVariable Long pid) {
+        return repository.findAllByProjectIdEquals(pid);
+    }
+
     @PostMapping()
     TestData postTestData(@RequestBody TestData newTestData) {
         return repository.save(newTestData);
@@ -33,7 +40,7 @@ public class TestDataController {
 
     @GetMapping("/{pid}/{id}")
     TestData getTestData(@PathVariable Long pid, @PathVariable Long id) {
-        TestData.TestNo testNo = new TestData.TestNo();
+        TestNo testNo = new TestNo();
         testNo.setTestId(id);
         testNo.setProjectId(pid);
         return repository.findById(testNo)
@@ -42,7 +49,7 @@ public class TestDataController {
 
     @PutMapping("/{pid}/{id}")
     TestData updateTestData(@RequestBody TestData newTestData, @PathVariable Long pid, @PathVariable Long id) {
-        TestData.TestNo testNo = new TestData.TestNo();
+        TestNo testNo = new TestNo();
         testNo.setTestId(id);
         testNo.setProjectId(pid);
         return repository.findById(testNo)
@@ -57,14 +64,15 @@ public class TestDataController {
                     return repository.save(TestData);
                 })
                 .orElseGet(() -> {
-                    newTestData.setTestNo(testNo);
+                    newTestData.setProjectId(pid);
+                    newTestData.setTestId(id);
                     return repository.save(newTestData);
                 });
     }
 
     @DeleteMapping("/{pid}/{id}")
     void deleteTestData(@PathVariable Long pid, @PathVariable Long id) {
-        TestData.TestNo testNo = new TestData.TestNo();
+        TestNo testNo = new TestNo();
         testNo.setTestId(id);
         testNo.setProjectId(pid);
 
