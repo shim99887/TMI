@@ -14,6 +14,15 @@ class BaseAxios {
   }
 }
 
+export class TestJobAxios extends BaseAxios {
+  getAll() {
+    return this.basicRequest("/testjob");
+  }
+  getOne(pid, id) {
+    return this.basicRequest(`/testjob/${pid}/${id}`);
+  }
+}
+
 export class ProjectAxios extends BaseAxios {
   all() {
     return this.basicRequest("/project");
