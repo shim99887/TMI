@@ -12,7 +12,6 @@ import java.util.Optional;
 
 @CrossOrigin("*")
 @RestController
-@CrossOrigin(origins = "*",allowedHeaders = "*")
 @RequestMapping("/testjob")
 public class TestDataController {
 
