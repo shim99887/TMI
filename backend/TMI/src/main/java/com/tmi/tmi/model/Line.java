@@ -4,11 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@ToString
 @Getter
 @Setter
-public class Counter {
-	private String type;
-	private int missed;
-	private int covered;
+@ToString
+public class Line {
+	private int nr;
+	private int mi;
+	private int ci;
+	private int mb;
+	private int cb;
 }

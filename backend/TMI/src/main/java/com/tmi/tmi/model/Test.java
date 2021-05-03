@@ -1,7 +1,5 @@
 package com.tmi.tmi.model;
 
-import java.util.List;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,11 +12,16 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-@Document(collection = "coverage")
-public class Coverage {
+@Document(collection = "test")
+public class Test {
 	@Id
-	private String _id;
+	String _id;
 	
-	private String projectName;
-	private List<Package> packageList;
+	String buildTime;
+	String package_name;
+	int runCount;
+    int failCount;
+    int errorCount;
+    int skipCount;
+    float elapsedTime; 
 }
