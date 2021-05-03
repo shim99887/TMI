@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@material-ui/core/Box";
 import Input from "@material-ui/core/Input";
 import Grid from "@material-ui/core/Grid";
 import TestJobItemContainer from "../../components/TestJobDetail/TestJobItemContainer";
 import TestJobHistory from "../../components/TestJobDetail/TestJobHistory";
 import { makeStyles } from "@material-ui/core/styles";
+import { TestJobAxios } from "../../utils/axios";
+import { useParams } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -16,7 +18,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function TestJobDetail() {
   const styles = useStyles();
-  // const path = useParams();
+  const params = useParams();
+  const [data, setData] = useState([]);
 
   // axios.get() Project의 TestJobList 반환받는다
   // Success, Fail, Error, Skip 눌렀을 때
@@ -24,6 +27,18 @@ export default function TestJobDetail() {
   let fail = 2 + 1;
   let error = 1 + 1;
   let skip = 0 + 1;
+
+  useEffect(async () => {
+    const testJobAxios = new TestJobAxios();
+    try {
+      const responseData = await testJobAxios.getOne(params.pid, params.id);
+      setData(responseData);
+      console.log(responseData);
+    } catch (error) {
+      console.error(error);
+    }
+    return () => {};
+  }, []);
 
   return (
     <Box>
@@ -34,6 +49,7 @@ export default function TestJobDetail() {
           item
           xs={2}
         >
+          <p>axios data: {JSON.stringify(data)}</p>
           <TestJobHistory testCount="8" date="21/04/28 17:00"></TestJobHistory>
           <TestJobHistory testCount="7" date="21/04/28 17:00"></TestJobHistory>
           <TestJobHistory testCount="6" date="21/04/28 17:00"></TestJobHistory>
