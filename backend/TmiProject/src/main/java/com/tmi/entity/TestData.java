@@ -1,25 +1,42 @@
 package com.tmi.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+
+import java.io.Serializable;
 
 @Entity
 @ToString
 @Getter
 @Setter
 public class TestData {
-	@Id @GeneratedValue
-    private long no;
+
+    @EmbeddedId
+    private TestNo testNo;
+
     private String testSetName; //ex) org.springframework.samples.petclinic.owner.VisitControllerTests
-    private int runCount;
-    private int failCount;
-    private int errorCount;
-    private int skipCount;
-    private float elapsedTime;
+    private Integer runCount;
+    private Integer failCount;
+    private Integer errorCount;
+    private Integer skipCount;
+    private Float elapsedTime;
     //txt에 대한 property만 가져옴. xml 파일의 정보도 추가 고려해야함.
+
+    @EqualsAndHashCode
+    @Embeddable
+    @Getter
+    @Setter
+    public static class TestNo implements Serializable {
+
+        @Column(name="test_id")
+        private Long testId;
+        @Column(name="project_id")
+        private Long projectId;
+
+        public TestNo(){
+            this.testId = Long.valueOf(0);
+            this.projectId = Long.valueOf(0);
+        }
+    }
 }

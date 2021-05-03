@@ -1,5 +1,7 @@
 package com.tmi.tmi.model;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -17,9 +19,6 @@ public class Coverage {
 	@Id
 	private String _id;
 	
-	//test용 세팅
-	private String email;
-	private String password;
-	private String nickname;
-	private boolean status;
+	private String projectName;
+	private List<Package> packageList;
 }
