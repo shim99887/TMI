@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/testData")
+@RequestMapping("/testjob")
 public class TestDataController {
 
     private final TestDataRepository repository;
