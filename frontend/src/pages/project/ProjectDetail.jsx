@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import ProjectDetailGraphs from "../../components/project/ProjectDetailGraphs";
 import ProjectDetailTestJobList from "../../components/project/ProjectDetailTestJobList";
-import { ProjectAxios } from "../../utils/axios";
+import { JacocoAxios } from "../../utils/axios";
 
 export default function ProjectDetail() {
   const params = useParams();
   const [data, setData] = useState([]);
   useEffect(async () => {
-    const projectAxios = new ProjectAxios();
+    const jacocoAxios = new JacocoAxios();
     try {
-      const responseData = await projectAxios.one(params.id);
+      const responseData = await jacocoAxios.all();
       setData(responseData);
     } catch (error) {
       console.error(error);
@@ -19,14 +19,13 @@ export default function ProjectDetail() {
   }, []);
   return (
     <>
-      <p>axios data: {JSON.stringify(data)}</p>
       <h2>{params.id} PJT</h2>
       <div>
-        <ProjectDetailGraphs />
+        <ProjectDetailGraphs data={data} />
       </div>
       <div>
         <h2>Test Job List</h2>
-        <ProjectDetailTestJobList />
+        <ProjectDetailTestJobList data={data} />
       </div>
     </>
   );
