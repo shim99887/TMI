@@ -8,7 +8,7 @@ export default function Navigation() {
     <>
       <nav style={{ backgroundColor: colors.blue[500], padding: 5 }}>
         <Link to="/">Home</Link>
-        <Link to="/dashboard">Dashboard</Link>
+        {/* <Link to="/dashboard">Dashboard</Link> */}
         <Link to="/project">Project</Link>
         <Link to="/testjob">Test Job</Link>
         <Link to="/about">About</Link>

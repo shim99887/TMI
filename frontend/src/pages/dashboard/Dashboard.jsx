@@ -5,6 +5,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
+import Line from "../../components/graph/Line";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -16,17 +17,13 @@ function TabPanel(props) {
       id={`simple-tabpanel-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && children}
     </div>
   );
 }
 
 export default function Dashboard() {
-  const [value, setValue] = React.useState(2);
+  const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -35,8 +32,9 @@ export default function Dashboard() {
   return (
     <div>
       <Grid container spacing={3}>
-        <Grid item xs={6}>
+        <Grid item xs={6} style={{ minHeight: 500, maxHeight: 500 }}>
           Total Average
+          <Line />
         </Grid>
         <Grid item xs={6}>
           <AppBar position="static" color="default">
@@ -52,13 +50,14 @@ export default function Dashboard() {
             </Tabs>
           </AppBar>
           <TabPanel value={value} index={0}>
-            asdasd
+            Item {value}
+            <Line />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            Item Two
+            Item {value}
           </TabPanel>
           <TabPanel value={value} index={2}>
-            Item Three
+            Item {value}
           </TabPanel>
         </Grid>
       </Grid>
