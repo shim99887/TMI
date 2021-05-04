@@ -7,6 +7,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -55,7 +57,8 @@ public class DataXmlController {
 				
 				Coverage coverage = new Coverage();
 				Date date_now = new Date(System.currentTimeMillis());
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+				sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
 				String buildTime = sdf.format(date_now);
 				coverage.setBuildTime(buildTime);
 				
