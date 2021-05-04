@@ -11,8 +11,9 @@ import java.io.Serializable;
 @Data
 public class TestNo implements Serializable {
 
-    private Long testId;
     private Long projectId;
+    private Long testId;
+    private Long no;
 
     public TestNo(){
     }
