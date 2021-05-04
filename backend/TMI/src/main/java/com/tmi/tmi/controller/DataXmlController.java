@@ -54,6 +54,25 @@ public class DataXmlController {
 				Coverage coverage = new Coverage();
 				List<Package> packageList = new ArrayList<Package>();
 				coverage.setProjectName(report.getString("name"));
+				JSONArray coverageCounterList = report.getJSONArray("counter");
+				
+				for(int i=0;i<coverageCounterList.length(); i++) {
+					JSONObject coverageCounter = coverageCounterList.getJSONObject(i);
+					Counter counter = parseCounter(coverageCounter);
+					if (counter.getType().equals("INSTRUCTION")) {
+						coverage.setInstruction(counter);
+					} else if (counter.getType().equals("LINE")) {
+						coverage.setLine(counter);
+					} else if (counter.getType().equals("COMPLEXITY")) {
+						coverage.setComplexity(counter);
+					} else if (counter.getType().equals("METHOD")) {
+						coverage.setMethod(counter);
+					} else if (counter.getType().equals("CLASS")) {
+						coverage.setInnerClass(counter);
+					} else {
+						coverage.setBranch(counter);
+					}
+				}
 				
 				for (int i = 0; i < packageArray.length(); i++) {
 					Package innerPackage = new Package();
