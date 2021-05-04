@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,7 +37,8 @@ public class DataTextContoller {
 		if (!txtFiles.isEmpty()) {
 			try {
 				Date date_now = new Date(System.currentTimeMillis());
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+				sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
 				String buildTime = sdf.format(date_now);
 				for (MultipartFile txtFile : txtFiles) {
 					Test test = new Test();
