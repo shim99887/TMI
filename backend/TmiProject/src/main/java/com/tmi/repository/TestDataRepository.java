@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface TestDataRepository extends JpaRepository<TestData, TestNo> {
     List<TestData> findAllByProjectIdEquals(Long projectId);
+    List<TestData> findAllByProjectIdAndTestIdEquals(Long projectId, Long testId);
 }

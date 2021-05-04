@@ -21,8 +21,11 @@ export class TestJobAxios extends BaseAxios {
   getOneProject(pid) {
     return this.basicGetRequest(`/testjob/${pid}`);
   }
-  getOne(pid, id) {
+  getTestJob(pid, id) {
     return this.basicGetRequest(`/testjob/${pid}/${id}`);
+  }
+  getOneTest(pid, id, no) {
+    return this.basicGetRequest(`/testjob/${pid}/${id}/${no}`);
   }
 }
 

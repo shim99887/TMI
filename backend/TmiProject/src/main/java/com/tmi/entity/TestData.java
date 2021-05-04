@@ -12,9 +12,11 @@ import lombok.*;
 public class TestData {
 
     @Id
+    private Long projectId;
+    @Id
     private Long testId;
     @Id
-    private Long projectId;
+    private Long no;
 
     private String testSetName; //ex) org.springframework.samples.petclinic.owner.VisitControllerTests
     private Integer runCount;

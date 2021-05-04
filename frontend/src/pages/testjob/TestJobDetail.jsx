@@ -23,15 +23,10 @@ export default function TestJobDetail() {
 
   // axios.get() Project의 TestJobList 반환받는다
   // Success, Fail, Error, Skip 눌렀을 때
-  let success = 8 + 1;
-  let fail = 2 + 1;
-  let error = 1 + 1;
-  let skip = 0 + 1;
-
   useEffect(async () => {
     const testJobAxios = new TestJobAxios();
     try {
-      const responseData = await testJobAxios.getOne(params.pid, params.id);
+      const responseData = await testJobAxios.getTestJob(params.pid, params.id);
       setData(responseData);
       console.log(responseData);
     } catch (error) {
@@ -39,6 +34,8 @@ export default function TestJobDetail() {
     }
     return () => {};
   }, []);
+
+  <p>axios data: {JSON.stringify(data.testNo)}</p>;
 
   return (
     <Box>
@@ -49,7 +46,6 @@ export default function TestJobDetail() {
           item
           xs={2}
         >
-          <p>axios data: {JSON.stringify(data)}</p>
           <TestJobHistory testCount="8" date="21/04/28 17:00"></TestJobHistory>
           <TestJobHistory testCount="7" date="21/04/28 17:00"></TestJobHistory>
           <TestJobHistory testCount="6" date="21/04/28 17:00"></TestJobHistory>
@@ -72,7 +68,7 @@ export default function TestJobDetail() {
             marginTop="1%"
             style={{ cursor: "pointer" }}
           >
-            <Box flexGrow={success} onClick={getSuccessList}>
+            <Box flexGrow={data.runCount + 1} onClick={getSuccessList}>
               <Box
                 style={{
                   backgroundColor: "#99DD99",
@@ -85,10 +81,10 @@ export default function TestJobDetail() {
                   backgroundColor: "#22DD22",
                 }}
               >
-                {success}
+                {data.runCount}
               </Box>
             </Box>
-            <Box flexGrow={fail} onClick={getFailList}>
+            <Box flexGrow={data.failCount + 1} onClick={getFailList}>
               <Box
                 style={{
                   backgroundColor: "#FFCC66",
@@ -101,11 +97,10 @@ export default function TestJobDetail() {
                   backgroundColor: "#FFAA00",
                 }}
               >
-                {fail}
+                {data.failCount}
               </Box>
             </Box>
-
-            <Box flexGrow={error} onClick={getErrorList}>
+            <Box flexGrow={data.errorCount + 1} onClick={getErrorList}>
               <Box
                 style={{
                   backgroundColor: "#FF4444",
@@ -118,11 +113,10 @@ export default function TestJobDetail() {
                   backgroundColor: "#FF0000",
                 }}
               >
-                {error}
+                {data.errorCount}
               </Box>
             </Box>
-
-            <Box flexGrow={skip} onClick={getSkipList}>
+            <Box flexGrow={data.skipCount + 1} onClick={getSkipList}>
               <Box
                 style={{
                   backgroundColor: "#CCCCCC",
@@ -135,7 +129,7 @@ export default function TestJobDetail() {
                   backgroundColor: "#AAAAAA",
                 }}
               >
-                {skip}
+                {data.skipCount}
               </Box>
             </Box>
           </Box>
