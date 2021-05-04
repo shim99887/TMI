@@ -38,7 +38,7 @@ public class DataXmlController {
 	
 	@PostMapping("/data")
 	@ApiOperation(value = "postXmlFile")
-	public ResponseEntity<String> postXmlFile(MultipartFile xmlFile) {
+	public ResponseEntity<Boolean> postXmlFile(MultipartFile xmlFile) {
 		if (!xmlFile.isEmpty()) {
 			try {
 
@@ -348,7 +348,8 @@ public class DataXmlController {
 				
 				coverage.setPackageList(packageList);
 				coverageRepository.save(coverage);
-				return new ResponseEntity<String>(coverage.getProjectName(), HttpStatus.ACCEPTED);
+				
+				return new ResponseEntity<>(true, HttpStatus.ACCEPTED);
 
 			} catch (Exception e) {
 				e.printStackTrace();
