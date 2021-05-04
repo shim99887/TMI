@@ -3,7 +3,9 @@ package com.tmi.tmi.controller;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -52,6 +54,11 @@ public class DataXmlController {
 				JSONArray packageArray = report.getJSONArray("package");
 				
 				Coverage coverage = new Coverage();
+				Date date_now = new Date(System.currentTimeMillis());
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				String buildTime = sdf.format(date_now);
+				coverage.setBuildTime(buildTime);
+				
 				List<Package> packageList = new ArrayList<Package>();
 				coverage.setProjectName(report.getString("name"));
 				
