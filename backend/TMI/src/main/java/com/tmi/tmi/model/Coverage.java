@@ -19,6 +19,7 @@ public class Coverage {
 	@Id
 	private String _id;
 	
+	private String buildTime;
 	private String projectName;
 	private List<Package> packageList;
 }
