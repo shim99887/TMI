@@ -126,7 +126,7 @@ public class TmiMojo extends AbstractMojo {
 
 
 		MultiValueMap<String, Object> junitTxtBody = new LinkedMultiValueMap<>();
-
+		junitTxtBody.add("gitUrl",gitUrl);
 		for (int i = 0; i < junitFileTextArr.length; i++) {
 			FileItem txtFileItem = null;
 			try {
@@ -140,7 +140,7 @@ public class TmiMojo extends AbstractMojo {
 			    e.printStackTrace();
 			}
 			multipartFile = new CommonsMultipartFile(txtFileItem);
-			junitTxtBody.add("gitUrl",gitUrl);
+
 			junitTxtBody.add("txtFiles", multipartFile.getResource());
 		}
 		
