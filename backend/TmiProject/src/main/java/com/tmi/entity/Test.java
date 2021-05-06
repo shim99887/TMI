@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,14 +31,15 @@ public class Test {
     @JoinColumn(name = "projectId")
     private Project projectId;
 
-    @OneToMany(mappedBy = "Test")
-    private List<TestData> testDatas = new ArrayList<TestData>();
+    // @OneToMany(mappedBy = "test")
+    // private List<TestData> testDatas = new ArrayList<TestData>();
 
-    @OneToMany(mappedBy = "Test")
+    @OneToMany(mappedBy = "test")
     private List<PackageCoverage> packageCoverages = new ArrayList<PackageCoverage>();
 
     private String title;
-    private String testDate;
+    private String description;
+    private LocalDateTime datetime;
     private Integer totalLineCovMissed;
     private Integer totalLineCovCovered;
     private Integer totalBranchCovMissed;
@@ -46,4 +48,5 @@ public class Test {
     private Integer totalFailCount;
     private Integer totalSkipCount;
     private Integer totalErrorCount;
+    private Integer totalElapsedTime;
 }

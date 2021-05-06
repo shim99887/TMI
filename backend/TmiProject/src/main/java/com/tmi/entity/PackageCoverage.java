@@ -12,12 +12,13 @@ import javax.persistence.*;
 @ToString
 public class PackageCoverage {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
-//    @ManyToOne
-//    @JoinColumn(name="test_id")
-//    private Test test;
+    @ManyToOne
+    @JoinColumn(name = "testId")
+    private Test test;
     private String groupName;
     private String packageName;
     private String className;
