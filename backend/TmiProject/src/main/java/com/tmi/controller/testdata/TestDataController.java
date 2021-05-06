@@ -1,18 +1,15 @@
 package com.tmi.controller.testdata;
 
 import com.tmi.entity.TestData;
-import com.tmi.entity.TestNo;
 import com.tmi.repository.TestDataRepository;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/testjob")
+@RequestMapping("/test-data")
 public class TestDataController {
 
     private final TestDataRepository repository;
@@ -32,17 +29,17 @@ public class TestDataController {
         return repository.findAllByProjectIdEquals(pid);
     }
 
-    @GetMapping("/{pid}/{id}")
-    List<TestData> getTestDataListByTestId(@PathVariable Long pid, @PathVariable Long id) {
-        return repository.findAllByProjectIdAndTestIdEquals(pid, id);
+    @GetMapping("/{pid}/{tid}")
+    List<TestData> getTestDataListByTestId(@PathVariable Long pid, @PathVariable Long tid) {
+        return repository.findAllByProjectIdAndTestIdEquals(pid, tid);
     }
 
-    @GetMapping("/{pid}/{id}/{no}")
-    TestData getTestData(@PathVariable Long pid, @PathVariable Long id, @PathVariable Long no) {
+    @GetMapping("/{pid}/{tid}/{id}")
+    TestData getTestData(@PathVariable Long pid, @PathVariable Long tid, @PathVariable Long id) {
         TestNo testNo = new TestNo();
         testNo.setProjectId(pid);
-        testNo.setTestId(id);
-        testNo.setNo(no);
+        testNo.setTestId(tid);
+        testNo.setTestDataId(id);
         return repository.findById(testNo)
                 .orElseThrow(() -> new TestDataNotFoundException(testNo));
     }

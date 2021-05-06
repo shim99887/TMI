@@ -1,9 +1,9 @@
 package com.tmi.controller.testdata;
 
-import com.tmi.entity.TestNo;
+import com.tmi.entity.TestDataId;
 
 public class TestDataNotFoundException extends RuntimeException {
-    TestDataNotFoundException(TestNo testNo) {
-        super("Could not find testdata " + testNo.getProjectId() + " / " + testNo.getTestId());
+    TestDataNotFoundException(TestDataId testDataId) {
+        super("Could not find testdata " + testDataId.getProjectId() + " / " + testDataId.getTestId());
     }
 }
