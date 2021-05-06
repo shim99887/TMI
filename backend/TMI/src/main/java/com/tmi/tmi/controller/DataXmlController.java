@@ -42,7 +42,7 @@ public class DataXmlController {
 	
 	@PostMapping("/data")
 	@ApiOperation(value = "postXmlFile")
-	public ResponseEntity<Boolean> postXmlFile(MultipartFile xmlFile) {
+	public ResponseEntity<Boolean> postXmlFile(String gitUrl, MultipartFile xmlFile) {
 		if (!xmlFile.isEmpty()) {
 			try {
 
@@ -64,7 +64,7 @@ public class DataXmlController {
 				
 				List<Package> packageList = new ArrayList<Package>();
 				coverage.setProjectName(report.getString("name"));
-				
+				coverage.setGitUrl(gitUrl);
 				for (int i = 0; i < packageArray.length(); i++) {
 					Package innerPackage = new Package();
 					innerPackage.setName(packageArray.getJSONObject(i).getString("name").replaceAll("/", "."));

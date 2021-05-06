@@ -33,7 +33,7 @@ public class DataTextContoller {
 	
 	@PostMapping("/junit/data")
 	@ApiOperation(value = "postTxtFile")
-	public ResponseEntity<Boolean> postTxtFile(List<MultipartFile> txtFiles) {
+	public ResponseEntity<Boolean> postTxtFile(String gitUrl, List<MultipartFile> txtFiles) {
 		if (!txtFiles.isEmpty()) {
 			try {
 				Date date_now = new Date(System.currentTimeMillis());
@@ -43,7 +43,7 @@ public class DataTextContoller {
 				for (MultipartFile txtFile : txtFiles) {
 					Test test = new Test();
 					test.setBuildTime(buildTime);
-					
+					test.setGitUrl(gitUrl);
 					// String content = new String(txtFile.getBytes());
 					File file = convert(txtFile);
 					FileReader fr = new FileReader(file);
