@@ -21,5 +21,6 @@ public class Coverage {
 	
 	private String buildTime;
 	private String projectName;
+	private String gitUrl;
 	private List<Package> packageList;
 }
