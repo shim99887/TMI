@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/testjob")
+@RequestMapping("/testdata")
 public class TestDataController {
 
     private final TestDataRepository repository;
@@ -82,7 +82,6 @@ public class TestDataController {
         TestNo testNo = new TestNo();
         testNo.setProjectId(pid);
         testNo.setTestId(id);
-
         repository.deleteById(testNo);
     }
 }
