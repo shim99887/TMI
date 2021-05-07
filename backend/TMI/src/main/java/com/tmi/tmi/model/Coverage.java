@@ -19,7 +19,9 @@ public class Coverage {
 	@Id
 	private String _id;
 	
+	private String buildTime;
 	private String projectName;
+	private String gitUrl;
 	private List<Package> packageList;
 	private Counter instruction;
 	private Counter line;

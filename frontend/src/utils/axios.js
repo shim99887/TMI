@@ -4,7 +4,7 @@ class BaseAxios {
   request = axios.create({
     baseURL: "https://k4a201.p.ssafy.io/api",
   });
-  async basicRequest(url) {
+  async basicGetRequest(url) {
     try {
       const response = await this.request.get(url);
       return response.data;
@@ -16,18 +16,33 @@ class BaseAxios {
 
 export class TestJobAxios extends BaseAxios {
   getAll() {
-    return this.basicRequest("/testjob");
+    return this.basicGetRequest("/testjob");
   }
-  getOne(pid, id) {
-    return this.basicRequest(`/testjob/${pid}/${id}`);
+  getOneProject(pid) {
+    return this.basicGetRequest(`/testjob/${pid}`);
+  }
+  getTestJob(pid, id) {
+    return this.basicGetRequest(`/testjob/${pid}/${id}`);
+  }
+  getOneTest(pid, id, no) {
+    return this.basicGetRequest(`/testjob/${pid}/${id}/${no}`);
   }
 }
 
 export class ProjectAxios extends BaseAxios {
   all() {
-    return this.basicRequest("/project");
+    return this.basicGetRequest("/project");
   }
   one(id) {
-    return this.basicRequest(`/project/${id}`);
+    return this.basicGetRequest(`/project/${id}`);
+  }
+}
+
+export class JacocoAxios extends BaseAxios {
+  all() {
+    return this.basicGetRequest("/jacoco");
+  }
+  one(id) {
+    return this.basicGetRequest(`/jacoco/${id}`);
   }
 }

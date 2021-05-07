@@ -3,8 +3,12 @@ package com.tmi.tmi.controller;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -38,7 +42,7 @@ public class DataXmlController {
 	
 	@PostMapping("/data")
 	@ApiOperation(value = "postXmlFile")
-	public ResponseEntity<Boolean> postXmlFile(MultipartFile xmlFile) {
+	public ResponseEntity<Boolean> postXmlFile(String gitUrl, MultipartFile xmlFile) {
 		if (!xmlFile.isEmpty()) {
 			try {
 
@@ -52,6 +56,12 @@ public class DataXmlController {
 				JSONArray packageArray = report.getJSONArray("package");
 				
 				Coverage coverage = new Coverage();
+				Date date_now = new Date(System.currentTimeMillis());
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+				sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+				String buildTime = sdf.format(date_now);
+				coverage.setBuildTime(buildTime);
+				
 				List<Package> packageList = new ArrayList<Package>();
 				coverage.setProjectName(report.getString("name"));
 				JSONArray coverageCounterList = report.getJSONArray("counter");
@@ -73,7 +83,7 @@ public class DataXmlController {
 						coverage.setBranch(counter);
 					}
 				}
-				
+				coverage.setGitUrl(gitUrl);
 				for (int i = 0; i < packageArray.length(); i++) {
 					Package innerPackage = new Package();
 					innerPackage.setName(packageArray.getJSONObject(i).getString("name").replaceAll("/", "."));

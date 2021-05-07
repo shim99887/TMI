@@ -16,7 +16,7 @@ function App() {
       <Navigation />
       <Container style={{ backgroundColor: "white" }}>
         <Route path="/" exact component={() => <div>Home</div>} />
-        <Route path="/dashboard" exact component={Dashboard} />
+        {/* <Route path="/dashboard" exact component={Dashboard} /> */}
         <Route path="/project" exact component={Project} />
         <Route path="/project/:id" component={ProjectDetail} />
         <Route path="/testjob" exact component={TestJob} />

@@ -19,6 +19,7 @@ public class Test {
 	
 	String buildTime;
 	String package_name;
+	String gitUrl;
 	int runCount;
     int failCount;
     int errorCount;

@@ -1,4 +1,5 @@
-import { Doughnut, Line, Bar } from "react-chartjs-2";
+import React, { useEffect, useState } from "react";
+import { Line } from "react-chartjs-2";
 import {
   Card,
   CardContent,
@@ -7,85 +8,122 @@ import {
   colors,
   Grid,
 } from "@material-ui/core";
+import DoughnutGraph from "../graph/DoughnutGraph";
+import BarGraph from "../graph/BarGraph";
 
-export default function ProjectDetailGraphs() {
-  const dataDoughnutGraph = {
-    datasets: [
-      {
-        data: [83, 9, 3, 5],
-        backgroundColor: [
-          colors.blue[500],
-          colors.orange[500],
-          colors.red[500],
-          colors.purple[500],
-        ],
-      },
-    ],
-    labels: ["Pass", "Fail", "Skip", "Error"],
-  };
+export default function ProjectDetailGraphs({ data }) {
+  const [instructionCov, setInstructionCov] = useState({
+    covered: 0,
+    missed: 0,
+  });
+  useEffect(() => {
+    return () => {};
+  }, []);
 
   const dataLineGraph = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-    datasets: [
-      {
-        label: "First dataset",
-        data: [33, 53, 85, 41, 44, 65],
-        fill: true,
-        backgroundColor: "rgba(75,192,192,0.2)",
-        borderColor: "rgba(75,192,192,1)",
-      },
-      {
-        label: "Second dataset",
-        data: [33, 25, 35, 51, 54, 76],
-        fill: false,
-        borderColor: "#742774",
-      },
+    labels: [
+      "2021-04-15",
+      "2021-04-18",
+      "2021-04-27",
+      "2021-05-02",
+      "2021-05-03",
     ],
-  };
-
-  const dataBarGraph = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
     datasets: [
       {
-        label: "My First Dataset",
-        data: [65, 59, 80, 81, 56, 55, 40],
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(255, 159, 64, 0.2)",
-          "rgba(255, 205, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(201, 203, 207, 0.2)",
-        ],
-        borderColor: [
-          "rgb(255, 99, 132)",
-          "rgb(255, 159, 64)",
-          "rgb(255, 205, 86)",
-          "rgb(75, 192, 192)",
-          "rgb(54, 162, 235)",
-          "rgb(153, 102, 255)",
-          "rgb(201, 203, 207)",
-        ],
+        label: "Instruction %",
+        // yAxisID: "B",
+        data: [15, 38, 68, 85, 93],
+        borderColor: colors.deepPurple[500],
+      },
+      {
+        label: "Branch %",
+        // yAxisID: "B",
+        data: [5, 40, 55, 79, 88],
+        borderColor: colors.indigo[500],
+      },
+      {
+        type: "bar",
+        yAxisID: "A",
+        label: "Instruction Covered",
+        data: [150, 380, 680, 850, 930],
+        backgroundColor: colors.deepPurple[50],
+        borderColor: colors.deepPurple[500],
         borderWidth: 1,
       },
+      {
+        type: "bar",
+        yAxisID: "A",
+        label: "Instruction Missed",
+        data: [850, 620, 320, 150, 70],
+        backgroundColor: colors.red[50],
+        borderColor: colors.red[500],
+        borderWidth: 1,
+      },
+      {
+        type: "bar",
+        yAxisID: "A",
+        label: "Branch Covered",
+        data: [50, 400, 550, 790, 880],
+        backgroundColor: colors.indigo[50],
+        borderColor: colors.indigo[500],
+        borderWidth: 1,
+      },
+      {
+        type: "bar",
+        yAxisID: "A",
+        label: "Branch Missed",
+        data: [950, 600, 450, 210, 120],
+        backgroundColor: colors.red[50],
+        borderColor: colors.red[500],
+        borderWidth: 1,
+      },
+      // {
+      //   label: "Line",
+      //   data: [93.8, 98.1, 92.6, 91.7, 91.2],
+      //   borderColor: colors.blue[500],
+      // },
+      // {
+      //   label: "Complexity",
+      //   data: [96.3, 92.5, 86.7, 94.4, 93.3],
+      //   borderColor: colors.lightBlue[500],
+      // },
+      // {
+      //   label: "Method",
+      //   data: [91.5, 89.7, 91.3, 96.7, 96.3],
+      //   borderColor: colors.cyan[500],
+      // },
     ],
+  };
+  const optionsLineGraph = {
+    scales: {
+      yAxes: [
+        {
+          id: "A",
+          type: "linear",
+          position: "left",
+        },
+        {
+          id: "B",
+          type: "linear",
+          position: "right",
+        },
+      ],
+    },
   };
 
   return (
     <>
       <Card variant="outlined">
-        <CardHeader title="Summary" />
+        <CardHeader title="Coverage History" />
         <Divider />
         <Grid container spacing={2} style={{ justifyContent: "space-around" }}>
           <CardContent>
-            <Doughnut data={dataDoughnutGraph} />
-          </CardContent>
-          <CardContent>
-            <Line height="300px" data={dataLineGraph} />
-          </CardContent>
-          <CardContent>
-            <Bar height="300px" data={dataBarGraph} />
+            <Line
+              height="300px"
+              width="650px"
+              data={dataLineGraph}
+              options={optionsLineGraph}
+            />
           </CardContent>
         </Grid>
       </Card>
