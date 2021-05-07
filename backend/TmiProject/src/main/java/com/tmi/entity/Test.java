@@ -8,23 +8,19 @@ import java.io.Serializable;
 
 @Entity
 @Data
-@Table(name="test_data")
-@IdClass(TestDataId.class)
-public class TestData {
-
-    // (PK, FK)
-    @Id
-    @ManyToOne
-    @JoinColumns({
-            @JoinColumn(name = "project_id"),
-            @JoinColumn(name = "test_id")
-    })
-    public Test testId;
+@Table(name="test")
+public class Test {
 
     //PK
     @Id
-    @Column(name="test_data_id")
-    private Long testDataId;
+    @GeneratedValue
+    @Column(name="test_id")
+    private Long id;
+
+    // FK
+    @ManyToOne
+    @JoinColumn(name = "report_id")
+    private Report reportId;
 
     private String name; //ex) org.springframework.samples.petclinic.owner.VisitControllerTests
     private String type;
