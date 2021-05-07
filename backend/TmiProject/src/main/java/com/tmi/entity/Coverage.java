@@ -1,9 +1,7 @@
 package com.tmi.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -11,10 +9,10 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class Coverage {
-
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -28,4 +26,15 @@ public class Coverage {
     private int branchCovMissed;
     private int branchCovCovered;
     private String highlightHtml;
+
+    public Coverage(String groupName, String packageName, String className, int lineCovMissed, int lineCovCovered, int branchCovMissed, int branchCovCovered, String highlightHtml) {
+        this.groupName = groupName;
+        this.packageName = packageName;
+        this.className = className;
+        this.lineCovMissed = lineCovMissed;
+        this.lineCovCovered = lineCovCovered;
+        this.branchCovMissed = branchCovMissed;
+        this.branchCovCovered = branchCovCovered;
+        this.highlightHtml = highlightHtml;
+    }
 }
