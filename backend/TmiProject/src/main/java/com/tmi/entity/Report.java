@@ -18,27 +18,21 @@ import javax.persistence.JoinColumn;
 @Getter
 @Setter
 @ToString
-public class Test {
+public class Report {
 
     @Id
-    private Long testId;
+    private Long id;
 
     // @ManyToOne
-    // @JoinColumn(name = "testJobId")
-    // private TestJob testJobId;
+    // @JoinColumn(name = "appId")
+    // private App appId;
 
-    @ManyToOne
-    @JoinColumn(name = "projectId")
-    private Project projectId;
+    // @OneToMany(mappedBy = "report")
+    // private List<Test> tests = new ArrayList<Test>();
 
-    // @OneToMany(mappedBy = "test")
-    // private List<TestData> testDatas = new ArrayList<TestData>();
-
-    @OneToMany(mappedBy = "test")
+    @OneToMany(mappedBy = "report")
     private List<Coverage> coverages = new ArrayList<Coverage>();
 
-    private String title;
-    private String description;
     private LocalDateTime datetime;
     private Integer totalLineCovMissed;
     private Integer totalLineCovCovered;
