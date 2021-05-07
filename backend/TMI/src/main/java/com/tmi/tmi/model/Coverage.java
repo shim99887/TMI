@@ -23,4 +23,10 @@ public class Coverage {
 	private String projectName;
 	private String gitUrl;
 	private List<Package> packageList;
+	private Counter instruction;
+	private Counter line;
+	private Counter branch;
+	private Counter complexity;
+	private Counter method;
+	private Counter innerClass;
 }
