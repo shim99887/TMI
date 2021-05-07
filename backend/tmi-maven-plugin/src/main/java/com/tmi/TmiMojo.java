@@ -1,15 +1,18 @@
 package com.tmi;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.FilenameFilter;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.Arrays;
-import java.util.List;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.io.IOUtils;
 import org.apache.maven.model.Build;
-import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -23,7 +26,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.ResourceHttpMessageConverter;
@@ -112,7 +114,7 @@ public class TmiMojo extends AbstractMojo {
 		jacocoXmlBody.add("gitUrl",gitUrl);
 		jacocoXmlBody.add("xmlFile", multipartFile.getResource());
 		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(jacocoXmlBody, headers);
-		String serverUrl = "http://localhost:8080/api/data";
+		String serverUrl = "http://k4a2011.p.ssafy.io:8080/api/data";
 		//RestTemplate restTemplate = new RestTemplate();
 		//ResponseEntity<String> xmlResponse = restTemplate.exchange(serverUrl, HttpMethod.POST, requestEntity, String.class);
 		String projectName = restTemplate.postForObject(serverUrl,requestEntity,String.class);
@@ -132,8 +134,8 @@ public class TmiMojo extends AbstractMojo {
 
 
 		MultiValueMap<String, Object> junitTxtBody = new LinkedMultiValueMap<>();
-		junitTxtBody.add("gitUrl",gitUrl);
 		junitTxtBody.add("projectName",projectName);
+		junitTxtBody.add("gitUrl",gitUrl);
 		for (int i = 0; i < junitFileTextArr.length; i++) {
 			FileItem txtFileItem = null;
 			try {
@@ -154,7 +156,7 @@ public class TmiMojo extends AbstractMojo {
 		
 		restTemplate = new RestTemplate(Arrays.asList(jackson, resource, formHttpMessageConverter));
 		requestEntity = new HttpEntity<>(junitTxtBody, headers);
-		String junitServerUrl = "http://localhost:8080/api/junit/data";
+		String junitServerUrl = "http://k4a2011.p.ssafy.io:8080/api/junit/data";
 		ResponseEntity<Boolean> response = restTemplate.exchange(junitServerUrl, HttpMethod.POST, requestEntity, Boolean.class);
 		
 		getLog().info("junit txt response code: " + response.getStatusCode());
