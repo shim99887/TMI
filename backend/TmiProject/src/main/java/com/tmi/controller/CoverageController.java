@@ -1,7 +1,9 @@
 package com.tmi.controller;
 
+import com.tmi.dto.coverage.CoveragePostDto;
 import com.tmi.entity.Coverage;
 import com.tmi.repository.CoverageRepository;
+import com.tmi.service.CoverageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,15 +14,15 @@ import java.util.List;
 @RequestMapping("/package-coverage")
 public class CoverageController {
     @Autowired
-    private CoverageRepository repository;
+    private CoverageService coverageService;
 
-    @GetMapping()
+    @GetMapping
     List<Coverage> all() {
-        return repository.findAll();
+        return coverageService.readAllCoverages();
     }
 
-    @PostMapping()
-    Coverage newPackageCoverage(@RequestBody Coverage newPC) {
-        return repository.save(newPC);
+    @PostMapping
+    Coverage createCoverage(@RequestBody CoveragePostDto dto) {
+        return coverageService.createCoverage(dto);
     }
 }
