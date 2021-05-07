@@ -33,7 +33,7 @@ public class DataTextContoller {
 	
 	@PostMapping("/junit/data")
 	@ApiOperation(value = "postTxtFile")
-	public ResponseEntity<Boolean> postTxtFile(String gitUrl, List<MultipartFile> txtFiles) {
+	public ResponseEntity<Boolean> postTxtFile(String projectName, String gitUrl, List<MultipartFile> txtFiles) {
 		if (!txtFiles.isEmpty()) {
 			try {
 				Date date_now = new Date(System.currentTimeMillis());
@@ -44,7 +44,7 @@ public class DataTextContoller {
 					Test test = new Test();
 					test.setBuildTime(buildTime);
 					test.setGitUrl(gitUrl);
-					// String content = new String(txtFile.getBytes());
+					test.setProjectName(projectName);
 					File file = convert(txtFile);
 					FileReader fr = new FileReader(file);
 					BufferedReader br = new BufferedReader(fr);
@@ -54,7 +54,7 @@ public class DataTextContoller {
 						String [] splitStr;
 						if(lineCount == 1) {
 							splitStr = line.split(":");
-							test.setPackage_name(splitStr[1].trim());
+							test.setPackageName(splitStr[1].trim());
 							//System.out.println(splitStr[1].trim());
 						}else if(lineCount == 3) {
 							splitStr = line.split(",");
