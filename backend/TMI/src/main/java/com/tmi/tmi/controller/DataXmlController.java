@@ -42,7 +42,7 @@ public class DataXmlController {
 	
 	@PostMapping("/data")
 	@ApiOperation(value = "postXmlFile")
-	public ResponseEntity<Boolean> postXmlFile(String gitUrl, MultipartFile xmlFile) {
+	public ResponseEntity<String> postXmlFile(String projectName,String gitUrl, MultipartFile xmlFile) {
 		if (!xmlFile.isEmpty()) {
 			try {
 
@@ -359,13 +359,13 @@ public class DataXmlController {
 				coverage.setPackageList(packageList);
 				coverageRepository.save(coverage);
 				
-				return new ResponseEntity<>(true, HttpStatus.ACCEPTED);
+				return new ResponseEntity<>(report.getString("name"), HttpStatus.OK);
 
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		return null;
+		return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
 
 	}
 
