@@ -14,18 +14,13 @@ import java.util.Date;
 @Entity
 @ToString
 @Data
-@Table(name = "test_job")
-@IdClass(TestJobId.class)
-public class TestJob {
-    
+@Table(name = "app")
+public class App {
     @Id
-    private long testjob_id;
-    @Id
-    private long project_id;
-
-    
-    private String testjob_name;
-    private String testjob_desc;
-    private Date testjob_regdate;
-    private String testjob_tag;
+    private int id;
+    private String title;
+    private String description;
+    private Date regDate;
+    private String gitUrl;
+    private String project_id;
 }
