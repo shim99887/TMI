@@ -73,12 +73,14 @@ public class DataTextContoller {
 									test.setSkipCount(Integer.parseInt(splitStr[i].replace("Tests","").split("-")[0].trim().split(":")[1].replace("s","").trim()));
 									break;
 								case 4:
-									test.setElapsedTime(Float.parseFloat(splitStr[i].replace("Tests","").split("-")[0].trim().split(":")[1].replace("s","").trim()));
+									test.setElapsedTime(Float.parseFloat(splitStr[i].replace("Tests","").split("-")[0].trim().split("<<<")[0].trim().split(":")[1].replace("s","").trim()));
 									break;
 								}
 								//System.out.println(splitStr[i].replace("Tests","").split("-")[0].trim().split(":")[1].replace("s","").trim());
 //								System.out.println(splitStr[i].trim());
 							}
+						}else if(lineCount == 4) {
+							break;
 						}
 						//System.out.println(lineCount + ", " + line);
 						lineCount++;
