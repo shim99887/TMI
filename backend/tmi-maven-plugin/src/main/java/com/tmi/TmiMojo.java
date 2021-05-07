@@ -1,15 +1,18 @@
 package com.tmi;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.FilenameFilter;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.Arrays;
-import java.util.List;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.io.IOUtils;
 import org.apache.maven.model.Build;
-import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -92,7 +95,10 @@ public class TmiMojo extends AbstractMojo {
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-		
+
+//		HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
+//		httpRequestFactory.setConnectTimeout(30000);
+
 		//jacoco xml 파일 전송
 		
 		HttpMessageConverter<Object> jackson = new MappingJackson2HttpMessageConverter();
@@ -101,7 +107,8 @@ public class TmiMojo extends AbstractMojo {
 		formHttpMessageConverter.addPartConverter(jackson);
 		formHttpMessageConverter.addPartConverter(resource); 
 
-		RestTemplate restTemplate = new RestTemplate(Arrays.asList(jackson, resource, formHttpMessageConverter));
+		RestTemplate restTemplate = new RestTemplate();
+
 		
 		MultiValueMap<String, Object> jacocoXmlBody = new LinkedMultiValueMap<>();
 		jacocoXmlBody.add("gitUrl",gitUrl);
@@ -109,8 +116,9 @@ public class TmiMojo extends AbstractMojo {
 		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(jacocoXmlBody, headers);
 		String serverUrl = "http://k4a2011.p.ssafy.io:8080/api/data";
 		//RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<Boolean> response = restTemplate.exchange(serverUrl, HttpMethod.POST, requestEntity, Boolean.class);
-		getLog().info("jacoco xml response code: " + response.getStatusCode());
+		//ResponseEntity<String> xmlResponse = restTemplate.exchange(serverUrl, HttpMethod.POST, requestEntity, String.class);
+		String projectName = restTemplate.postForObject(serverUrl,requestEntity,String.class);
+		getLog().info("project name: " + projectName);
 
 
 		//junit txt 파일 전송
@@ -126,6 +134,7 @@ public class TmiMojo extends AbstractMojo {
 
 
 		MultiValueMap<String, Object> junitTxtBody = new LinkedMultiValueMap<>();
+		junitTxtBody.add("projectName",projectName);
 		junitTxtBody.add("gitUrl",gitUrl);
 		for (int i = 0; i < junitFileTextArr.length; i++) {
 			FileItem txtFileItem = null;
@@ -148,7 +157,7 @@ public class TmiMojo extends AbstractMojo {
 		restTemplate = new RestTemplate(Arrays.asList(jackson, resource, formHttpMessageConverter));
 		requestEntity = new HttpEntity<>(junitTxtBody, headers);
 		String junitServerUrl = "http://k4a2011.p.ssafy.io:8080/api/junit/data";
-		response = restTemplate.exchange(junitServerUrl, HttpMethod.POST, requestEntity, Boolean.class);
+		ResponseEntity<Boolean> response = restTemplate.exchange(junitServerUrl, HttpMethod.POST, requestEntity, Boolean.class);
 		
 		getLog().info("junit txt response code: " + response.getStatusCode());
 	}
