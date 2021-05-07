@@ -18,7 +18,9 @@ public class Test {
 	String _id;
 	
 	String buildTime;
-	String package_name;
+	String packageName;
+	String gitUrl;
+	String projectName;
 	int runCount;
     int failCount;
     int errorCount;

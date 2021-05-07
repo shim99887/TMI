@@ -33,24 +33,21 @@ public class ProjectController {
 
     @GetMapping("/{id}")
     Project one(@PathVariable Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new ProjectNotFoundException(id));
+        return repository.findById(id).orElseThrow(() -> new ProjectNotFoundException(id));
     }
 
     @PutMapping("/{id}")
     Project replaceProject(@RequestBody Project newProject, @PathVariable Long id) {
-        return repository.findById(id)
-                .map(Project -> {
-                    Project.setTitle(newProject.getTitle());
-                    Project.setDescription(newProject.getDescription());
-                    Project.setRegDate(newProject.getRegDate());
-                    Project.setUser(newProject.getUser());
-                    return repository.save(Project);
-                })
-                .orElseGet(() -> {
-                    newProject.setId(id);
-                    return repository.save(newProject);
-                });
+        return repository.findById(id).map(Project -> {
+            Project.setTitle(newProject.getTitle());
+            Project.setDescription(newProject.getDescription());
+            Project.setRegDate(newProject.getRegDate());
+            Project.setUser(newProject.getUser());
+            return repository.save(Project);
+        }).orElseGet(() -> {
+            newProject.setId(id);
+            return repository.save(newProject);
+        });
     }
 
     @DeleteMapping("/{id}")

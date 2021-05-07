@@ -42,7 +42,7 @@ public class DataXmlController {
 	
 	@PostMapping("/data")
 	@ApiOperation(value = "postXmlFile")
-	public ResponseEntity<Boolean> postXmlFile(MultipartFile xmlFile) {
+	public ResponseEntity<String> postXmlFile(String projectName,String gitUrl, MultipartFile xmlFile) {
 		if (!xmlFile.isEmpty()) {
 			try {
 
@@ -64,7 +64,26 @@ public class DataXmlController {
 				
 				List<Package> packageList = new ArrayList<Package>();
 				coverage.setProjectName(report.getString("name"));
+				JSONArray coverageCounterList = report.getJSONArray("counter");
 				
+				for(int i=0;i<coverageCounterList.length(); i++) {
+					JSONObject coverageCounter = coverageCounterList.getJSONObject(i);
+					Counter counter = parseCounter(coverageCounter);
+					if (counter.getType().equals("INSTRUCTION")) {
+						coverage.setInstruction(counter);
+					} else if (counter.getType().equals("LINE")) {
+						coverage.setLine(counter);
+					} else if (counter.getType().equals("COMPLEXITY")) {
+						coverage.setComplexity(counter);
+					} else if (counter.getType().equals("METHOD")) {
+						coverage.setMethod(counter);
+					} else if (counter.getType().equals("CLASS")) {
+						coverage.setInnerClass(counter);
+					} else {
+						coverage.setBranch(counter);
+					}
+				}
+				coverage.setGitUrl(gitUrl);
 				for (int i = 0; i < packageArray.length(); i++) {
 					Package innerPackage = new Package();
 					innerPackage.setName(packageArray.getJSONObject(i).getString("name").replaceAll("/", "."));
@@ -340,13 +359,13 @@ public class DataXmlController {
 				coverage.setPackageList(packageList);
 				coverageRepository.save(coverage);
 				
-				return new ResponseEntity<>(true, HttpStatus.ACCEPTED);
+				return new ResponseEntity<>(report.getString("name"), HttpStatus.OK);
 
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		return null;
+		return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
 
 	}
 

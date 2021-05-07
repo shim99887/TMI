@@ -1,18 +1,18 @@
 package com.tmi;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.Arrays;
-import java.util.List;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.io.IOUtils;
 import org.apache.maven.model.Build;
-import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -43,24 +43,38 @@ public class TmiMojo extends AbstractMojo {
 	private Model model;
 	private Build build;
 	private File targetDir;
+	private File projectDir;
 
 	public void execute() throws MojoExecutionException {
-		List<Dependency> dependencies = project.getDependencies();
-		long numDependencies = dependencies.stream().count();
-		getLog().info("Number of dependencies: " + numDependencies);
-
 		this.model = project.getModel();
 		this.build = model.getBuild();
 		this.targetDir = new File(build.getDirectory());
+		this.projectDir = project.getBasedir();
 
-		File dir = new File(targetDir + "/surefire-reports/");
+		getLog().info("project directory: " + projectDir);
 
-		FilenameFilter filter = new FilenameFilter() {
-			public boolean accept(File f, String name) {
-				return name.endsWith("txt");
+		//Git url을 가져오기 위한 parsing
+		File gitConfig = new File(projectDir + "/.git/config");
+		String gitUrl = "";
+		try {
+			FileReader fr = new FileReader(gitConfig);
+			BufferedReader br = new BufferedReader(fr);
+			String line = "";
+			while((line = br.readLine()) != null){
+				String temp = line.trim();
+				getLog().info("gitConfig contents: " + temp);
+				String [] splitStr = temp.split("=");
+				if(splitStr[0].trim().equals("url")){
+					gitUrl = splitStr[1].trim();
+					break;
+				}
 			}
-		};
-		File[] junitFileTextArr = dir.listFiles(filter);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
+
 		// List<File> junitXmlFileList = new ArrayList<>();
 		File jacocoXmlFile = new File(targetDir + "/site/jacoco/jacoco.xml");
 		//File file = new File("/path/to/file");
@@ -79,16 +93,13 @@ public class TmiMojo extends AbstractMojo {
 
 		MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
 		
-		
-		for (int i = 0; i < junitFileTextArr.length; i++) {
-			getLog().info("junit xml file name " + junitFileTextArr[i].getName());
-		}
-		
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-		
+
+//		HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
+//		httpRequestFactory.setConnectTimeout(30000);
+
 		//jacoco xml 파일 전송
-		
 		
 		HttpMessageConverter<Object> jackson = new MappingJackson2HttpMessageConverter();
 		HttpMessageConverter<Resource> resource = new ResourceHttpMessageConverter();
@@ -96,18 +107,35 @@ public class TmiMojo extends AbstractMojo {
 		formHttpMessageConverter.addPartConverter(jackson);
 		formHttpMessageConverter.addPartConverter(resource); 
 
-		RestTemplate restTemplate = new RestTemplate(Arrays.asList(jackson, resource, formHttpMessageConverter));
+		RestTemplate restTemplate = new RestTemplate();
+
 		
 		MultiValueMap<String, Object> jacocoXmlBody = new LinkedMultiValueMap<>();
+		jacocoXmlBody.add("gitUrl",gitUrl);
 		jacocoXmlBody.add("xmlFile", multipartFile.getResource());
 		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(jacocoXmlBody, headers);
 		String serverUrl = "http://k4a2011.p.ssafy.io:8080/api/data";
 		//RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<Boolean> response = restTemplate.exchange(serverUrl, HttpMethod.POST, requestEntity, Boolean.class);
-		getLog().info("jacoco xml response code: " + response.getStatusCode());
-		
+		//ResponseEntity<String> xmlResponse = restTemplate.exchange(serverUrl, HttpMethod.POST, requestEntity, String.class);
+		String projectName = restTemplate.postForObject(serverUrl,requestEntity,String.class);
+		getLog().info("project name: " + projectName);
+
+
+		//junit txt 파일 전송
+
+		File dir = new File(targetDir + "/surefire-reports/");
+
+		FilenameFilter filter = new FilenameFilter() {
+			public boolean accept(File f, String name) {
+				return name.endsWith("txt");
+			}
+		};
+		File[] junitFileTextArr = dir.listFiles(filter);
+
+
 		MultiValueMap<String, Object> junitTxtBody = new LinkedMultiValueMap<>();
-		//List<Resource> junitTxtResourceList = new ArrayList<>();
+		junitTxtBody.add("projectName",projectName);
+		junitTxtBody.add("gitUrl",gitUrl);
 		for (int i = 0; i < junitFileTextArr.length; i++) {
 			FileItem txtFileItem = null;
 			try {
@@ -121,15 +149,15 @@ public class TmiMojo extends AbstractMojo {
 			    e.printStackTrace();
 			}
 			multipartFile = new CommonsMultipartFile(txtFileItem);
+
 			junitTxtBody.add("txtFiles", multipartFile.getResource());
-			//junitTxtResourceList.add(multipartFile.getResource());
 		}
 		
 		
 		restTemplate = new RestTemplate(Arrays.asList(jackson, resource, formHttpMessageConverter));
 		requestEntity = new HttpEntity<>(junitTxtBody, headers);
 		String junitServerUrl = "http://k4a2011.p.ssafy.io:8080/api/junit/data";
-		response = restTemplate.exchange(junitServerUrl, HttpMethod.POST, requestEntity, Boolean.class);
+		ResponseEntity<Boolean> response = restTemplate.exchange(junitServerUrl, HttpMethod.POST, requestEntity, Boolean.class);
 		
 		getLog().info("junit txt response code: " + response.getStatusCode());
 	}

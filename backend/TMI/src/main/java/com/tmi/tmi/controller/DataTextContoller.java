@@ -33,7 +33,7 @@ public class DataTextContoller {
 	
 	@PostMapping("/junit/data")
 	@ApiOperation(value = "postTxtFile")
-	public ResponseEntity<Boolean> postTxtFile(List<MultipartFile> txtFiles) {
+	public ResponseEntity<Boolean> postTxtFile(String projectName, String gitUrl, List<MultipartFile> txtFiles) {
 		if (!txtFiles.isEmpty()) {
 			try {
 				Date date_now = new Date(System.currentTimeMillis());
@@ -43,8 +43,8 @@ public class DataTextContoller {
 				for (MultipartFile txtFile : txtFiles) {
 					Test test = new Test();
 					test.setBuildTime(buildTime);
-					
-					// String content = new String(txtFile.getBytes());
+					test.setGitUrl(gitUrl);
+					test.setProjectName(projectName);
 					File file = convert(txtFile);
 					FileReader fr = new FileReader(file);
 					BufferedReader br = new BufferedReader(fr);
@@ -54,7 +54,7 @@ public class DataTextContoller {
 						String [] splitStr;
 						if(lineCount == 1) {
 							splitStr = line.split(":");
-							test.setPackage_name(splitStr[1].trim());
+							test.setPackageName(splitStr[1].trim());
 							//System.out.println(splitStr[1].trim());
 						}else if(lineCount == 3) {
 							splitStr = line.split(",");
@@ -73,12 +73,14 @@ public class DataTextContoller {
 									test.setSkipCount(Integer.parseInt(splitStr[i].replace("Tests","").split("-")[0].trim().split(":")[1].replace("s","").trim()));
 									break;
 								case 4:
-									test.setElapsedTime(Float.parseFloat(splitStr[i].replace("Tests","").split("-")[0].trim().split(":")[1].replace("s","").trim()));
+									test.setElapsedTime(Float.parseFloat(splitStr[i].replace("Tests","").split("-")[0].trim().split("<<<")[0].trim().split(":")[1].replace("s","").trim()));
 									break;
 								}
 								//System.out.println(splitStr[i].replace("Tests","").split("-")[0].trim().split(":")[1].replace("s","").trim());
 //								System.out.println(splitStr[i].trim());
 							}
+						}else if(lineCount == 4) {
+							break;
 						}
 						//System.out.println(lineCount + ", " + line);
 						lineCount++;
