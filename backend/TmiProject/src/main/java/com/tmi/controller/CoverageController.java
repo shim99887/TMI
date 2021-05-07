@@ -1,7 +1,7 @@
 package com.tmi.controller;
 
-import com.tmi.entity.PackageCoverage;
-import com.tmi.repository.PackageCoverageRepository;
+import com.tmi.entity.Coverage;
+import com.tmi.repository.CoverageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,17 +10,17 @@ import java.util.List;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/package-coverage")
-public class PackageCoverageController {
+public class CoverageController {
     @Autowired
-    private PackageCoverageRepository repository;
+    private CoverageRepository repository;
 
     @GetMapping()
-    List<PackageCoverage> all() {
+    List<Coverage> all() {
         return repository.findAll();
     }
 
     @PostMapping()
-    PackageCoverage newPackageCoverage(@RequestBody PackageCoverage newPC) {
+    Coverage newPackageCoverage(@RequestBody Coverage newPC) {
         return repository.save(newPC);
     }
 }
