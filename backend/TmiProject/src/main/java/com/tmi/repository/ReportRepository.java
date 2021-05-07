@@ -1,9 +1,9 @@
 package com.tmi.repository;
 
-import com.tmi.entity.Test;
+import com.tmi.entity.Report;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TestRepository extends JpaRepository<Test, Long> {
+public interface ReportRepository extends JpaRepository<Report, Long> {
 }

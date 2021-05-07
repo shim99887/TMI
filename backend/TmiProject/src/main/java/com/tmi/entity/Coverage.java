@@ -19,7 +19,7 @@ public class Coverage {
 
     @ManyToOne
     @JsonIgnore
-    private Test test;
+    private Report report;
     private String groupName;
     private String packageName;
     private String className;

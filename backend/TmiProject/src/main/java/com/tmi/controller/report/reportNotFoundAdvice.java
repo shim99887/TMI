@@ -1,4 +1,4 @@
-package com.tmi.controller.test;
+package com.tmi.controller.report;
 
 import com.tmi.controller.project.ProjectNotFoundException;
 
@@ -9,18 +9,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-public class testNotFoundAdvice {
-    @ResponseBody
-    @ExceptionHandler(ProjectNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    String projectNotFoundHandler(ProjectNotFoundException ex) {
-        return ex.getMessage();
-    }
-
+public class reportNotFoundAdvice {
     // @ResponseBody
-    // @ExceptionHandler(TestJobNotFoundException.class)
+    // @ExceptionHandler(AppNotFoundException.class)
     // @ResponseStatus(HttpStatus.NOT_FOUND)
-    // String testJobNotFoundHandler(TestJobNotFoundException ex) {
+    // String testJobNotFoundHandler(AppNotFoundException ex) {
     // return ex.getMessage();
     // }
 }
