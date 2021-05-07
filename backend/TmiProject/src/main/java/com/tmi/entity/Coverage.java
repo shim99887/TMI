@@ -1,5 +1,6 @@
 package com.tmi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -10,14 +11,14 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
-public class PackageCoverage {
+public class Coverage {
 
     @Id
     @GeneratedValue
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "testId")
+    @JsonIgnore
     private Test test;
     private String groupName;
     private String packageName;

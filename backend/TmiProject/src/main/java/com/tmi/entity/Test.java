@@ -35,7 +35,7 @@ public class Test {
     // private List<TestData> testDatas = new ArrayList<TestData>();
 
     @OneToMany(mappedBy = "test")
-    private List<PackageCoverage> packageCoverages = new ArrayList<PackageCoverage>();
+    private List<Coverage> coverages = new ArrayList<Coverage>();
 
     private String title;
     private String description;
