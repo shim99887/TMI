@@ -28,6 +28,18 @@ public class Test {
     private String errorMessage;
     private Integer elapsedTime;
 
+    public Test() {
+    }
+
+    public Test(Test newTest){
+        this.id = newTest.getId();
+        this.name = newTest.getName();
+        this.type = newTest.getType();
+        this.errorType = newTest.getErrorType();
+        this.errorMessage = newTest.getErrorMessage();
+        this.elapsedTime = newTest.getElapsedTime();
+    }
+
     //txt에 대한 property만 가져옴. xml 파일의 정보도 추가 고려해야함.
 }
 
