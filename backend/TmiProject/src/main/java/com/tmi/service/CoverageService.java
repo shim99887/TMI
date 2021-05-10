@@ -24,10 +24,10 @@ public class CoverageService {
         return coverageRepository.findAll();
     }
 
-//    public List<Coverage> readAllCoveragesInReport(long id) {
-//        Report report = reportRepository.findById(id).get();
-//        return report.getCoverages();
-//    }
+    public List<Coverage> readAllCoveragesInReport(long id) {
+        Report report = reportRepository.findById(id).get();
+        return report.getCoverages();
+    }
 
     public Optional<Coverage> readOneCoverage(long id) {
         return coverageRepository.findById(id);

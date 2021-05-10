@@ -21,10 +21,10 @@ public class CoverageController {
         return coverageService.readAllCoverages();
     }
 
-//    @GetMapping("/{id}")
-//    List<Coverage> allInReport(@PathVariable long id) {
-//        return coverageService.readAllCoveragesInReport(id);
-//    }
+    @GetMapping("/{id}")
+    List<Coverage> allInReport(@PathVariable long id) {
+        return coverageService.readAllCoveragesInReport(id);
+    }
 
     @PostMapping
     Coverage createCoverage(@RequestBody CoveragePostDto dto) {
