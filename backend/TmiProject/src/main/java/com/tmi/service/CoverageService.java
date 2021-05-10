@@ -1,7 +1,7 @@
 package com.tmi.service;
 
 
-import com.tmi.dto.coverage.CoveragePostDto;
+import com.tmi.dto.CoveragePostDto;
 import com.tmi.entity.Coverage;
 import com.tmi.entity.Report;
 import com.tmi.repository.CoverageRepository;

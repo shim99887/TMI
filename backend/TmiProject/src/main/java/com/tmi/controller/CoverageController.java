@@ -1,6 +1,6 @@
 package com.tmi.controller;
 
-import com.tmi.dto.coverage.CoveragePostDto;
+import com.tmi.dto.CoveragePostDto;
 import com.tmi.entity.Coverage;
 import com.tmi.service.CoverageService;
 import org.springframework.beans.factory.annotation.Autowired;
