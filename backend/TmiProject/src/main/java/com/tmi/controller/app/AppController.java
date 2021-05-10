@@ -1,7 +1,6 @@
-package com.tmi.controller.testjob;
+package com.tmi.controller.app;
 
 import com.tmi.entity.App;
-import com.tmi.entity.TestJobId;
 import com.tmi.repository.AppRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,25 +20,24 @@ public class AppController {
         return repo.findAll();
     }
 
-//    @GetMapping("/{pid}")
-//    TestJob getAppListByProjectId(@PathVariable int pid) {
-//        return repo.findById(testJobId).get();
-//    }
+    // TestJob getAppListByP
+    // return repo.findById(testJobId).get();
+    //
 
     @DeleteMapping("/{id}")
-    boolean deleteAppById(@PathVariable int id){
+    boolean deleteAppById(@PathVariable int id) {
         repo.deleteById(id);
         return false;
     }
 
     @PostMapping
-    void postAppData(@RequestBody App app){
+    void postAppData(@RequestBody App app) {
         app.setRegDate(new Date());
         repo.save(app);
     }
 
     @PutMapping("/{id}")
-    void putAppData(@RequestBody App app, @PathVariable int id){
+    void putAppData(@RequestBody App app, @PathVariable int id) {
 
         repo.findById(id).ifPresent(selectedApp -> {
             selectedApp.setRegDate(new Date());
