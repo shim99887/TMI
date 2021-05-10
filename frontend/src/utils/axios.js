@@ -2,7 +2,8 @@ import axios from "axios";
 
 class BaseAxios {
   request = axios.create({
-    baseURL: "https://k4a201.p.ssafy.io/api",
+    // baseURL: "https://k4a201.p.ssafy.io/api",
+    baseURL: "http://localhost:8080",
   });
   async basicGetRequest(url) {
     try {
@@ -11,6 +12,30 @@ class BaseAxios {
     } catch (error) {
       return error;
     }
+  }
+}
+
+const request = axios.create({
+  // baseURL: "https://k4a201.p.ssafy.io/api",
+  baseURL: "http://localhost:8080",
+});
+
+const basicGetRequest = async (url) => {
+  try {
+    const response = await request.get(url);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const CoverageAxios = {
+  all: (id) => basicGetRequest(`/coverage/${id}`),
+};
+
+export class ReportAxios extends BaseAxios {
+  all() {
+    return this.basicGetRequest("/report");
   }
 }
 

@@ -11,7 +11,7 @@ import {
 import DoughnutGraph from "../graph/DoughnutGraph";
 import BarGraph from "../graph/BarGraph";
 
-export default function ProjectDetailGraphs({ data }) {
+export default function ProjectReportGraphs({ data }) {
   const [instructionCov, setInstructionCov] = useState({
     covered: 0,
     missed: 0,
