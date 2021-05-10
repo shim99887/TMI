@@ -152,6 +152,21 @@ public class TmiMojo extends AbstractMojo {
 
 			junitTxtBody.add("txtFiles", multipartFile.getResource());
 		}
+		File htmlFile = new File(targetDir + "/site/surefire-report.html");
+		FileItem htmlFileItem = null;
+		try {
+			htmlFileItem = new DiskFileItem("mainFile", Files.probeContentType(htmlFile.toPath()), false, htmlFile.getName(), (int) htmlFile.length(), htmlFile.getParentFile());
+
+			InputStream input = new FileInputStream(htmlFile);
+			//IOUtils.copy(input, os);
+			// Or faster..
+			IOUtils.copy(input, htmlFileItem.getOutputStream());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		multipartFile = new CommonsMultipartFile(htmlFileItem);
+
+		junitTxtBody.add("htmlFile", multipartFile.getResource());
 		
 		
 		restTemplate = new RestTemplate(Arrays.asList(jackson, resource, formHttpMessageConverter));
