@@ -10,7 +10,7 @@ export default function Navigation() {
         <Link to="/">Home</Link>
         {/* <Link to="/dashboard">Dashboard</Link> */}
         <Link to="/project">Project</Link>
-        <Link to="/testjob">Test Job</Link>
+        <Link to="/app">Test Job</Link>
         <Link to="/about">About</Link>
       </nav>
       <MyBreadcrumbs />
