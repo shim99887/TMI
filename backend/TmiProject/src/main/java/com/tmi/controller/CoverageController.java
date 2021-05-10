@@ -2,16 +2,16 @@ package com.tmi.controller;
 
 import com.tmi.dto.coverage.CoveragePostDto;
 import com.tmi.entity.Coverage;
-import com.tmi.repository.CoverageRepository;
 import com.tmi.service.CoverageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/package-coverage")
+@RequestMapping("/coverage")
 public class CoverageController {
     @Autowired
     private CoverageService coverageService;
@@ -19,6 +19,11 @@ public class CoverageController {
     @GetMapping
     List<Coverage> all() {
         return coverageService.readAllCoverages();
+    }
+
+    @GetMapping("/{id}")
+    List<Coverage> allInReport(@PathVariable long id) {
+        return coverageService.readAllCoveragesInReport(id);
     }
 
     @PostMapping
