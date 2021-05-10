@@ -11,7 +11,6 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 
 @Configuration
 @EnableAutoConfiguration(exclude={MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
-@ComponentScan
 @SpringBootApplication
 @EnableMongoRepositories(basePackages = "com.tmi.tmi.repository")
 public class TmiApplication {

@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,11 +21,13 @@ public class Test {
 	
 	String buildTime;
 	String packageName;
+	String packageShortName;
 	String gitUrl;
 	String projectName;
 	int runCount;
     int failCount;
     int errorCount;
     int skipCount;
-    float elapsedTime; 
+    float elapsedTime;
+    List<TestCase> testCaseList;
 }

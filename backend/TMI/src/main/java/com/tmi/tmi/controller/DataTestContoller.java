@@ -6,11 +6,11 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,15 +26,15 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api")
-public class DataTextContoller {
+public class DataTestContoller {
 	
 	@Autowired
 	TestRepository testRepository;
 	
 	@PostMapping("/junit/data")
 	@ApiOperation(value = "postTxtFile")
-	public ResponseEntity<Boolean> postTxtFile(String projectName, String gitUrl, List<MultipartFile> txtFiles) {
-		if (!txtFiles.isEmpty()) {
+	public ResponseEntity<Boolean> postTxtFile(String projectName, String gitUrl, List<MultipartFile> txtFiles, MultipartFile htmlFile) {
+		if (!txtFiles.isEmpty() && !htmlFile.isEmpty()) {
 			try {
 				Date date_now = new Date(System.currentTimeMillis());
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
@@ -45,6 +45,7 @@ public class DataTextContoller {
 					test.setBuildTime(buildTime);
 					test.setGitUrl(gitUrl);
 					test.setProjectName(projectName);
+					test.setTestCaseList(new ArrayList<>());
 					File file = convert(txtFile);
 					FileReader fr = new FileReader(file);
 					BufferedReader br = new BufferedReader(fr);
@@ -54,8 +55,11 @@ public class DataTextContoller {
 						String [] splitStr;
 						if(lineCount == 1) {
 							splitStr = line.split(":");
-							test.setPackageName(splitStr[1].trim());
-							//System.out.println(splitStr[1].trim());
+							String packageName = splitStr[1].trim();
+							test.setPackageName(packageName);
+							String [] tempSplitStr = packageName.split("[.]");
+							test.setPackageShortName(tempSplitStr[tempSplitStr.length-1]);
+
 						}else if(lineCount == 3) {
 							splitStr = line.split(",");
 							for(int i=0;i<splitStr.length;i++) {
@@ -90,6 +94,35 @@ public class DataTextContoller {
 					// System.out.println(content);
 					testRepository.save(test);
 				}
+
+				//html 파일 처리
+				File file = convert(htmlFile);
+				//File file = new File("./surefire-report.html");
+				Document doc = Jsoup.parse(file, "UTF-8");
+				Elements div = doc.select("div.section");
+//            System.out.println(div);
+				int index = 0;
+				for(int i=0; i < div.size(); i++){
+					if(div.get(i).select("h2").text().equals("Test Cases")){
+						index = i;
+						break;
+					}
+				}
+
+				for(int i=index; i < div.size(); i++){
+					//class
+					if(div.get(i).select("h2").hasText()){
+						System.out.println(div.get(i).select("h2").text());
+					}
+					System.out.println(div.get(i).select("h3").text());
+					Elements classes = div.get(i).select("td");
+					for(int j=0; j < classes.size(); j++){
+						if(classes.get(j).select("td").hasText()){
+							System.out.println(classes.get(j).select("td").text());
+						}
+					}
+				}
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
