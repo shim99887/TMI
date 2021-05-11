@@ -26,8 +26,8 @@ public class AppController {
         return repo.findById(id).orElseThrow(() -> new AppNotFoundException(id));
     }
 
-    // TestJob getAppListByP
-    // return repo.findById(testJobId).get();
+    // List<App> getAppListByProjectId
+    //
     //
 
     @DeleteMapping("/{id}")
