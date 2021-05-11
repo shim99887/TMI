@@ -25,7 +25,7 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import { useHistory } from "react-router-dom";
 import { ButtonBase } from "@material-ui/core";
-import { ProjectAxios, TestJobAxios } from "../../utils/axios";
+import { ProjectAxios, AppAxios } from "../../utils/axios";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -56,17 +56,17 @@ const cardStyles = makeStyles({
   card: { width: "100%" },
 });
 
-function TestJobList(props) {
+function AppList(props) {
   const { pid, history } = props;
   const cardClass = cardStyles();
 
-  const [testJobData, setTestJobData] = useState([]);
+  const [app, setApp] = useState([]);
 
   useEffect(async () => {
-    const testJobAxios = new TestJobAxios();
+    const appAxios = new AppAxios();
     try {
-      const testJobAxiosData = await testJobAxios.getOneProject(pid);
-      setTestJobData(testJobAxiosData);
+      const appAxiosData = await appAxios.getAppByProjectId(pid);
+      setApp(appAxiosData);
     } catch (error) {
       console.error(error);
     }
@@ -76,20 +76,18 @@ function TestJobList(props) {
   return (
     <>
       <Grid container spacing={0}>
-        {testJobData.map((testJob) => (
+        {app.map((app) => (
           <ButtonBase
             className={cardClass.button}
             onClick={(event) => {
-              history.push(`/testjob/${pid}/${testJob.testId}`);
+              // history.push(`/testjob/${pid}/${testJob.testId}`);
             }}
           >
             <Card className={cardClass.card}>
               <CardContent>
                 <Typography align="left">Status: 😀</Typography>
-                <Typography align="left">ID: {testJob.testId}</Typography>
-                <Typography align="left">
-                  Name: {testJob.testSetName}
-                </Typography>
+                <Typography align="left">ID: {app.id}</Typography>
+                <Typography align="left">Name: {app.title}</Typography>
               </CardContent>
             </Card>
           </ButtonBase>
@@ -204,7 +202,7 @@ function Project() {
             detailPanel={(rowData) => {
               return (
                 <div>
-                  <TestJobList pid={rowData.id} history={history} />
+                  <AppList pid={rowData.id} history={history} />
                 </div>
               );
             }}
