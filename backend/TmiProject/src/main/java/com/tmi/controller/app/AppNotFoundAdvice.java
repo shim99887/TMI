@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-public class AppNotFoundAdvide {
+public class AppNotFoundAdvice {
     @ResponseBody
     @ExceptionHandler(AppNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
