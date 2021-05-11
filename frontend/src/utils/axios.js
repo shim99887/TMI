@@ -39,6 +39,12 @@ export class ProjectAxios extends BaseAxios {
 }
 
 export class AppAxios extends BaseAxios {
+  getAll() {
+    return this.basicGetRequest("/app");
+  }
+  getOne(id) {
+    return this.basicGetRequest(`/app/${id}`);
+  }
   getAppByProjectId(pid) {
     return this.basicGetRequest(`/app/project/${pid}`);
   }
@@ -52,7 +58,7 @@ export class ReportAxios extends BaseAxios {
     return this.basicGetRequest(`/report/${id}`);
   }
   getListByAppId(aid) {
-    return this.basicGetRequest(`/report/${aid}`);
+    return this.basicGetRequest(`/report/app/${aid}`);
   }
 }
 
@@ -77,6 +83,6 @@ export class TestAxios extends BaseAxios {
     return this.basicGetRequest(`/test/${id}`);
   }
   getListByReportId(rid) {
-    return this.basicGetRequest(`/test/${rid}`);
+    return this.basicGetRequest(`/test/report/${rid}`);
   }
 }
