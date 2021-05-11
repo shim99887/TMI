@@ -45,7 +45,9 @@ public class AppController {
     @PostMapping("/project/{id}")
     App postAppAtProject(@RequestBody App app, @PathVariable long id) {
         Project project = projectRepository.findById(id).get();
+        app.setId("test");
         app.setProject(project);
+        app.setRegDate(new Date());
         return repo.save(app);
     }
 
