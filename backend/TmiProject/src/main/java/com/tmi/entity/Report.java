@@ -44,8 +44,8 @@ public class Report {
     private int totalElapsedTime;
 
     public Report(LocalDateTime datetime, int totalLineCovMissed, int totalLineCovCovered, int totalBranchCovMissed,
-            int totalBranchCovCovered, int totalRunCount, int totalFailCount, int totalSkipCount, int totalErrorCount,
-            int totalElapsedTime) {
+                  int totalBranchCovCovered, int totalRunCount, int totalFailCount, int totalSkipCount, int totalErrorCount,
+                  int totalElapsedTime) {
         this.datetime = datetime;
         this.totalLineCovMissed = totalBranchCovMissed;
         this.totalLineCovCovered = totalLineCovCovered;
