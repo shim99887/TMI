@@ -28,6 +28,6 @@ public class Test {
     int failCount;
     int errorCount;
     int skipCount;
-    float elapsedTime;
+    int elapsedTime;
     List<TestCase> testCaseList;
 }

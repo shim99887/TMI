@@ -1,4 +1,4 @@
-package com.tmi.dto.coverage;
+package com.tmi.dto;
 
 import com.tmi.entity.Coverage;
 import lombok.Getter;

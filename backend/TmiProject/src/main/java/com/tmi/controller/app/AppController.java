@@ -17,7 +17,7 @@ public class AppController {
     private AppRepository repo;
 
     @GetMapping
-    List<App> getAllApp(){
+    List<App> getAllApp() {
         return repo.findAll();
     }
 
@@ -26,9 +26,10 @@ public class AppController {
         return repo.findById(id).orElseThrow(() -> new AppNotFoundException(id));
     }
 
-    // List<App> getAppListByProjectId
-    //
-    //
+    @GetMapping("/project/{pid}")
+    List<App> getAppListByProjectId(@PathVariable Long pid) {
+        return repo.findAllByProjectIdEquals(pid);
+    }
 
     @DeleteMapping("/{id}")
     boolean deleteAppById(@PathVariable Long id) {

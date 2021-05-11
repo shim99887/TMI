@@ -7,5 +7,5 @@ import com.tmi.tmi.model.Test;
 import java.util.List;
 
 public interface TestRepository extends MongoRepository<Test, String>{
-	//List<Test> findByPackageShorNameAndBuildTime(String packageShortName, String buildTime);
+	List<Test> findByPackageShortNameAndBuildTimeAndProjectName(String packageShortName, String buildTime, String projectName);
 }

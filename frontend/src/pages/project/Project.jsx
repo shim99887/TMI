@@ -60,13 +60,13 @@ function AppList(props) {
   const { pid, history } = props;
   const cardClass = cardStyles();
 
-  const [appData, setAppData] = useState([]);
+  const [app, setApp] = useState([]);
 
   useEffect(async () => {
     const appAxios = new AppAxios();
     try {
-      const appAxiosData = await appAxios.getListByProjectId(pid);
-      setAppData(appAxiosData);
+      const appAxiosData = await appAxios.getAppByProjectId(pid);
+      setApp(appAxiosData);
     } catch (error) {
       console.error(error);
     }
@@ -76,11 +76,11 @@ function AppList(props) {
   return (
     <>
       <Grid container spacing={0}>
-        {appData.map((app) => (
+        {app.map((app) => (
           <ButtonBase
             className={cardClass.button}
             onClick={(event) => {
-              history.push(`/app/${pid}/${app.id}`);
+              // history.push(`/testjob/${pid}/${testJob.testId}`);
             }}
           >
             <Card className={cardClass.card}>
