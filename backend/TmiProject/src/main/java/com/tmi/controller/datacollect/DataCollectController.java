@@ -3,7 +3,6 @@ package com.tmi.controller.datacollect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tmi.service.DataCollectService;
@@ -12,7 +11,6 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/api")
 public class DataCollectController {
 	
 	@Autowired
