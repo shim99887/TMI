@@ -3,7 +3,7 @@ import axios from "axios";
 class BaseAxios {
   request = axios.create({
     baseURL: "https://k4a201.p.ssafy.io/api",
-    // baseURL: "http://localhost:8080",
+    // baseURL: "http://localhost:3000",
   });
   async basicGetRequest(url) {
     try {
@@ -17,12 +17,21 @@ class BaseAxios {
 
 const request = axios.create({
   baseURL: "https://k4a201.p.ssafy.io/api",
-  // baseURL: "http://localhost:8080",
+  // baseURL: "http://localhost:3000",
 });
 
-const basicGetRequest = async (url) => {
+const basicGetRequest = async (url, config) => {
   try {
-    const response = await request.get(url);
+    const response = await request.get(url, config);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+const basicPostRequest = async (url, data, config) => {
+  try {
+    const response = await request.post(url, data, config);
     return response.data;
   } catch (error) {
     return error;
@@ -59,6 +68,9 @@ export const appAxios = {
   },
   getAppByProjectId: (pid) => {
     return basicGetRequest(`/app/project/${pid}`);
+  },
+  postAppByProjectId: (id, data) => {
+    return basicPostRequest(`/app/project/${id}`, data);
   },
 };
 

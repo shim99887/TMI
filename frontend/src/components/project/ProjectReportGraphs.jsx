@@ -30,53 +30,53 @@ export default function ProjectReportGraphs({ data }) {
     ],
     datasets: [
       {
-        label: "Instruction %",
+        label: "Instruction Cov.",
         // yAxisID: "B",
         data: [15, 38, 68, 85, 93],
         borderColor: colors.deepPurple[500],
       },
       {
-        label: "Branch %",
+        label: "Branch Cov.",
         // yAxisID: "B",
         data: [5, 40, 55, 79, 88],
         borderColor: colors.indigo[500],
       },
-      {
-        type: "bar",
-        yAxisID: "A",
-        label: "Instruction Covered",
-        data: [150, 380, 680, 850, 930],
-        backgroundColor: colors.deepPurple[50],
-        borderColor: colors.deepPurple[500],
-        borderWidth: 1,
-      },
-      {
-        type: "bar",
-        yAxisID: "A",
-        label: "Instruction Missed",
-        data: [850, 620, 320, 150, 70],
-        backgroundColor: colors.red[50],
-        borderColor: colors.red[500],
-        borderWidth: 1,
-      },
-      {
-        type: "bar",
-        yAxisID: "A",
-        label: "Branch Covered",
-        data: [50, 400, 550, 790, 880],
-        backgroundColor: colors.indigo[50],
-        borderColor: colors.indigo[500],
-        borderWidth: 1,
-      },
-      {
-        type: "bar",
-        yAxisID: "A",
-        label: "Branch Missed",
-        data: [950, 600, 450, 210, 120],
-        backgroundColor: colors.red[50],
-        borderColor: colors.red[500],
-        borderWidth: 1,
-      },
+      // {
+      //   type: "bar",
+      //   yAxisID: "A",
+      //   label: "Instruction Covered",
+      //   data: [150, 380, 680, 850, 930],
+      //   backgroundColor: colors.deepPurple[50],
+      //   borderColor: colors.deepPurple[500],
+      //   borderWidth: 1,
+      // },
+      // {
+      //   type: "bar",
+      //   yAxisID: "A",
+      //   label: "Instruction Missed",
+      //   data: [850, 620, 320, 150, 70],
+      //   backgroundColor: colors.red[50],
+      //   borderColor: colors.red[500],
+      //   borderWidth: 1,
+      // },
+      // {
+      //   type: "bar",
+      //   yAxisID: "A",
+      //   label: "Branch Covered",
+      //   data: [50, 400, 550, 790, 880],
+      //   backgroundColor: colors.indigo[50],
+      //   borderColor: colors.indigo[500],
+      //   borderWidth: 1,
+      // },
+      // {
+      //   type: "bar",
+      //   yAxisID: "A",
+      //   label: "Branch Missed",
+      //   data: [950, 600, 450, 210, 120],
+      //   backgroundColor: colors.red[50],
+      //   borderColor: colors.red[500],
+      //   borderWidth: 1,
+      // },
       // {
       //   label: "Line",
       //   data: [93.8, 98.1, 92.6, 91.7, 91.2],
@@ -114,7 +114,7 @@ export default function ProjectReportGraphs({ data }) {
   return (
     <>
       <Card variant="outlined">
-        <CardHeader title="Coverage History" />
+        <CardHeader title="Project Summary" />
         <Divider />
         <Grid container spacing={2} style={{ justifyContent: "space-around" }}>
           <CardContent>
