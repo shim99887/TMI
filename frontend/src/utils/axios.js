@@ -74,17 +74,17 @@ export const appAxios = {
   },
 };
 
-export class ReportAxios extends BaseAxios {
-  all() {
-    return this.basicGetRequest("/report");
-  }
-  getOne(id) {
-    return this.basicGetRequest(`/report/${id}`);
-  }
-  getListByAppId(aid) {
-    return this.basicGetRequest(`/report/app/${aid}`);
-  }
-}
+// export class ReportAxios extends BaseAxios {
+//   all() {
+//     return this.basicGetRequest("/report");
+//   }
+//   getOne(id) {
+//     return this.basicGetRequest(`/report/${id}`);
+//   }
+//   getListByAppId(aid) {
+//     return this.basicGetRequest(`/report/app/${aid}`);
+//   }
+// }
 
 export const reportAxios = {
   all: () => {
@@ -102,14 +102,17 @@ export const coverageAxios = {
   all: (id) => basicGetRequest(`/coverage/${id}`),
 };
 
-export class TestAxios extends BaseAxios {
-  getAll() {
-    return this.basicGetRequest(`/test/`);
-  }
-  getOne(id) {
-    return this.basicGetRequest(`/test/${id}`);
-  }
-  getListByReportId(rid) {
-    return this.basicGetRequest(`/test/report/${rid}`);
-  }
-}
+export const testAxios = {
+  getAll: () => {
+    return basicGetRequest(`/test/`);
+  },
+  getOne: (id) => {
+    return basicGetRequest(`/test/${id}`);
+  },
+  getListByReportId: (rid) => {
+    return basicGetRequest(`/test/report/${rid}`);
+  },
+  getListByAppId: (rid) => {
+    return basicGetRequest(`/test/report/${rid}`);
+  },
+};

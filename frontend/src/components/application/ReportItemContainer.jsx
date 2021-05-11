@@ -52,81 +52,278 @@ export default function ReportItemContainer(props) {
   const handleClickAway = () => {
     setOpen(false);
   };
-
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
       <Box>
         <Paper>
-          <Box
-            style={{
-              borderLeft: props.color,
-              paddingBottom: "1%",
-            }}
-          >
-            <Box className={styles.container}>
-              <Box
-                style={{
-                  fontSize: "150%",
-                  color: "#444444",
-                  fontWeight: "bold",
-                }}
-              >
-                {props.name}
+          {props.resultType == "pass" && (
+            <Box
+              style={{
+                borderLeft: "10px solid #22DD22",
+                paddingBottom: "1%",
+              }}
+            >
+              <Box className={styles.container}>
+                <Box
+                  style={{
+                    fontSize: "150%",
+                    color: "#444444",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {props.name}
+                </Box>
+
+                <Box
+                  style={{
+                    fontSize: "125%",
+                    color: "#444444",
+                  }}
+                >
+                  ({props.time} ms)
+                </Box>
+
+                <Box
+                  style={{
+                    flexGrow: 1,
+                    fontSize: "75%",
+                    color: "#444444",
+                    textAlign: "right",
+                  }}
+                >
+                  Case History
+                </Box>
               </Box>
 
-              <Box
-                style={{
-                  fontSize: "125%",
-                  color: "#444444",
-                }}
-              >
-                ({props.time} ms)
-              </Box>
+              {open === true ? (
+                <Box
+                  style={{
+                    borderLeft: props.secondColor,
+                    marginLeft: "3%",
+                    marginRight: "3%",
+                    marginTop: "1%",
+                    marginBottom: "1%",
+                  }}
+                >
+                  <ReportErrorContainer
+                    name="Type"
+                    content={props.errorType}
+                  ></ReportErrorContainer>
+                  <ReportErrorContainer
+                    name="Message"
+                    content={props.errorMessage}
+                  ></ReportErrorContainer>
+                  <ReportErrorContainer
+                    name="ResultType"
+                    content={props.resultType}
+                  ></ReportErrorContainer>
+                </Box>
+              ) : null}
+            </Box>
+          )}
+          {props.resultType == "fail" && (
+            <Box
+              style={{
+                borderLeft: "10px solid #FFCC66",
+                paddingBottom: "1%",
+              }}
+            >
+              <Box className={styles.container}>
+                <Box
+                  style={{
+                    fontSize: "150%",
+                    color: "#444444",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {props.name}
+                </Box>
 
-              {(props.resultType === "Error" ||
-                props.resultType === "Fail") && (
+                <Box
+                  style={{
+                    fontSize: "125%",
+                    color: "#444444",
+                  }}
+                >
+                  ({props.time} ms)
+                </Box>
+
                 <Button onClick={handleClick}>
                   {open === false ? <ExpandMoreIcon /> : <ExpandLessIcon />}
                 </Button>
-              )}
 
-              <Box
-                style={{
-                  flexGrow: 1,
-                  fontSize: "75%",
-                  color: "#444444",
-                  textAlign: "right",
-                }}
-              >
-                Case History
+                <Box
+                  style={{
+                    flexGrow: 1,
+                    fontSize: "75%",
+                    color: "#444444",
+                    textAlign: "right",
+                  }}
+                >
+                  Case History
+                </Box>
               </Box>
+
+              {open === true ? (
+                <Box
+                  style={{
+                    borderLeft: props.secondColor,
+                    marginLeft: "3%",
+                    marginRight: "3%",
+                    marginTop: "1%",
+                    marginBottom: "1%",
+                  }}
+                >
+                  <ReportErrorContainer
+                    name="Type"
+                    content={props.errorType}
+                  ></ReportErrorContainer>
+                  <ReportErrorContainer
+                    name="Message"
+                    content={props.errorMessage}
+                  ></ReportErrorContainer>
+                  <ReportErrorContainer
+                    name="ResultType"
+                    content={props.resultType}
+                  ></ReportErrorContainer>
+                </Box>
+              ) : null}
             </Box>
+          )}
+          {props.resultType == "error" && (
+            <Box
+              style={{
+                borderLeft: "10px solid #FF4444",
+                paddingBottom: "1%",
+              }}
+            >
+              <Box className={styles.container}>
+                <Box
+                  style={{
+                    fontSize: "150%",
+                    color: "#444444",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {props.name}
+                </Box>
 
-            {open === true ? (
-              <Box
-                style={{
-                  borderLeft: props.secondColor,
-                  marginLeft: "3%",
-                  marginRight: "3%",
-                  marginTop: "1%",
-                  marginBottom: "1%",
-                }}
-              >
-                <ReportErrorContainer
-                  name="Type"
-                  content={props.errorType}
-                ></ReportErrorContainer>
-                <ReportErrorContainer
-                  name="Message"
-                  content={props.errorMessage}
-                ></ReportErrorContainer>
-                <ReportErrorContainer
-                  name="ResultType"
-                  content={props.resultType}
-                ></ReportErrorContainer>
+                <Box
+                  style={{
+                    fontSize: "125%",
+                    color: "#444444",
+                  }}
+                >
+                  ({props.time} ms)
+                </Box>
+
+                <Button onClick={handleClick}>
+                  {open === false ? <ExpandMoreIcon /> : <ExpandLessIcon />}
+                </Button>
+
+                <Box
+                  style={{
+                    flexGrow: 1,
+                    fontSize: "75%",
+                    color: "#444444",
+                    textAlign: "right",
+                  }}
+                >
+                  Case History
+                </Box>
               </Box>
-            ) : null}
-          </Box>
+
+              {open === true ? (
+                <Box
+                  style={{
+                    borderLeft: props.secondColor,
+                    marginLeft: "3%",
+                    marginRight: "3%",
+                    marginTop: "1%",
+                    marginBottom: "1%",
+                  }}
+                >
+                  <ReportErrorContainer
+                    name="Type"
+                    content={props.errorType}
+                  ></ReportErrorContainer>
+                  <ReportErrorContainer
+                    name="Message"
+                    content={props.errorMessage}
+                  ></ReportErrorContainer>
+                  <ReportErrorContainer
+                    name="ResultType"
+                    content={props.resultType}
+                  ></ReportErrorContainer>
+                </Box>
+              ) : null}
+            </Box>
+          )}
+          {props.resultType == "skip" && (
+            <Box
+              style={{
+                borderLeft: "10px solid #CCCCCC",
+                paddingBottom: "1%",
+              }}
+            >
+              <Box className={styles.container}>
+                <Box
+                  style={{
+                    fontSize: "150%",
+                    color: "#444444",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {props.name}
+                </Box>
+
+                <Box
+                  style={{
+                    fontSize: "125%",
+                    color: "#444444",
+                  }}
+                >
+                  ({props.time} ms)
+                </Box>
+
+                <Box
+                  style={{
+                    flexGrow: 1,
+                    fontSize: "75%",
+                    color: "#444444",
+                    textAlign: "right",
+                  }}
+                >
+                  Case History
+                </Box>
+              </Box>
+
+              {open === true ? (
+                <Box
+                  style={{
+                    borderLeft: props.secondColor,
+                    marginLeft: "3%",
+                    marginRight: "3%",
+                    marginTop: "1%",
+                    marginBottom: "1%",
+                  }}
+                >
+                  <ReportErrorContainer
+                    name="Type"
+                    content={props.errorType}
+                  ></ReportErrorContainer>
+                  <ReportErrorContainer
+                    name="Message"
+                    content={props.errorMessage}
+                  ></ReportErrorContainer>
+                  <ReportErrorContainer
+                    name="ResultType"
+                    content={props.resultType}
+                  ></ReportErrorContainer>
+                </Box>
+              ) : null}
+            </Box>
+          )}
         </Paper>
       </Box>
     </ClickAwayListener>

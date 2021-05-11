@@ -5,7 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import ReportItemContainer from "../../components/application/ReportItemContainer";
 import ReportHistoryContainer from "../../components/application/ReportHistoryContainer";
 import { makeStyles } from "@material-ui/core/styles";
-import { ReportAxios, TestAxios } from "../../utils/axios";
+import { reportAxios, testAxios } from "../../utils/axios";
 import { useParams } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
@@ -19,23 +19,56 @@ const useStyles = makeStyles((theme) => ({
 export default function ReportDetail() {
   const styles = useStyles();
   const params = useParams();
-  const [data, setData] = useState([]);
-
+  const [idx, setIdx] = useState(-1);
+  const [report, setReport] = useState([]);
+  const [test, setTest] = useState([]);
   // axios.get() Project의 ReportList 반환받는다
   // Success, Fail, Error, Skip 눌렀을 때
   useEffect(async () => {
-    const reportAxios = new ReportAxios();
-    const testAxios = new TestAxios();
-    try {
-      const responseData = await reportAxios.getListByAppId(params.id);
-      setData(responseData);
-      //const responseData2 = await testAxios.getListByReportId(params.pid);
-      console.log(responseData);
-    } catch (error) {
-      console.error(error);
-    }
+    const reportResponse = await reportAxios.getListByAppId(params.id);
+
+    setReport(reportResponse);
     return () => {};
   }, []);
+
+  const reports = report.map((data, index) => (
+    <Box onClick={() => getReportData(data.id)} key={index}>
+      <ReportHistoryContainer
+        testCount={data.id}
+        date={data.datetime}
+      ></ReportHistoryContainer>
+    </Box>
+  ));
+
+  async function getReportData(id) {
+    await testAxios
+      .getListByReportId(id)
+      .then((res) => {
+        setTest(res);
+        setIdx(id - 1);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  const tests = test.map((data, index) => (
+    <Box
+      style={{
+        marginTop: "1%",
+        marginBottom: "1%",
+      }}
+      key={index}
+    >
+      <ReportItemContainer
+        name={data.name}
+        time={data.elapsedTime}
+        resultType={data.type}
+        errorType={data.errorType}
+        errorMessage={data.errorMessage}
+      />
+    </Box>
+  ));
 
   return (
     <Box>
@@ -46,166 +79,105 @@ export default function ReportDetail() {
           item
           xs={2}
         >
-          <ReportHistoryContainer
-            testCount="8"
-            date="21/04/28 17:00"
-          ></ReportHistoryContainer>
+          {reports}
         </Grid>
         <Grid item xs={10}>
           <Box display="flex" justifyContent="space-between">
-            <Box>History : #8 21/04/28 17:00</Box>
             <Box border="1px solid black">
               <Input placeholder="Search"></Input>
             </Box>
           </Box>
-          <Box
-            className={styles.container}
-            fontSize="200%"
-            marginTop="1%"
-            style={{ cursor: "pointer" }}
-          >
-            <Box flexGrow={data.runCount + 1} onClick={getSuccessList}>
+          {idx >= 0 && (
+            <Box
+              className={styles.container}
+              fontSize="200%"
+              marginTop="1%"
+              style={{ cursor: "pointer" }}
+            >
               <Box
-                style={{
-                  backgroundColor: "#99DD99",
-                }}
+                flexGrow={report[idx].totalRunCount + 1}
+                onClick={getSuccessList}
               >
-                Success
+                <Box
+                  style={{
+                    backgroundColor: "#99DD99",
+                  }}
+                >
+                  Pass
+                </Box>
+                <Box
+                  style={{
+                    backgroundColor: "#22DD22",
+                  }}
+                >
+                  {report[idx].totalRunCount}
+                </Box>
               </Box>
               <Box
-                style={{
-                  backgroundColor: "#22DD22",
-                }}
+                flexGrow={report[idx].totalFailCount + 1}
+                onClick={getFailList}
               >
-                {data.runCount}
+                <Box
+                  style={{
+                    backgroundColor: "#FFCC66",
+                  }}
+                >
+                  Fail
+                </Box>
+                <Box
+                  style={{
+                    backgroundColor: "#FFAA00",
+                  }}
+                >
+                  {report[idx].totalFailCount}
+                </Box>
+              </Box>
+              <Box
+                flexGrow={report[idx].totalErrorCount + 1}
+                onClick={getErrorList}
+              >
+                <Box
+                  style={{
+                    backgroundColor: "#FF4444",
+                  }}
+                >
+                  Error
+                </Box>
+                <Box
+                  style={{
+                    backgroundColor: "#FF0000",
+                  }}
+                >
+                  {report[idx].totalErrorCount}
+                </Box>
+              </Box>
+              <Box
+                flexGrow={report[idx].totalSkipCount + 1}
+                onClick={getSkipList}
+              >
+                <Box
+                  style={{
+                    backgroundColor: "#CCCCCC",
+                  }}
+                >
+                  Skip
+                </Box>
+                <Box
+                  style={{
+                    backgroundColor: "#AAAAAA",
+                  }}
+                >
+                  {report[idx].totalSkipCount}
+                </Box>
               </Box>
             </Box>
-            <Box flexGrow={data.failCount + 1} onClick={getFailList}>
-              <Box
-                style={{
-                  backgroundColor: "#FFCC66",
-                }}
-              >
-                Fail
-              </Box>
-              <Box
-                style={{
-                  backgroundColor: "#FFAA00",
-                }}
-              >
-                {data.failCount}
-              </Box>
-            </Box>
-            <Box flexGrow={data.errorCount + 1} onClick={getErrorList}>
-              <Box
-                style={{
-                  backgroundColor: "#FF4444",
-                }}
-              >
-                Error
-              </Box>
-              <Box
-                style={{
-                  backgroundColor: "#FF0000",
-                }}
-              >
-                {data.errorCount}
-              </Box>
-            </Box>
-            <Box flexGrow={data.skipCount + 1} onClick={getSkipList}>
-              <Box
-                style={{
-                  backgroundColor: "#CCCCCC",
-                }}
-              >
-                Skip
-              </Box>
-              <Box
-                style={{
-                  backgroundColor: "#AAAAAA",
-                }}
-              >
-                {data.skipCount}
-              </Box>
-            </Box>
-          </Box>
-          <Box
-            style={{
-              marginTop: "1%",
-              marginBottom: "1%",
-            }}
-          >
-            <ReportItemContainer
-              name="DashBoardDataComponent should run #getCoverageTotal()"
-              time="143"
-              color="10px solid #22DD22"
-              secondColor="8px solid #99DD99"
-              resultType="Success"
-              errorType="none of content"
-              errorMessage="none of content"
-              errorContents="none of content"
-            />
-          </Box>
-
-          <Box
-            style={{
-              marginTop: "1%",
-              marginBottom: "1%",
-            }}
-          >
-            <ReportItemContainer
-              name="DashBoardDataComponent should run #getCoverageTotal()"
-              time="143"
-              color="10px solid #FFAA00"
-              secondColor="8px solid #FFCC66"
-              resultType="Fail"
-              errorType="none of content"
-              errorMessage="none of content"
-              errorContents="none of content"
-            />
-          </Box>
-
-          <Box
-            style={{
-              marginTop: "1%",
-              marginBottom: "1%",
-            }}
-          >
-            <ReportItemContainer
-              name="DashBoardDataComponent should run #getCoverageTotal()"
-              time="143"
-              color="10px solid #FF0000"
-              secondColor="8px solid #FF4444"
-              resultType="Error"
-              errorType="none of content"
-              errorMessage="none of content"
-              errorContents="none of content"
-            />
-          </Box>
-
-          <Box
-            style={{
-              marginTop: "1%",
-              marginBottom: "1%",
-            }}
-          >
-            <ReportItemContainer
-              name="DashBoardDataComponent should run #getCoverageTotal()"
-              time="143"
-              color="10px solid #AAAAAA"
-              secondColor="8px solid #CCCCCC"
-              resultType="Skip"
-              errorType="none of content"
-              errorMessage="none of content"
-              errorContents="none of content"
-            />
-          </Box>
+          )}
+          {tests}
         </Grid>
       </Grid>
     </Box>
   );
 
-  // axios 재호출할건지 있는 리스트에서 출력할건지
   function getSuccessList() {
     console.log("axios.get getSuccessList");
   }
