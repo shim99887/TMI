@@ -22,5 +22,5 @@ public class App {
     private String description;
     private Date regDate;
     private String gitUrl;
-    private String project_id;
+    private Long projectId;
 }
