@@ -33,11 +33,7 @@ public class UserController {
 
     @PostMapping("/login")
     public User login(@RequestBody Map<String, String> map){
-//        User user = new User();
-
-        System.out.println(repo.findUser(map.get("id"), map.get("pwd")));
-
-        return null;
+        return repo.findUser(map.get("id"), map.get("pwd"));
     }
 
     @DeleteMapping("/{uid}")
