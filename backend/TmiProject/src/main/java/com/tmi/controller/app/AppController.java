@@ -16,8 +16,13 @@ public class AppController {
     private AppRepository repo;
 
     @GetMapping
-    List<App> getAllApp(){
+    List<App> getAllApp() {
         return repo.findAll();
+    }
+
+    @GetMapping("/{pid}")
+    List<App> getAppListByProjectId(@PathVariable Long pid) {
+        return repo.findAllByProjectIdEquals(pid);
     }
 
     // TestJob getAppListByP
