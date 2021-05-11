@@ -5,11 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @ToString
@@ -17,10 +15,14 @@ import java.util.Date;
 @Table(name = "app")
 public class App {
     @Id
-    private int id;
+    private String id;
     private String title;
     private String description;
     private Date regDate;
     private String gitUrl;
     private Long projectId;
+
+    @OneToMany
+    @JoinColumn(name = "appId")
+    private List<Report> reports;
 }

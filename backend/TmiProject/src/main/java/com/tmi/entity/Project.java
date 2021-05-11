@@ -1,13 +1,12 @@
 package com.tmi.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -29,4 +28,7 @@ public class Project {
     private String commitUserName; // git.commit.user.name
     // private String commitMessage; //git.commit.message.short
 
+    @OneToMany
+    @JoinColumn(name = "projectId")
+    private List<App> app;
 }

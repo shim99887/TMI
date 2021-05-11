@@ -20,7 +20,8 @@ public class Report {
 
     // @ManyToOne
     // @JoinColumn(name = "appId")
-    // private App appId;
+
+     private String appId;
 
     @OneToMany(mappedBy = "report")
     @JsonIgnore
