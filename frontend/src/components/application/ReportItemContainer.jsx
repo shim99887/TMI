@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import TestJobErrorContainer from "./TestJobErrorContainer";
+import ReportErrorContainer from "./ReportErrorContainer";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
       </Accordion> */
 }
 
-export default function TestJobDetailItem(props) {
+export default function ReportItemContainer(props) {
   const styles = useStyles();
 
   const [open, setOpen] = React.useState(false);
@@ -112,22 +112,18 @@ export default function TestJobDetailItem(props) {
                   marginBottom: "1%",
                 }}
               >
-                <TestJobErrorContainer
+                <ReportErrorContainer
                   name="Type"
                   content={props.errorType}
-                ></TestJobErrorContainer>
-                <TestJobErrorContainer
+                ></ReportErrorContainer>
+                <ReportErrorContainer
                   name="Message"
                   content={props.errorMessage}
-                ></TestJobErrorContainer>
-                <TestJobErrorContainer
-                  name="Contents"
-                  content={props.errorContents}
-                ></TestJobErrorContainer>
-                <TestJobErrorContainer
+                ></ReportErrorContainer>
+                <ReportErrorContainer
                   name="ResultType"
                   content={props.resultType}
-                ></TestJobErrorContainer>
+                ></ReportErrorContainer>
               </Box>
             ) : null}
           </Box>

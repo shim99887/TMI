@@ -35,17 +35,21 @@ public class TestController {
                 .orElseThrow(() -> new TestNotFoundException(id));
     }
 
+    @GetMapping("/report/{rid}")
+    List<Test> getTestListByReportId(@PathVariable Long rid) {
+        return testRepository.findAllByReport_Id(rid);
+    }
+
     @PostMapping("/{rid}")
     Test postTest(@RequestBody Test newTest, @PathVariable Long rid) {
         Test NewTest = new Test(newTest);
         Optional<Report> report = reportRepository.findById(rid);
-        if(!report.isPresent()){
+        if (!report.isPresent()) {
             throw new IllegalArgumentException();
         }
-        NewTest.setReportId(report.get());
+        NewTest.setReport(report.get());
         return testRepository.save(NewTest);
     }
-    // Update와 Delete는 추후에 수정할 것 ( TestJob을 지우는 것인가? TestJob의 각 Test를 지우는 것인가?)
 
     @PutMapping("/{id}")
     Test updateTest(@RequestBody Test newTest, @PathVariable Long id) {
