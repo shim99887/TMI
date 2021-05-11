@@ -1,7 +1,7 @@
 package com.tmi.controller.app;
 
 public class AppNotFoundException extends RuntimeException {
-    AppNotFoundException(Long id) {
+    AppNotFoundException(String id) {
         super("Could not find project " + id);
     }
 }

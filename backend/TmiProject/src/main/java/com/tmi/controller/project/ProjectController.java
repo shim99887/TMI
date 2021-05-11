@@ -42,7 +42,7 @@ public class ProjectController {
             Project.setTitle(newProject.getTitle());
             Project.setDescription(newProject.getDescription());
             Project.setRegDate(newProject.getRegDate());
-            Project.setUser(newProject.getUser());
+            Project.setDepartment(newProject.getDepartment());
             return repository.save(Project);
         }).orElseGet(() -> {
             newProject.setId(id);
