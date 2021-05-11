@@ -3,14 +3,22 @@ import datetime from "../../utils/moment";
 import React from "react";
 
 export default function ProjectAppReportCell({ row }) {
+  const totalLineCovSum = row.totalLineCovCovered + row.totalLineCovMissed;
+  const totalBranchCovSum =
+    row.totalBranchCovCovered + row.totalBranchCovMissed;
+  const totalTestCount =
+    row.totalErrorCount +
+    row.totalFailCount +
+    row.totalRunCount +
+    row.totalSkipCount;
   return (
     <>
       <TableCell>{datetime(row.datetime)}</TableCell>
       <TableCell>
         <Box>
-          {row.totalLineCovCovered + row.totalLineCovMissed
-            ? row.totalLineCovMissed /
-              (row.totalLineCovCovered + row.totalLineCovMissed)
+          {totalLineCovSum
+            ? Math.round((row.totalLineCovMissed / totalLineCovSum) * 10000) /
+              100
             : 100}
         </Box>
         <Box>Covered / Missed</Box>
@@ -20,9 +28,10 @@ export default function ProjectAppReportCell({ row }) {
       </TableCell>
       <TableCell>
         <Box>
-          {row.totalBranchCovCovered + row.totalBranchCovMissed
-            ? row.totalBranchCovMissed /
-              (row.totalBranchCovCovered + row.totalBranchCovMissed)
+          {totalBranchCovSum
+            ? Math.round(
+                (row.totalBranchCovMissed / totalBranchCovSum) * 10000
+              ) / 100
             : 100}
         </Box>
         <Box>Covered / Missed</Box>
@@ -32,15 +41,8 @@ export default function ProjectAppReportCell({ row }) {
       </TableCell>
       <TableCell>
         <Box>
-          {row.totalErrorCount +
-          row.totalFailCount +
-          row.totalRunCount +
-          row.totalSkipCount
-            ? row.totalRunCount /
-              (row.totalErrorCount +
-                row.totalFailCount +
-                row.totalRunCount +
-                row.totalSkipCount)
+          {totalTestCount
+            ? Math.round((row.totalRunCount / totalTestCount) * 10000) / 100
             : 100}
         </Box>
         <Box>Run / Fail / Skip / Error</Box>

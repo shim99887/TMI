@@ -23,6 +23,10 @@ export default function ProjectAppReportCollapse({ open, reportList }) {
             <Table size="small" aria-label="purchases">
               <TableHead>
                 <TableRow>
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
                   {[
                     "App Name",
                     "Build Datetime",
@@ -40,6 +44,10 @@ export default function ProjectAppReportCollapse({ open, reportList }) {
               <TableBody>
                 {reportList.map((row, index) => (
                   <TableRow key={index}>
+                    <TableCell />
+                    <TableCell />
+                    <TableCell />
+                    <TableCell />
                     <ProjectAppReportCell row={row} />
                   </TableRow>
                 ))}
