@@ -11,7 +11,7 @@ import { Box, Collapse, IconButton, Typography } from "@material-ui/core";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import datetime from "../../utils/moment";
-import { CoverageAxios } from "../../utils/axios";
+import { coverageAxios } from "../../utils/axios";
 
 const useStyles = makeStyles({
   table: {
@@ -42,7 +42,7 @@ function Row({ row }) {
   async function onClick() {
     setOpen(!open);
     // if (!Object.keys(coverages).length) {
-    //   const response = await CoverageAxios.all(row.id);
+    //   const response = await coverageAxios.all(row.id);
     //   setCoverages(response);
     //   console.log(response);
     // }
