@@ -2,9 +2,10 @@ package com.tmi.controller.report;
 
 import java.util.List;
 
-import com.tmi.controller.app.AppNotFoundException;
+import com.tmi.dto.ReportPostDto;
 import com.tmi.entity.Report;
-import com.tmi.repository.ReportRepository;
+import com.tmi.service.CoverageService;
+import com.tmi.service.ReportService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,25 +15,25 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/report")
 public class ReportController {
     @Autowired
-    private ReportRepository repository;
+    private ReportService reportService;
 
     @GetMapping()
-    List<Report> all() {
-        return repository.findAll();
+    List<Report> allReport() {
+        return reportService.readAllReports();
     }
 
     @GetMapping("/{id}")
-    Report getReport(@PathVariable Long id) {
-        return repository.findById(id).orElseThrow(() -> new ReportNotFoundException(id));
+    Report oneReport(@PathVariable Long id) {
+        return reportService.readOneReport(id);
     }
 
     @GetMapping("/app/{aid}")
-    List<Report> getReportListByAppId(@PathVariable Long aid) {
-        return repository.findAllByApp_Id(aid);
+    List<Report> allReportByAppId(@PathVariable Long aid) {
+        return reportService.readAllReportsInApp(aid);
     }
 
     @PostMapping()
-    Report newTest(@RequestBody Report newReport) {
-        return repository.save(newReport);
+    Report createReport(@RequestBody ReportPostDto dto) {
+        return reportService.createReport(dto);
     }
 }

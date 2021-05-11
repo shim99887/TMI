@@ -1,13 +1,13 @@
 package com.tmi.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import java.util.ArrayList;
+import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.*;
 
 @Entity
 @Getter
@@ -17,6 +17,10 @@ public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToMany(mappedBy = "project")
+    @JsonIgnore
+    private List<App> apps = new ArrayList<>();
 
     private String title;
     private String description;
