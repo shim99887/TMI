@@ -14,13 +14,11 @@ public class Test {
     //PK
     @Id
     @GeneratedValue
-    @Column(name="test_id")
     private Long id;
 
     // FK
     @ManyToOne
-    @JoinColumn(name = "report_id")
-    private Report reportId;
+    private Report report;
 
     private String name; //ex) org.springframework.samples.petclinic.owner.VisitControllerTests
     private String type;

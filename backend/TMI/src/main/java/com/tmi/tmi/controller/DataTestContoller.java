@@ -8,12 +8,14 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import com.tmi.tmi.model.TestCase;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.server.DelegatingServerHttpResponse;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -77,21 +79,18 @@ public class DataTestContoller {
 									test.setSkipCount(Integer.parseInt(splitStr[i].replace("Tests","").split("-")[0].trim().split(":")[1].replace("s","").trim()));
 									break;
 								case 4:
-									test.setElapsedTime(Float.parseFloat(splitStr[i].replace("Tests","").split("-")[0].trim().split("<<<")[0].trim().split(":")[1].replace("s","").trim()));
+									test.setElapsedTime((int)(Float.parseFloat(splitStr[i].replace("Tests","").split("-")[0].trim().split("<<<")[0].trim().split(":")[1].replace("s","").trim()) * 1000));
 									break;
 								}
-								//System.out.println(splitStr[i].replace("Tests","").split("-")[0].trim().split(":")[1].replace("s","").trim());
-//								System.out.println(splitStr[i].trim());
+
 							}
 						}else if(lineCount == 4) {
 							break;
 						}
-						//System.out.println(lineCount + ", " + line);
+
 						lineCount++;
 					}
-
 					br.close();
-					// System.out.println(content);
 					testRepository.save(test);
 				}
 
@@ -100,7 +99,6 @@ public class DataTestContoller {
 				//File file = new File("./surefire-report.html");
 				Document doc = Jsoup.parse(file, "UTF-8");
 				Elements div = doc.select("div.section");
-//            System.out.println(div);
 				int index = 0;
 				for(int i=0; i < div.size(); i++){
 					if(div.get(i).select("h2").text().equals("Test Cases")){
@@ -109,18 +107,85 @@ public class DataTestContoller {
 					}
 				}
 
-				for(int i=index; i < div.size(); i++){
+				for(int i=1; i < div.get(index).select("div.section").size(); i++){
 					//class
-					if(div.get(i).select("h2").hasText()){
-						System.out.println(div.get(i).select("h2").text());
-					}
-					System.out.println(div.get(i).select("h3").text());
-					Elements classes = div.get(i).select("td");
+
+					String packageShortName = div.get(index).select("div.section").get(i).select("h3").text();
+					List<Test> testList = testRepository.findByPackageShortNameAndBuildTimeAndProjectName(packageShortName, buildTime, projectName);
+
+					Test test = testList.get(0);
+					List<TestCase> testCaseList = test.getTestCaseList();
+
+					Elements classes = div.get(index).select("div.section").get(i).select("td");
+
 					for(int j=0; j < classes.size(); j++){
 						if(classes.get(j).select("td").hasText()){
-							System.out.println(classes.get(j).select("td").text());
+							TestCase tc = new TestCase();
+							String testCaseName = classes.get(j).select("td").text();
+							if(testCaseName.contains("[ Detail ]")) {
+								tc.setFail(true);
+								testCaseName = testCaseName.replace("+-","").replace("[ Detail ]","").trim();
+							}
+							else {
+								tc.setFail(false);
+							}
+							if(!isNumber(testCaseName)){
+								tc.setTestCaseName(testCaseName);
+
+								while(j < classes.size() - 1){
+									j++;
+									if(classes.get(j).select("td").hasText())
+										break;
+								}
+
+								int testTime = (int)(Float.parseFloat(classes.get(j).select("td").text()) * 1000);
+								tc.setTestTime(testTime);
+							}else {
+								int testTime = (int)(Float.parseFloat(testCaseName) * 1000);
+								testCaseName = packageShortName;
+								tc.setTestCaseName(testCaseName);
+
+								tc.setTestTime(testTime);
+							}
+
+
+
+							if(tc.isFail()){
+								StringBuilder sb = new StringBuilder();
+
+								while(j < classes.size() - 1){
+									j++;
+									if(classes.get(j).select("td").hasText())
+										break;
+								}
+								sb.append(classes.get(j).select("td").text());
+								while (j < classes.size() - 1) {
+									j++;
+									if (classes.get(j).select("td").hasText())
+										break;
+								}
+								sb.append(classes.get(j).select("td").text());
+								tc.setFailDescription(sb.toString());
+
+							}else{
+								while(j < classes.size() - 1){
+									j++;
+									if(classes.get(j).select("td").hasText()){
+										if(j < classes.size() && classes.get(j).select("td").text().equals("skipped"))
+											tc.setFailDescription("skipped");
+										else
+											j--;
+										break;
+									}
+								}
+							}
+
+							testCaseList.add(tc);
 						}
 					}
+
+					test.setTestCaseList(testCaseList);
+					testRepository.save(test);
 				}
 
 			} catch (Exception e) {
@@ -140,5 +205,18 @@ public class DataTestContoller {
 		fos.write(file.getBytes());
 		fos.close();
 		return convFile;
+	}
+
+	public static boolean isNumber(String str) {
+		boolean check = true;
+		for(int i = 0; i < str.length(); i++) {
+			// Character클래스의 isDigit() 메소드를 이용하여 문자이면
+			// check에 false를 대입하고 break를 이용하여 for문을 빠져나옴
+			if(!Character.isDigit(str.charAt(i))) {
+				check = false;
+				break;
+			}
+		}
+		return check;
 	}
 }

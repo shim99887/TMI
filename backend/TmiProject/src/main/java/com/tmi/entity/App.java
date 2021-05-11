@@ -17,10 +17,10 @@ import java.util.Date;
 @Table(name = "app")
 public class App {
     @Id
-    private int id;
+    private Long id;
     private String title;
     private String description;
     private Date regDate;
     private String gitUrl;
-    private String project_id;
+    private Long projectId;
 }

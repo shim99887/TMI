@@ -1,7 +1,7 @@
 package com.tmi.service;
 
 
-import com.tmi.dto.coverage.CoveragePostDto;
+import com.tmi.dto.CoveragePostDto;
 import com.tmi.entity.Coverage;
 import com.tmi.entity.Report;
 import com.tmi.repository.CoverageRepository;
@@ -24,10 +24,10 @@ public class CoverageService {
         return coverageRepository.findAll();
     }
 
-//    public List<Coverage> readAllCoveragesInReport(long id) {
-//        Report report = reportRepository.findById(id).get();
-//        return report.getCoverages();
-//    }
+    public List<Coverage> readAllCoveragesInReport(long id) {
+        Report report = reportRepository.findById(id).get();
+        return report.getCoverages();
+    }
 
     public Optional<Coverage> readOneCoverage(long id) {
         return coverageRepository.findById(id);
