@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TestJobListBox(props) {
+export default function ReportHistoryContatiner(props) {
   const styles = useStyles();
   return (
     <Box>

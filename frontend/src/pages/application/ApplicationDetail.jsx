@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import Box from "@material-ui/core/Box";
 import Input from "@material-ui/core/Input";
 import Grid from "@material-ui/core/Grid";
-import TestJobItemContainer from "../../components/TestJobDetail/TestJobItemContainer";
-import TestJobHistory from "../../components/TestJobDetail/TestJobHistory";
+import ReportItemContainer from "../../components/application/ReportItemContainer";
+import ReportHistoryContainer from "../../components/application/ReportHistoryContainer";
 import { makeStyles } from "@material-ui/core/styles";
-import { TestJobAxios } from "../../utils/axios";
+import { ReportAxios, TestAxios } from "../../utils/axios";
 import { useParams } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
@@ -16,26 +16,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TestJobDetail() {
+export default function ReportDetail() {
   const styles = useStyles();
   const params = useParams();
   const [data, setData] = useState([]);
 
-  // axios.get() Project의 TestJobList 반환받는다
+  // axios.get() Project의 ReportList 반환받는다
   // Success, Fail, Error, Skip 눌렀을 때
   useEffect(async () => {
-    const testJobAxios = new TestJobAxios();
+    const reportAxios = new ReportAxios();
+    const testAxios = new TestAxios();
     try {
-      const responseData = await testJobAxios.getTestJob(params.pid, params.id);
+      const responseData = await reportAxios.getListByAppId(params.id);
       setData(responseData);
+      //const responseData2 = await testAxios.getListByReportId(params.pid);
       console.log(responseData);
     } catch (error) {
       console.error(error);
     }
     return () => {};
   }, []);
-
-  <p>axios data: {JSON.stringify(data.testNo)}</p>;
 
   return (
     <Box>
@@ -46,14 +46,10 @@ export default function TestJobDetail() {
           item
           xs={2}
         >
-          <TestJobHistory testCount="8" date="21/04/28 17:00"></TestJobHistory>
-          <TestJobHistory testCount="7" date="21/04/28 17:00"></TestJobHistory>
-          <TestJobHistory testCount="6" date="21/04/28 17:00"></TestJobHistory>
-          <TestJobHistory testCount="5" date="21/04/28 17:00"></TestJobHistory>
-          <TestJobHistory testCount="4" date="21/04/28 17:00"></TestJobHistory>
-          <TestJobHistory testCount="3" date="21/04/28 17:00"></TestJobHistory>
-          <TestJobHistory testCount="2" date="21/04/28 17:00"></TestJobHistory>
-          <TestJobHistory testCount="1" date="21/04/28 17:00"></TestJobHistory>
+          <ReportHistoryContainer
+            testCount="8"
+            date="21/04/28 17:00"
+          ></ReportHistoryContainer>
         </Grid>
         <Grid item xs={10}>
           <Box display="flex" justifyContent="space-between">
@@ -139,7 +135,7 @@ export default function TestJobDetail() {
               marginBottom: "1%",
             }}
           >
-            <TestJobItemContainer
+            <ReportItemContainer
               name="DashBoardDataComponent should run #getCoverageTotal()"
               time="143"
               color="10px solid #22DD22"
@@ -157,7 +153,7 @@ export default function TestJobDetail() {
               marginBottom: "1%",
             }}
           >
-            <TestJobItemContainer
+            <ReportItemContainer
               name="DashBoardDataComponent should run #getCoverageTotal()"
               time="143"
               color="10px solid #FFAA00"
@@ -175,7 +171,7 @@ export default function TestJobDetail() {
               marginBottom: "1%",
             }}
           >
-            <TestJobItemContainer
+            <ReportItemContainer
               name="DashBoardDataComponent should run #getCoverageTotal()"
               time="143"
               color="10px solid #FF0000"
@@ -193,7 +189,7 @@ export default function TestJobDetail() {
               marginBottom: "1%",
             }}
           >
-            <TestJobItemContainer
+            <ReportItemContainer
               name="DashBoardDataComponent should run #getCoverageTotal()"
               time="143"
               color="10px solid #AAAAAA"

@@ -29,37 +29,6 @@ const basicGetRequest = async (url) => {
   }
 };
 
-export const CoverageAxios = {
-  all: (id) => basicGetRequest(`/coverage/${id}`),
-};
-
-export class ReportAxios extends BaseAxios {
-  all() {
-    return this.basicGetRequest("/report");
-  }
-}
-
-export class AppAxios extends BaseAxios {
-  getAppByProjectId(pid) {
-    return this.basicGetRequest(`/app/${pid}`);
-  }
-}
-
-export class TestJobAxios extends BaseAxios {
-  getAll() {
-    return this.basicGetRequest("/testjob");
-  }
-  getOneProject(pid) {
-    return this.basicGetRequest(`/testjob/${pid}`);
-  }
-  getTestJob(pid, id) {
-    return this.basicGetRequest(`/testjob/${pid}/${id}`);
-  }
-  getOneTest(pid, id, no) {
-    return this.basicGetRequest(`/testjob/${pid}/${id}/${no}`);
-  }
-}
-
 export class ProjectAxios extends BaseAxios {
   all() {
     return this.basicGetRequest("/project");
@@ -69,11 +38,51 @@ export class ProjectAxios extends BaseAxios {
   }
 }
 
+export class AppAxios extends BaseAxios {
+  getAll() {
+    return this.basicGetRequest("/app");
+  }
+  getOne(id) {
+    return this.basicGetRequest(`/app/${id}`);
+  }
+  getAppByProjectId(pid) {
+    return this.basicGetRequest(`/app/project/${pid}`);
+  }
+}
+
+export class ReportAxios extends BaseAxios {
+  all() {
+    return this.basicGetRequest("/report");
+  }
+  getOne(id) {
+    return this.basicGetRequest(`/report/${id}`);
+  }
+  getListByAppId(aid) {
+    return this.basicGetRequest(`/report/app/${aid}`);
+  }
+}
+
+export const CoverageAxios = {
+  all: (id) => basicGetRequest(`/coverage/${id}`),
+};
+
 export class JacocoAxios extends BaseAxios {
   all() {
     return this.basicGetRequest("/jacoco");
   }
   one(id) {
     return this.basicGetRequest(`/jacoco/${id}`);
+  }
+}
+
+export class TestAxios extends BaseAxios {
+  getAll() {
+    return this.basicGetRequest(`/test/`);
+  }
+  getOne(id) {
+    return this.basicGetRequest(`/test/${id}`);
+  }
+  getListByReportId(rid) {
+    return this.basicGetRequest(`/test/report/${rid}`);
   }
 }

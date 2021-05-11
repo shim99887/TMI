@@ -6,8 +6,8 @@ import About from "./pages/About";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Project from "./pages/project/Project";
 import ProjectReport from "./pages/project/ProjectReport";
-import TestJob from "./pages/testjob/TestJob";
-import TestJobDetail from "./pages/testjob/TestJobDetail";
+import Application from "./pages/application/Application";
+import ApplicationDetail from "./pages/application/ApplicationDetail";
 import "./App.css";
 
 function App() {
@@ -19,8 +19,8 @@ function App() {
         {/* <Route path="/dashboard" exact component={Dashboard} /> */}
         <Route path="/project" exact component={Project} />
         <Route path="/project/:id" component={ProjectReport} />
-        <Route path="/testjob" exact component={TestJob} />
-        <Route path="/testjob/:pid/:id" component={TestJobDetail} />
+        <Route path="/app" exact component={Application} />
+        <Route path="/app/:id" component={ApplicationDetail} />
         <Route path="/about" component={About} />
       </Container>
     </>
