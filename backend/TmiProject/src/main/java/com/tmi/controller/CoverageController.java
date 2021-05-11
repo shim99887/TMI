@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin("*")
 @RestController
@@ -16,13 +15,19 @@ public class CoverageController {
     @Autowired
     private CoverageService coverageService;
 
+
     @GetMapping
     List<Coverage> all() {
         return coverageService.readAllCoverages();
     }
 
-    @GetMapping("/{id}")
-    List<Coverage> allInReport(@PathVariable long id) {
+//    @GetMapping("/{id}")
+//    List<Coverage> allInReport(@PathVariable long id) {
+//        return coverageService.readAllCoveragesInReport(id);
+//    }
+
+    @GetMapping("/report/{id}")
+    List<Coverage> getCoverageListByReportId(@PathVariable Long id) {
         return coverageService.readAllCoveragesInReport(id);
     }
 

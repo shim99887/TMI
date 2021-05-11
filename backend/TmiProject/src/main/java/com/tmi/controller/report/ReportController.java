@@ -28,7 +28,7 @@ public class ReportController {
     }
 
     @GetMapping("/app/{aid}")
-    List<Report> allReportByAppId(@PathVariable Long aid) {
+    List<Report> allReportByAppId(@PathVariable String aid) {
         return reportService.readAllReportsInApp(aid);
     }
 

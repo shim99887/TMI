@@ -9,8 +9,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.*;
 
-import java.util.List;
-
 @Entity
 @Getter
 @Setter
@@ -27,15 +25,12 @@ public class Project {
     private String title;
     private String description;
     private String regDate;
-    private String user;
+    private String department;
 
-    private String javaVersion; // java.version
-    private String branch; // git.branch
-    private String commitId; // git.commit.id (e2fbc561309d03d92a0958f3cf59219b1fc0d985)
-    private String commitUserName; // git.commit.user.name
+//    private String javaVersion; // java.version
+//    private String branch; // git.branch
+//    private String commitId; // git.commit.id (e2fbc561309d03d92a0958f3cf59219b1fc0d985)
+//    private String commitUserName; // git.commit.user.name
     // private String commitMessage; //git.commit.message.short
 
-    @OneToMany
-    @JoinColumn(name = "projectId")
-    private List<App> app;
 }

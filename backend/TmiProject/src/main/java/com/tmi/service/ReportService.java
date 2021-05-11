@@ -31,7 +31,7 @@ public class ReportService {
         return report;
     }
 
-    public List<Report> readAllReportsInApp(long aid) {
+    public List<Report> readAllReportsInApp(String aid) {
         // , Sort.by(Sort.Direction.DESC, "aid")
         App app = appRepository.findById(aid).get();
         List<Report> reports = app.getReports();

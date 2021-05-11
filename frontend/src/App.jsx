@@ -5,7 +5,7 @@ import Navigation from "./components/Navigation";
 import About from "./pages/About";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Project from "./pages/project/Project";
-import ProjectReport from "./pages/project/ProjectReport";
+import ProjectApp from "./pages/project/ProjectApp";
 import Application from "./pages/application/Application";
 import ApplicationDetail from "./pages/application/ApplicationDetail";
 import "./App.css";
@@ -18,7 +18,7 @@ function App() {
         <Route path="/" exact component={() => <div>Home</div>} />
         {/* <Route path="/dashboard" exact component={Dashboard} /> */}
         <Route path="/project" exact component={Project} />
-        <Route path="/project/:id" component={ProjectReport} />
+        <Route path="/project/:id" component={ProjectApp} />
         <Route path="/app" exact component={Application} />
         <Route path="/app/:id" component={ApplicationDetail} />
         <Route path="/about" component={About} />

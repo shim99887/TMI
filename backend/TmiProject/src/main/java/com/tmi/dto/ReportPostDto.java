@@ -17,7 +17,7 @@ public class ReportPostDto {
     private int totalSkipCount;
     private int totalErrorCount;
     private int totalElapsedTime;
-    private long appId;
+    private String appId;
 
     public Report toEntity() {
         return new Report(datetime, totalLineCovMissed, totalLineCovCovered, totalBranchCovMissed,

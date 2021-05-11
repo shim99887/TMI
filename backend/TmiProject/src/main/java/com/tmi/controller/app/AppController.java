@@ -2,7 +2,9 @@ package com.tmi.controller.app;
 
 import com.tmi.controller.test.TestNotFoundException;
 import com.tmi.entity.App;
+import com.tmi.entity.Project;
 import com.tmi.repository.AppRepository;
+import com.tmi.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,13 +18,16 @@ public class AppController {
     @Autowired
     private AppRepository repo;
 
+    @Autowired
+    private ProjectRepository projectRepository;
+
     @GetMapping
     List<App> getAllApp() {
         return repo.findAll();
     }
 
     @GetMapping("/{id}")
-    App getApp(@PathVariable Long id){
+    App getApp(@PathVariable String id){
         return repo.findById(id).orElseThrow(() -> new AppNotFoundException(id));
     }
 
@@ -32,19 +37,20 @@ public class AppController {
     }
 
     @DeleteMapping("/{id}")
-    boolean deleteAppById(@PathVariable Long id) {
+    boolean deleteAppById(@PathVariable String id) {
         repo.deleteById(id);
         return false;
     }
 
-    @PostMapping
-    void postAppData(@RequestBody App app) {
-        app.setRegDate(new Date());
-        repo.save(app);
+    @PostMapping("/project/{id}")
+    App postAppAtProject(@RequestBody App app, @PathVariable long id) {
+        Project project = projectRepository.findById(id).get();
+        app.setProject(project);
+        return repo.save(app);
     }
 
     @PutMapping("/{id}")
-    void putAppData(@RequestBody App app, @PathVariable Long id) {
+    void putAppData(@RequestBody App app, @PathVariable String id) {
 
         repo.findById(id).ifPresent(selectedApp -> {
             selectedApp.setRegDate(new Date());
