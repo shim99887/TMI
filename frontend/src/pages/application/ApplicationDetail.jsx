@@ -5,7 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import ReportItemContainer from "../../components/application/ReportItemContainer";
 import ReportHistoryContainer from "../../components/application/ReportHistoryContainer";
 import { makeStyles } from "@material-ui/core/styles";
-import { AppAxios } from "../../utils/axios";
+import { ReportAxios, TestAxios } from "../../utils/axios";
 import { useParams } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
@@ -24,10 +24,12 @@ export default function ReportDetail() {
   // axios.get() Project의 ReportList 반환받는다
   // Success, Fail, Error, Skip 눌렀을 때
   useEffect(async () => {
-    const reportAxios = new AppAxios();
+    const reportAxios = new ReportAxios();
+    const testAxios = new TestAxios();
     try {
-      const responseData = await reportAxios.getOne(params.id);
+      const responseData = await reportAxios.getListByAppId(params.id);
       setData(responseData);
+      //const responseData2 = await testAxios.getListByReportId(params.pid);
       console.log(responseData);
     } catch (error) {
       console.error(error);
@@ -46,34 +48,6 @@ export default function ReportDetail() {
         >
           <ReportHistoryContainer
             testCount="8"
-            date="21/04/28 17:00"
-          ></ReportHistoryContainer>
-          <ReportHistoryContainer
-            testCount="7"
-            date="21/04/28 17:00"
-          ></ReportHistoryContainer>
-          <ReportHistoryContainer
-            testCount="6"
-            date="21/04/28 17:00"
-          ></ReportHistoryContainer>
-          <ReportHistoryContainer
-            testCount="5"
-            date="21/04/28 17:00"
-          ></ReportHistoryContainer>
-          <ReportHistoryContainer
-            testCount="4"
-            date="21/04/28 17:00"
-          ></ReportHistoryContainer>
-          <ReportHistoryContainer
-            testCount="3"
-            date="21/04/28 17:00"
-          ></ReportHistoryContainer>
-          <ReportHistoryContainer
-            testCount="2"
-            date="21/04/28 17:00"
-          ></ReportHistoryContainer>
-          <ReportHistoryContainer
-            testCount="1"
             date="21/04/28 17:00"
           ></ReportHistoryContainer>
         </Grid>

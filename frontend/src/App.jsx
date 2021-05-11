@@ -20,7 +20,7 @@ function App() {
         <Route path="/project" exact component={Project} />
         <Route path="/project/:id" component={ProjectReport} />
         <Route path="/app" exact component={Application} />
-        <Route path="/app/:pid/:id" component={ApplicationDetail} />
+        <Route path="/app/:id" component={ApplicationDetail} />
         <Route path="/about" component={About} />
       </Container>
     </>
