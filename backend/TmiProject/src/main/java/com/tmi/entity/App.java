@@ -25,7 +25,7 @@ public class App {
     private Project project;
 
     @Id
-    private Long id;
+    private String id;
     private String title;
     private String description;
     private Date regDate;
