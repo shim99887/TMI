@@ -172,7 +172,7 @@ export default function ReportDetail() {
               </Box>
             </Box>
           )}
-          {tests.length > 0 && tests[0].props.children.props.resultType}
+          {tests}
         </Grid>
       </Grid>
     </Box>
