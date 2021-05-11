@@ -1,5 +1,6 @@
 package com.tmi.controller.app;
 
+import com.tmi.controller.test.TestNotFoundException;
 import com.tmi.entity.App;
 import com.tmi.repository.AppRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,17 +21,18 @@ public class AppController {
         return repo.findAll();
     }
 
-    @GetMapping("/{pid}")
+    @GetMapping("/{id}")
+    App getApp(@PathVariable Long id){
+        return repo.findById(id).orElseThrow(() -> new AppNotFoundException(id));
+    }
+
+    @GetMapping("/project/{pid}")
     List<App> getAppListByProjectId(@PathVariable Long pid) {
         return repo.findAllByProjectIdEquals(pid);
     }
 
-    // TestJob getAppListByP
-    // return repo.findById(testJobId).get();
-    //
-
     @DeleteMapping("/{id}")
-    boolean deleteAppById(@PathVariable int id) {
+    boolean deleteAppById(@PathVariable Long id) {
         repo.deleteById(id);
         return false;
     }
@@ -42,7 +44,7 @@ public class AppController {
     }
 
     @PutMapping("/{id}")
-    void putAppData(@RequestBody App app, @PathVariable int id) {
+    void putAppData(@RequestBody App app, @PathVariable Long id) {
 
         repo.findById(id).ifPresent(selectedApp -> {
             selectedApp.setRegDate(new Date());

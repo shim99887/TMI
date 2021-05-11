@@ -14,6 +14,15 @@ import java.util.List;
 @Data
 @Table(name = "app")
 public class App {
+
+    @OneToMany(mappedBy = "app")
+    @JsonIgnore
+    private List<Report> reports = new ArrayList<>();
+
+    @ManyToOne
+    @JsonIgnore
+    private Project project;
+
     @Id
     private String id;
     private String title;

@@ -1,10 +1,13 @@
 package com.tmi.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.*;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.*;
 
 import java.util.List;
 
@@ -16,6 +19,10 @@ public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToMany(mappedBy = "project")
+    @JsonIgnore
+    private List<App> apps = new ArrayList<>();
 
     private String title;
     private String description;
