@@ -50,6 +50,18 @@ export class AppAxios extends BaseAxios {
   }
 }
 
+export const appAxios = {
+  getAll: () => {
+    return basicGetRequest("/app");
+  },
+  getOne: (id) => {
+    return basicGetRequest(`/app/${id}`);
+  },
+  getAppByProjectId: (pid) => {
+    return basicGetRequest(`/app/project/${pid}`);
+  },
+};
+
 export class ReportAxios extends BaseAxios {
   all() {
     return this.basicGetRequest("/report");
@@ -62,18 +74,21 @@ export class ReportAxios extends BaseAxios {
   }
 }
 
-export const CoverageAxios = {
-  all: (id) => basicGetRequest(`/coverage/${id}`),
+export const reportAxios = {
+  all: () => {
+    return basicGetRequest("/report");
+  },
+  getOne: (id) => {
+    return basicGetRequest(`/report/${id}`);
+  },
+  getListByAppId: (aid) => {
+    return basicGetRequest(`/report/app/${aid}`);
+  },
 };
 
-export class JacocoAxios extends BaseAxios {
-  all() {
-    return this.basicGetRequest("/jacoco");
-  }
-  one(id) {
-    return this.basicGetRequest(`/jacoco/${id}`);
-  }
-}
+export const coverageAxios = {
+  all: (id) => basicGetRequest(`/coverage/${id}`),
+};
 
 export class TestAxios extends BaseAxios {
   getAll() {
