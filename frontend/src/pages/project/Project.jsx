@@ -1,31 +1,35 @@
-import React, { useState, useEffect } from "react";
-import { forwardRef } from "react";
-
-import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import MaterialTable from "material-table";
-import AddBox from "@material-ui/icons/AddBox";
-import ArrowDownward from "@material-ui/icons/ArrowDownward";
-import Check from "@material-ui/icons/Check";
-import ChevronLeft from "@material-ui/icons/ChevronLeft";
-import ChevronRight from "@material-ui/icons/ChevronRight";
-import Clear from "@material-ui/icons/Clear";
-import DeleteOutline from "@material-ui/icons/DeleteOutline";
-import Edit from "@material-ui/icons/Edit";
-import FilterList from "@material-ui/icons/FilterList";
-import FirstPage from "@material-ui/icons/FirstPage";
-import LastPage from "@material-ui/icons/LastPage";
-import Remove from "@material-ui/icons/Remove";
-import SaveAlt from "@material-ui/icons/SaveAlt";
-import Search from "@material-ui/icons/Search";
-import ViewColumn from "@material-ui/icons/ViewColumn";
-import Alert from "@material-ui/lab/Alert";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
+import React, { useState, useEffect, useParams, forwardRef } from "react";
 import { useHistory } from "react-router-dom";
-import { ButtonBase } from "@material-ui/core";
-import { ProjectAxios, AppAxios } from "../../utils/axios";
+import {
+  Grid,
+  // Card,
+  // CardContent,
+  // Typography,
+  // ButtonBase,
+  // Modal,
+  // Button,
+} from "@material-ui/core";
+import MaterialTable from "material-table";
+import {
+  AddBox,
+  ArrowDownward,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  Clear,
+  DeleteOutline,
+  Edit,
+  FilterList,
+  FirstPage,
+  LastPage,
+  Remove,
+  SaveAlt,
+  Search,
+  ViewColumn,
+} from "@material-ui/icons";
+// import { makeStyles } from "@material-ui/core/styles";
+import { Alert } from "@material-ui/lab";
+import { projectAxios, appAxios } from "../../utils/axios";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -51,71 +55,81 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
 
-const cardStyles = makeStyles({
-  button: { width: "25%" },
-  card: { width: "100%" },
-});
+// const cardStyles = makeStyles({
+//   button: { width: "25%" },
+//   card: { width: "100%" },
+// });
 
-function AppList(props) {
-  const { pid, history } = props;
-  const cardClass = cardStyles();
+// function AppList(props) {
+//   const { pid, history } = props;
+//   const cardClass = cardStyles();
 
-  const [app, setApp] = useState([]);
+//   // const params = useParams();
+//   const [appData, setAppData] = useState([]);
 
-  useEffect(async () => {
-    const appAxios = new AppAxios();
-    try {
-      const appAxiosData = await appAxios.getAppByProjectId(pid);
-      setApp(appAxiosData);
-    } catch (error) {
-      console.error(error);
-    }
-    return () => {};
-  }, []);
+//   useEffect(async () => {
+//     try {
+//       const responseData = await appAxios.getAppByProjectId(pid);
+//       setAppData(responseData);
+//       console.log(responseData);
+//     } catch (error) {
+//       console.error(error);
+//     }
+//     return () => {};
+//   }, []);
 
-  return (
-    <>
-      <Grid container spacing={0}>
-        {app.map((app) => (
-          <ButtonBase
-            className={cardClass.button}
-            onClick={(event) => {
-              // history.push(`/testjob/${pid}/${testJob.testId}`);
-            }}
-          >
-            <Card className={cardClass.card}>
-              <CardContent>
-                <Typography align="left">Status: 😀</Typography>
-                <Typography align="left">ID: {app.id}</Typography>
-                <Typography align="left">Name: {app.title}</Typography>
-              </CardContent>
-            </Card>
-          </ButtonBase>
-        ))}
-      </Grid>
-    </>
-  );
-}
+//   return (
+//     <>
+//       <Grid container spacing={0}>
+//         {appData.map((app) => (
+//           <ButtonBase
+//             className={cardClass.button}
+//             onClick={(event) => {
+//               // history.push(`/testjob/${pid}/${testJob.testId}`);
+//             }}
+//           >
+//             <Card className={cardClass.card}>
+//               <CardContent>
+//                 <Typography align="left">Status: 😀</Typography>
+//                 <Typography align="left">ID: {app.id}</Typography>
+//                 <Typography align="left">Name: {app.title}</Typography>
+//               </CardContent>
+//             </Card>
+//           </ButtonBase>
+//         ))}
+//       </Grid>
+//     </>
+//   );
+// }
 
-function Project() {
+export default function Project() {
   var columns = [
-    { title: "ID", field: "id" },
+    { title: "ID", field: "id", editable: "never" },
     { title: "Title", field: "title" },
     { title: "Descrption", field: "description" },
   ];
-  const [projectData, setProjectData] = useState();
+  const [projectList, setProjectList] = useState();
 
-  //for error handling
   const [iserror, setIserror] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
+
+  async function addRow(data) {
+    const response = await projectAxios.postProject({
+      title: data.title,
+      description: data.description,
+    });
+    let dataToAdd = [...projectList];
+    dataToAdd.push(response);
+    setProjectList(dataToAdd);
+  }
 
   const history = useHistory();
 
   useEffect(async () => {
-    const projectAxios = new ProjectAxios();
     try {
-      const projectAxiosData = await projectAxios.all();
-      setProjectData(projectAxiosData);
+      const responseData = await projectAxios.getAll();
+      setProjectList(responseData);
+      console.log(responseData);
     } catch (error) {
       console.error(error);
     }
@@ -123,11 +137,7 @@ function Project() {
   }, []);
 
   const handleRowUpdate = (newData, oldData, resolve) => {
-    //validation
     let errorList = [];
-    if (!newData.id) {
-      errorList.push("Please enter id");
-    }
     if (!newData.title) {
       errorList.push("Please enter title");
     }
@@ -136,10 +146,10 @@ function Project() {
     }
 
     if (errorList.length < 1) {
-      const dataUpdate = [...projectData];
+      const dataUpdate = [...projectList];
       const index = oldData.tableData.id;
       dataUpdate[index] = newData;
-      setProjectData([...dataUpdate]);
+      setProjectList([...dataUpdate]);
       resolve();
     } else {
       setErrorMessages(errorList);
@@ -149,11 +159,7 @@ function Project() {
   };
 
   const handleRowAdd = (newData, resolve) => {
-    //validation
     let errorList = [];
-    if (!newData.id) {
-      errorList.push("Please enter id");
-    }
     if (!newData.title) {
       errorList.push("Please enter title");
     }
@@ -162,9 +168,7 @@ function Project() {
     }
 
     if (errorList.length < 1) {
-      let dataToAdd = [...projectData];
-      dataToAdd.push(newData);
-      setProjectData(dataToAdd);
+      addRow(newData);
       resolve();
     } else {
       setErrorMessages(errorList);
@@ -174,65 +178,65 @@ function Project() {
   };
 
   const handleRowDelete = (oldData, resolve) => {
-    const dataDelete = [...projectData];
+    const dataDelete = [...projectList];
     const index = oldData.tableData.id;
     dataDelete.splice(index, 1);
-    setProjectData([...dataDelete]);
+    setProjectList([...dataDelete]);
     resolve();
   };
 
   return (
-    <div>
-      <Grid container spacing={0}>
-        <Grid item xs={1}></Grid>
-        <Grid item xs={10}>
-          <div>
-            {iserror && (
-              <Alert severity="error">
-                {errorMessages.map((msg, i) => {
-                  return <div key={i}>{msg}</div>;
-                })}
-              </Alert>
-            )}
-          </div>
-          <MaterialTable
-            title="Project List"
-            columns={columns}
-            data={projectData}
-            detailPanel={(rowData) => {
-              return (
-                <div>
-                  <AppList pid={rowData.id} history={history} />
-                </div>
-              );
-            }}
-            icons={tableIcons}
-            editable={{
-              onRowUpdate: (newData, oldData) =>
-                new Promise((resolve) => {
-                  handleRowUpdate(newData, oldData, resolve);
-                }),
-              onRowAdd: (newData) =>
-                new Promise((resolve) => {
-                  handleRowAdd(newData, resolve);
-                }),
-              onRowDelete: (oldData) =>
-                new Promise((resolve) => {
-                  handleRowDelete(oldData, resolve);
-                }),
-            }}
-            onRowClick={(evt, selectedRow) =>
-              history.push("/project/" + selectedRow.id)
-            }
-            options={{
-              actionsColumnIndex: -1,
-            }}
-          />
+    <>
+      <div>
+        <Grid container spacing={0}>
+          <Grid item xs={1}></Grid>
+          <Grid item xs={10}>
+            <div>
+              {iserror && (
+                <Alert severity="error">
+                  {errorMessages.map((msg, i) => {
+                    return <div key={i}>{msg}</div>;
+                  })}
+                </Alert>
+              )}
+            </div>
+            <MaterialTable
+              title="Project List"
+              columns={columns}
+              data={projectList}
+              // detailPanel={(rowData) => {
+              //   return (
+              //     <div>
+              //       <AppList pid={rowData.id} history={history} />
+              //     </div>
+              //   );
+              // }}
+              icons={tableIcons}
+              editable={{
+                onRowUpdate: (newData, oldData) =>
+                  new Promise((resolve) => {
+                    handleRowUpdate(newData, oldData, resolve);
+                  }),
+                onRowAdd: (newData) =>
+                  new Promise((resolve) => {
+                    handleRowAdd(newData, resolve);
+                  }),
+                onRowDelete: (oldData) =>
+                  new Promise((resolve) => {
+                    handleRowDelete(oldData, resolve);
+                  }),
+              }}
+              onRowClick={(evt, selectedRow) =>
+                history.push("/project/" + selectedRow.id)
+              }
+              options={{
+                actionsColumnIndex: -1,
+              }}
+            />
+          </Grid>
+          <Grid item xs={3}></Grid>
         </Grid>
-        <Grid item xs={3}></Grid>
-      </Grid>
-    </div>
+      </div>
+    </>
   );
 }
-
-export default Project;
