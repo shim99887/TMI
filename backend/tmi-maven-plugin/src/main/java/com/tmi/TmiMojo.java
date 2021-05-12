@@ -200,6 +200,7 @@ public class TmiMojo extends AbstractMojo {
 		requestEntity = new HttpEntity<>(dataSendBody, headers);
 		String mainServerUrl = "https://k4a201.p.ssafy.io/api/data";
 		//String mainServerUrl = "http://localhost:3000/api/data";
+		//String mainServerUrl = "http://localhost:3000/data";
 		Boolean isOk = restTemplate.postForObject(mainServerUrl, requestEntity, Boolean.class);
 		getLog().info("data send " + isOk);
 	}

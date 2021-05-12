@@ -1,18 +1,18 @@
 package com.tmi.service;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.tmi.dto.ReportPostDto;
 import com.tmi.entity.App;
 import com.tmi.entity.Report;
 import com.tmi.repository.AppRepository;
 import com.tmi.repository.ReportRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ReportService {
