@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Login({ authenticated, login, location }) {
+export default function Login({ login, location }) {
   const classes = useStyles();
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
@@ -56,6 +56,7 @@ export default function Login({ authenticated, login, location }) {
     try {
       login({ id, password });
     } catch (e) {
+      console.error(e);
       alert("Failed to login");
       setId("");
       setPassword("");
