@@ -14,7 +14,9 @@ function App() {
   return (
     <>
       <Navigation />
-      <Container style={{ backgroundColor: "white" }}>
+      <Container
+        style={{ backgroundColor: "white", height: "100vh", padding: 10 }}
+      >
         <Route path="/" exact component={() => <div>Home</div>} />
         {/* <Route path="/dashboard" exact component={Dashboard} /> */}
         <Route path="/project" exact component={Project} />
