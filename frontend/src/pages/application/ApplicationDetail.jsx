@@ -26,7 +26,6 @@ export default function ReportDetail() {
   // Success, Fail, Error, Skip 눌렀을 때
   useEffect(async () => {
     const reportResponse = await reportAxios.getListByAppId(params.id);
-
     setReport(reportResponse);
     return () => {};
   }, []);
@@ -79,14 +78,18 @@ export default function ReportDetail() {
           item
           xs={2}
         >
+          {params.id}
           {reports}
         </Grid>
         <Grid item xs={10}>
-          <Box display="flex" justifyContent="space-between">
-            <Box border="1px solid black">
-              <Input placeholder="Search"></Input>
+          {idx >= 0 && (
+            <Box display="flex" justifyContent="space-between">
+              Report #{idx + 1} - {report[idx].datetime}
+              {/* <Box border="1px solid black"> */}
+              {/* <Input placeholder="Search"></Input> */}
+              {/* </Box> */}
             </Box>
-          </Box>
+          )}
           {idx >= 0 && (
             <Box
               className={styles.container}
