@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 // import MyBreadcrumbs from "./Breadcrumbs";
 
 const useStyles = makeStyles((theme) => ({
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Navigation() {
+function Navigation({ logout, history }) {
   const classes = useStyles();
 
   return (
@@ -58,9 +58,19 @@ export default function Navigation() {
               </Link>
             </Button>
           </Grid>
-          <Button color="inherit">Logout</Button>
+          <Button
+            onClick={() => {
+              logout();
+              history.push("/");
+            }}
+            color="inherit"
+          >
+            Logout
+          </Button>
         </Toolbar>
       </AppBar>
     </div>
   );
 }
+
+export default withRouter(Navigation);
