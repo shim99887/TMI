@@ -24,10 +24,12 @@ function App() {
     <>
       {authenticated ? (
         <>
-          <Redirect to="/project" />;
-          <Navigation />
-          <LogoutButton logout={logout} />
-          <Container style={{ backgroundColor: "white" }}>
+          <Redirect to="/project" />
+          <Navigation logout={logout} />
+          {/* <LogoutButton logout={logout} /> */}
+          <Container
+            style={{ backgroundColor: "white", height: "100vh", padding: 10 }}
+          >
             {/* <Route path="/" exact component={() => <div>Home</div>} /> */}
             <Route path="/project" exact component={Project} />
             <Route path="/project/:id" component={ProjectApp} />

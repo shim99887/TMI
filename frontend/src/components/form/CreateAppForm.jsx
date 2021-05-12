@@ -8,7 +8,7 @@ import { useParams } from "react-router";
 const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
-      margin: theme.spacing(1),
+      // margin: theme.spacing(1),
       // width: "25ch",
     },
   },
@@ -33,10 +33,12 @@ export default function CreateAppForm({ handleClose }) {
     <>
       <form className={classes.root} noValidate autoComplete="off">
         <TextField
+          style={{ width: "100%" }}
           onChange={(event) => setAppName(event.target.value)}
           label="App Name"
         />
         <TextField
+          style={{ width: "100%" }}
           onChange={(event) => setGitUrl(event.target.value)}
           label="Git Repository URL"
         />

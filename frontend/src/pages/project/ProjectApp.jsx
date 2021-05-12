@@ -4,7 +4,14 @@ import ProjectAppCoverageGraphs from "../../components/project/ProjectAppCoverag
 import { appAxios } from "../../utils/axios";
 import CommonTable from "../../components/table/CommonTable";
 import ProjectAppTableBody from "../../components/table/ProjectAppTableBody";
-import { Button, Grid, makeStyles, Modal } from "@material-ui/core";
+import {
+  Box,
+  Button,
+  colors,
+  Grid,
+  makeStyles,
+  Modal,
+} from "@material-ui/core";
 import CreateAppForm from "../../components/form/CreateAppForm";
 import ProjectAppPassRateGraphs from "../../components/project/ProjectAppPassRateGraphs";
 
@@ -84,9 +91,29 @@ export default function ProjectApp() {
           head={[
             "App Name",
             "Build Datetime",
-            "Line Cov.(%)",
-            "Branch Cov.(%)",
-            "Pass Rate(%)",
+            <>
+              Line Cov.(%)
+              <Box>
+                <small style={{ color: colors.blue[500] }}>Covered</small> /{" "}
+                <small style={{ color: colors.red[500] }}>Missed</small>
+              </Box>
+            </>,
+            <>
+              Branch Cov.(%)
+              <Box>
+                <small style={{ color: colors.blue[500] }}>Covered</small> /{" "}
+                <small style={{ color: colors.red[500] }}>Missed</small>
+              </Box>
+            </>,
+            <>
+              Pass Rate(%)
+              <Box>
+                <small style={{ color: colors.blue[500] }}>Pass</small> /{" "}
+                <small style={{ color: colors.red[500] }}>Fail</small> /{" "}
+                <small style={{ color: colors.orange[500] }}>Error</small> /{" "}
+                <small style={{ color: colors.purple[500] }}>Skip</small>
+              </Box>
+            </>,
             "Elapsed Time(sec.)",
           ]}
           body={appList.map((app, index) => (
