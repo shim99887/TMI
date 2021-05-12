@@ -1,7 +1,5 @@
 package com.tmi.service;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
@@ -50,13 +48,7 @@ public class DataCollectService {
 	}
 	
 	public Optional<App> getAppData(String gitUrl, String projectName) {
-		try {
-			return appRepository.findById(URLEncoder.encode(gitUrl, "UTF-8") + "_" + projectName);
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+		return appRepository.findById(gitUrl + "_" + projectName);
 	}
 	
 	public String dataCollect(String projectName, String gitUrl, String buildTime, String coverageKey, String [] testKeys) {
