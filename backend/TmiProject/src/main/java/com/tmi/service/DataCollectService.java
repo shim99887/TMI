@@ -116,8 +116,9 @@ public class DataCollectService {
 			for(TestCase testcase : testRawData.getTestCaseList()) {
 				Test test = new Test();
 				test.setReport(report);
-				test.setElapsedTime(testcase.getTestTime());
 				test.setName(testcase.getTestCaseName());
+				test.setElapsedTime(testcase.getTestTime());
+				totalElapsedTime += testcase.getTestTime();
 				if(testcase.isFail() && !testcase.getFailDescription().equals("skipped")) {
 					test.setType("fail");
 					totalFailCount++;
