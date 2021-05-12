@@ -75,6 +75,11 @@ public class DataCollectService {
 		
 		reportRepository.save(report);
 		
+		int totalElapsedTime = 0;
+		int totalErrorCount = 0;
+		int totalFailCount = 0;
+		int totalRunCount = 0;
+		int totalSkipCount = 0;
 		//Coverage test 연결용
 		//Long reportId = reportRepository.save(report).getId();
 		
@@ -108,18 +113,21 @@ public class DataCollectService {
 		for(int i=0;i<testKeys.length;i++) {
 			TestRawData testRawData = getTestData(testKeys[i]).get();
 			
-			
 			for(TestCase testcase : testRawData.getTestCaseList()) {
 				Test test = new Test();
 				test.setReport(report);
 				test.setElapsedTime(testcase.getTestTime());
+				test.setName(testcase.getTestCaseName());
 				if(testcase.isFail() && !testcase.getFailDescription().equals("skipped")) {
 					test.setType("fail");
+					totalFailCount++;
 					test.setErrorMessage(testcase.getFailDescription());
 				}else if(testcase.getFailDescription() != null && testcase.getFailDescription().equals("skipped")) {
 					test.setType("skip");
+					totalSkipCount++;
 					test.setErrorMessage("skipped");
 				}else {
+					totalRunCount++;
 					test.setType("pass");
 				}
 				
@@ -127,7 +135,13 @@ public class DataCollectService {
 			}
 			
 		}
+		report.setTotalElapsedTime(totalElapsedTime);
+		report.setTotalErrorCount(totalErrorCount);
+		report.setTotalFailCount(totalFailCount);
+		report.setTotalRunCount(totalRunCount);
+		report.setTotalSkipCount(totalSkipCount);
 		
+		reportRepository.save(report);
 		
 		return "success";
 	}
