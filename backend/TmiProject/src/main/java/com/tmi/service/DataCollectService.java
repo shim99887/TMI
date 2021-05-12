@@ -8,13 +8,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tmi.entity.App;
+import com.tmi.entity.Coverage;
 import com.tmi.entity.Report;
+import com.tmi.entity.Test;
 import com.tmi.raw.entity.CoverageRawData;
+import com.tmi.raw.entity.Package;
+import com.tmi.raw.entity.Sourcefile;
+import com.tmi.raw.entity.TestCase;
 import com.tmi.raw.entity.TestRawData;
 import com.tmi.raw.repository.CoverageRawDataRepository;
 import com.tmi.raw.repository.TestRawDataRepository;
 import com.tmi.repository.AppRepository;
+import com.tmi.repository.CoverageRepository;
 import com.tmi.repository.ReportRepository;
+import com.tmi.repository.TestRepository;
 
 @Service
 public class DataCollectService {
@@ -26,6 +33,10 @@ public class DataCollectService {
 	ReportRepository reportRepository;
 	@Autowired
 	AppRepository appRepository;
+	@Autowired
+	CoverageRepository coverageRepository;
+	@Autowired
+	TestRepository testRepository;
 	
 	
 	public Optional<CoverageRawData> getCoverageData(String id) {
@@ -62,9 +73,61 @@ public class DataCollectService {
 		
 		report.setApp(appData.get());
 		
-		Long reportId = reportRepository.save(report).getId();
+		reportRepository.save(report);
 		
-		System.out.println(reportId);
+		//Coverage test 연결용
+		//Long reportId = reportRepository.save(report).getId();
+		
+		for(Package pkg : coverageRawData.getPackageList()) {
+			for(Sourcefile sourcefile : pkg.getSourceFileList()) {
+				Coverage coverage = new Coverage();
+				coverage.setClassName(sourcefile.getName());
+				coverage.setPackageName(pkg.getName());
+				coverage.setReport(report);
+				coverage.setGroupName(projectName);
+				if(sourcefile.getBranch() == null) {
+					coverage.setBranchCovCovered(0);
+					coverage.setBranchCovMissed(0);
+				}else {
+					coverage.setBranchCovCovered(sourcefile.getBranch().getCovered());
+					coverage.setBranchCovMissed(sourcefile.getBranch().getMissed());
+				}
+				
+				if(sourcefile.getLine() == null) {
+					coverage.setLineCovCovered(0);
+					coverage.setLineCovMissed(0);
+				}else {
+					coverage.setLineCovCovered(sourcefile.getLine().getCovered());
+					coverage.setLineCovMissed(sourcefile.getLine().getMissed());
+				}
+				
+				coverageRepository.save(coverage);
+			}
+		}
+		
+		for(int i=0;i<testKeys.length;i++) {
+			TestRawData testRawData = getTestData(testKeys[i]).get();
+			
+			
+			for(TestCase testcase : testRawData.getTestCaseList()) {
+				Test test = new Test();
+				test.setReport(report);
+				test.setElapsedTime(testcase.getTestTime());
+				if(testcase.isFail() && !testcase.getFailDescription().equals("skipped")) {
+					test.setType("fail");
+					test.setErrorMessage(testcase.getFailDescription());
+				}else if(testcase.getFailDescription() != null && testcase.getFailDescription().equals("skipped")) {
+					test.setType("skip");
+					test.setErrorMessage("skipped");
+				}else {
+					test.setType("pass");
+				}
+				
+				testRepository.save(test);
+			}
+			
+		}
+		
 		
 		return "success";
 	}
