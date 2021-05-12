@@ -35,13 +35,15 @@ public class DataTestContoller {
 	
 	@PostMapping("/junit/data")
 	@ApiOperation(value = "postTxtFile")
-	public ResponseEntity<Boolean> postTxtFile(String projectName, String gitUrl, List<MultipartFile> txtFiles, MultipartFile htmlFile) {
+	public ResponseEntity<String []> postTxtFile(String projectName, String gitUrl, List<MultipartFile> txtFiles, MultipartFile htmlFile) {
 		if (!txtFiles.isEmpty() && !htmlFile.isEmpty()) {
+			List<String> keyList = new ArrayList<>();
 			try {
 				Date date_now = new Date(System.currentTimeMillis());
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
 				sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
 				String buildTime = sdf.format(date_now);
+				keyList.add(buildTime);
 				for (MultipartFile txtFile : txtFiles) {
 					Test test = new Test();
 					test.setBuildTime(buildTime);
@@ -185,16 +187,16 @@ public class DataTestContoller {
 					}
 
 					test.setTestCaseList(testCaseList);
-					testRepository.save(test);
+					keyList.add(testRepository.save(test).get_id());
 				}
-
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			// 받아졌다면
-			return new ResponseEntity<>(true, HttpStatus.OK);
+			String [] keyArr = keyList.toArray(new String[keyList.size()]);
+			return new ResponseEntity<>(keyArr, HttpStatus.OK);
 		} else {
-			return new ResponseEntity<>(false, HttpStatus.OK);
+			return new ResponseEntity<>(null, HttpStatus.OK);
 		}
 	}
 

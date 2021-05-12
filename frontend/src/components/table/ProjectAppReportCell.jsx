@@ -17,7 +17,7 @@ export default function ProjectAppReportCell({ row }) {
       <TableCell>
         <Box>
           {totalLineCovSum
-            ? Math.round((row.totalLineCovMissed / totalLineCovSum) * 10000) /
+            ? Math.round((row.totalLineCovCovered / totalLineCovSum) * 10000) /
               100
             : 100}
         </Box>
@@ -30,7 +30,7 @@ export default function ProjectAppReportCell({ row }) {
         <Box>
           {totalBranchCovSum
             ? Math.round(
-                (row.totalBranchCovMissed / totalBranchCovSum) * 10000
+                (row.totalBranchCovCovered / totalBranchCovSum) * 10000
               ) / 100
             : 100}
         </Box>

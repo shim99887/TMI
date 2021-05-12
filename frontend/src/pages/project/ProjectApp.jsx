@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import ProjectReportGraphs from "../../components/project/ProjectReportGraphs";
+import ProjectAppCoverageGraphs from "../../components/project/ProjectAppCoverageGraphs";
 import { appAxios } from "../../utils/axios";
 import CommonTable from "../../components/table/CommonTable";
 import ProjectAppTableBody from "../../components/table/ProjectAppTableBody";
 import { Button, Grid, makeStyles, Modal } from "@material-ui/core";
 import CreateAppForm from "../../components/form/CreateAppForm";
+import ProjectAppPassRateGraphs from "../../components/project/ProjectAppPassRateGraphs";
 
 function getModalStyle() {
   const top = 50;
@@ -71,8 +72,10 @@ export default function ProjectApp() {
     <>
       <h2>{params.id} PJT</h2>
 
-      <div>
-        <ProjectReportGraphs appList={appList} />
+      <div style={{ display: "flex", justifyContent: "space-around" }}>
+        {/* sample graphs */}
+        <ProjectAppCoverageGraphs />
+        <ProjectAppPassRateGraphs />
       </div>
       <div>
         <h2>App List</h2>
