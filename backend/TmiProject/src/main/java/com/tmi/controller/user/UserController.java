@@ -40,4 +40,7 @@ public class UserController {
     public void deleteUser(@PathVariable String uid){
         repo.deleteUser(uid);
     }
+
+    @DeleteMapping("/dept/{id}")
+    public void deleteDept(@PathVariable int id){deptRepo.deleteById(id);}
 }

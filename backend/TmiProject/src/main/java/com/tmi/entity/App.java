@@ -16,7 +16,7 @@ import java.util.List;
 @Table(name = "app")
 public class App {
 
-    @OneToMany(mappedBy = "app")
+    @OneToMany(mappedBy = "app", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Report> reports = new ArrayList<>();
 

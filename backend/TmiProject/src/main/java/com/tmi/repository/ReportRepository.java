@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface ReportRepository extends JpaRepository<Report, Long> {
-    List<Report> findAllByAppIdOrderByIdDesc(Long aid);
+//    List<Report> findAllByAppIdOrderByIdDesc(String aid);
 
     List<Report> findAllByOrderByIdDesc();
 }
