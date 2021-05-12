@@ -12,17 +12,24 @@ import ApplicationDetail from "./pages/application/ApplicationDetail";
 import "./App.css";
 import { loginCheck } from "./components/user/auth";
 import LogoutButton from "./components/user/logoutButton";
+import { useDispatch, useSelector } from "react-redux";
+import { LOG_IN, LOG_OUT } from "./redux/user";
 
 function App() {
-  const [user, setUser] = useState(null);
-  const authenticated = user != null;
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
-  const login = ({ id, password }) => setUser(loginCheck({ id, password }));
-  const logout = () => setUser(null);
+  const login = ({ id, password }) => {
+    if (loginCheck({ id, password })) {
+      dispatch(LOG_IN("test_user"));
+    }
+  };
+  console.log(user);
+  const logout = () => dispatch(LOG_OUT());
 
   return (
     <>
-      {authenticated ? (
+      {user.isLoggedIn ? (
         <>
           <Redirect to="/project" />
           <Navigation logout={logout} />
@@ -41,9 +48,7 @@ function App() {
       ) : (
         <Route
           path="/"
-          render={(props) => (
-            <Login authenticated={authenticated} login={login} {...props} />
-          )}
+          render={(props) => <Login login={login} {...props} />}
         />
       )}
     </>
