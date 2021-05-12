@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.tmi.dto.ReportPostDto;
@@ -31,13 +32,13 @@ public class ReportService {
         return report;
     }
 
-//    public List<Report> readAllReportsInApp(String aid) {
-        // , Sort.by(Sort.Direction.DESC, "aid")
-//        App app = appRepository.findById(aid).get();
-//        List<Report> reports = app.getReports();
-//        reports = reports.stream().sorted(Comparator.comparing(Report::getId).reversed()).collect(Collectors.toList());
-//        return reports;
-//    }
+    public List<Report> readAllReportsInApp(String aid) {
+        Sort.by(Sort.Direction.DESC, "aid");
+        App app = appRepository.findById(aid).get();
+        List<Report> reports = app.getReports();
+        reports = reports.stream().sorted(Comparator.comparing(Report::getId).reversed()).collect(Collectors.toList());
+        return reports;
+    }
 
     public Report createReport(ReportPostDto reportPostDto) {
         Optional<App> app = appRepository.findById(reportPostDto.getAppId());

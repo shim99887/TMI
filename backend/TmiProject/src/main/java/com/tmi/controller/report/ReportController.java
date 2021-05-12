@@ -27,10 +27,10 @@ public class ReportController {
         return reportService.readOneReport(id);
     }
 
-//    @GetMapping("/app/{aid}")
-//    List<Report> allReportByAppId(@PathVariable String aid) {
-//        return reportService.readAllReportsInApp(aid);
-//    }
+    @GetMapping("/app/{aid}")
+    List<Report> allReportByAppId(@PathVariable String aid) {
+        return reportService.readAllReportsInApp(aid);
+    }
 
     @PostMapping()
     Report createReport(@RequestBody ReportPostDto dto) {
