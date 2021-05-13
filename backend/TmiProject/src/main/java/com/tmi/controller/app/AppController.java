@@ -1,9 +1,8 @@
 package com.tmi.controller.app;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,6 +29,7 @@ public class AppController {
 
     @Autowired
     private ProjectRepository projectRepository;
+    
 
     @GetMapping
     List<App> getAllApp() {
@@ -55,14 +55,12 @@ public class AppController {
     @PostMapping("/project/{id}")
     App postAppAtProject(@RequestBody App app, @PathVariable long id) {
         Project project = projectRepository.findById(id).get();
-        try {
-			app.setId(app.getTitle() + "_" + URLEncoder.encode(app.getGitUrl(),"UTF-8"));
-			app.setProject(project);
-	        app.setRegDate(new Date());
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        if(repo.findApp(app.getTitle(), app.getGitUrl()) != null) {
+        	throw new AppDuplicatedException(app.getTitle(), app.getGitUrl());
+        }
+        app.setId(UUID.randomUUID().toString());
+		app.setProject(project);
+		app.setRegDate(new Date());
         
         return repo.save(app);
     }

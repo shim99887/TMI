@@ -1,7 +1,5 @@
 package com.tmi.service;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
@@ -49,18 +47,13 @@ public class DataCollectService {
 		return testRawDataRepository.findById(id);
 	}
 	
-	public Optional<App> getAppData(String gitUrl, String projectName) {
-		try {
-			return appRepository.findById(projectName + "_" + URLEncoder.encode(gitUrl,"UTF-8"));
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+	public App getAppData(String gitUrl, String projectName) {
+		//return appRepository.findById(projectName + "_" + encryptImpl.encrypt(gitUrl));
+		return appRepository.findApp(projectName, gitUrl);
 	}
 	
 	public String dataCollect(String projectName, String gitUrl, String buildTime, String coverageKey, String [] testKeys) {
-		Optional<App> appData = getAppData(gitUrl, projectName);
+		App appData = getAppData(gitUrl, projectName);
 //		if(appData.get() == null) {
 //			return "This is not registered app.";
 //		}
@@ -79,7 +72,7 @@ public class DataCollectService {
         
         Report report = new Report(datetime, totalLineCovMissed, totalLineCovCovered, totalBranchCovMissed, totalBranchCovCovered, 0, 0, 0, 0, 0);
 		
-		report.setApp(appData.get());
+		report.setApp(appData);
 		
 		reportRepository.save(report);
 		
