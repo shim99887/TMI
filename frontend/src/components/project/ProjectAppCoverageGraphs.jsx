@@ -1,17 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Divider,
-  colors,
-  Grid,
-} from "@material-ui/core";
-import DoughnutGraph from "../graph/DoughnutGraph";
-import BarGraph from "../graph/BarGraph";
+import { colors, Box, Typography } from "@material-ui/core";
 
-export default function ProjectAppCoverageGraphs({ data }) {
+export default function ProjectAppCoverageGraphs({ data, title }) {
   const [instructionCov, setInstructionCov] = useState({
     covered: 0,
     missed: 0,
@@ -112,21 +103,14 @@ export default function ProjectAppCoverageGraphs({ data }) {
   };
 
   return (
-    <>
-      <Card variant="outlined" style={{ margin: "10px" }}>
-        <CardHeader title="Coverage Summary" />
-        <Divider />
-        <Grid container spacing={2} style={{ justifyContent: "space-around" }}>
-          <CardContent>
-            <Line
-              height="200px"
-              width="500px"
-              data={dataLineGraph}
-              options={optionsLineGraph}
-            />
-          </CardContent>
-        </Grid>
-      </Card>
-    </>
+    <Box>
+      <Typography variant="h5">{title}</Typography>
+      <Line
+        height="250"
+        width="600"
+        data={dataLineGraph}
+        options={optionsLineGraph}
+      />
+    </Box>
   );
 }

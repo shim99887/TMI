@@ -28,6 +28,7 @@ function App() {
           <Container
             style={{ backgroundColor: "white", height: "100vh", padding: 10 }}
           >
+            <div style={{ height: 64 }} />
             {/* <Route path="/" exact component={() => <div>Home</div>} /> */}
             <Route path="/project" exact component={Project} />
             <Route path="/project/:id" component={ProjectApp} />
