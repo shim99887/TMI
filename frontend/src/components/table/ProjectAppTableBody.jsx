@@ -65,7 +65,7 @@ export default function ProjectAppTableBody({ app }) {
       ) : (
         <></>
       )}
-      {open && reportList.length ? (
+      {open && reportList.length > 2 ? (
         <>
           <TablePagination
             rowsPerPageOptions={[10, 25, 50, 100]}
