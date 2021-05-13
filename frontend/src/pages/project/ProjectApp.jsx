@@ -4,16 +4,10 @@ import ProjectAppCoverageGraphs from "../../components/project/ProjectAppCoverag
 import { appAxios } from "../../utils/axios";
 import CommonTable from "../../components/table/CommonTable";
 import ProjectAppTableBody from "../../components/table/ProjectAppTableBody";
-import {
-  Box,
-  Button,
-  colors,
-  Grid,
-  makeStyles,
-  Modal,
-} from "@material-ui/core";
+import { Box, Button, colors, makeStyles, Modal } from "@material-ui/core";
 import CreateAppForm from "../../components/form/CreateAppForm";
 import ProjectAppPassRateGraphs from "../../components/project/ProjectAppPassRateGraphs";
+import TotalCoverageDoughnutGraph from "../../components/graph/TotalCoverageDoughnutGraph";
 
 function getModalStyle() {
   const top = 50;
@@ -79,13 +73,25 @@ export default function ProjectApp() {
     <>
       <h2>{params.id} PJT</h2>
 
+      {/* sample graphs */}
       <div style={{ display: "flex", justifyContent: "space-around" }}>
-        {/* sample graphs */}
-        <ProjectAppCoverageGraphs />
-        <ProjectAppPassRateGraphs />
+        <TotalCoverageDoughnutGraph data={[90, 10]} title="Current Coverage" />
+        <ProjectAppCoverageGraphs title="Coverage Trend" />
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-around" }}>
+        <TotalCoverageDoughnutGraph data={[90, 10]} title="Current Pass Rate" />
+        <ProjectAppPassRateGraphs title="Pass Rate Trend" />
       </div>
       <div>
-        <h2>App List</h2>
+        <div style={{ display: "flex" }}>
+          <h2 style={{ flexGrow: 1 }}>App List</h2>
+          <Button variant="contained" onClick={handleOpen}>
+            Create new app
+          </Button>
+          <Modal open={open} onClose={handleClose}>
+            {body}
+          </Modal>
+        </div>
 
         <CommonTable
           head={[
@@ -120,19 +126,6 @@ export default function ProjectApp() {
             <ProjectAppTableBody key={index} app={app} />
           ))}
         />
-      </div>
-      <div style={{ textAlign: "right" }}>
-        <Button variant="contained" onClick={handleOpen}>
-          Create new app
-        </Button>
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
-        >
-          {body}
-        </Modal>
       </div>
     </>
   );
