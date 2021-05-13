@@ -30,15 +30,6 @@ export default function ReportDetail() {
     return () => {};
   }, []);
 
-  const reports = report.map((data, index) => (
-    <Box onClick={() => getReportData(data.id)} key={index}>
-      <ReportHistoryContainer
-        testCount={data.id}
-        date={data.datetime}
-      ></ReportHistoryContainer>
-    </Box>
-  ));
-
   async function getReportData(id) {
     await testAxios
       .getListByReportId(id)
@@ -50,6 +41,23 @@ export default function ReportDetail() {
         console.log(err);
       });
   }
+
+  const reports = report.map((data, index) => (
+    <Box onClick={() => getReportData(data.id)} key={index}>
+      <ReportHistoryContainer
+        testCount={data.id}
+        date={data.datetime}
+        percent={
+          data.totalRunCount /
+          (data.totalRunCount +
+            data.totalErrorCount +
+            data.totalFailCount +
+            data.totalSkipCount)
+        }
+        targetPercent={0.7}
+      ></ReportHistoryContainer>
+    </Box>
+  ));
 
   const tests = test.map((data, index) => (
     <Box
@@ -71,23 +79,59 @@ export default function ReportDetail() {
 
   return (
     <Box>
-      <Grid container spacing={3}>
-        <Grid
-          className={styles.container}
-          style={{ flexDirection: "column" }}
-          item
-          xs={2}
+      <Box className={styles.container}>
+        <Box
+          style={{
+            marginTop: "1%",
+            marginBottom: "3%",
+            flexGrow: "1",
+            fontSize: "200%",
+            maxWidth: "20%",
+          }}
         >
-          {params.id}
-          {reports}
-        </Grid>
-        <Grid item xs={10}>
+          Main Server
+        </Box>
+        <Box display="flex" flexDirection="Column" flexGrow="3">
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            zIndex="1"
+            position="relative"
+            marginLeft="5%"
+            marginRight="5%"
+          >
+            {reports}
+          </Box>
+          <Box
+            style={{
+              borderTop: "2px solid black",
+              zIndex: "0",
+              position: "relative",
+              top: "-66px",
+            }}
+          ></Box>
+          <Box
+            style={{
+              height: "14px",
+              borderLeft: "2px solid black",
+              borderRight: "2px solid black",
+              zIndex: "0",
+              position: "relative",
+              top: "-74px",
+            }}
+          ></Box>
+        </Box>
+
+        <Box flexGrow="1" maxWidth="20%" marginBottom="3%">
+          <Input placeholder="Search"></Input>
+        </Box>
+      </Box>
+      <Grid className={styles.container} item>
+        <Grid item xs={12}>
           {idx >= 0 && (
-            <Box display="flex" justifyContent="space-between">
-              Report #{idx + 1} - {report[idx].datetime}
-              {/* <Box border="1px solid black"> */}
-              {/* <Input placeholder="Search"></Input> */}
-              {/* </Box> */}
+            <Box display="flex" justifyContent="space-between" marginTop="3%">
+              Report #{idx + 1} - {report[idx].datetime.split("T")[0]}{" "}
+              {report[idx].datetime.split("T")[1]}
             </Box>
           )}
           {idx >= 0 && (
@@ -99,7 +143,7 @@ export default function ReportDetail() {
             >
               <Box
                 flexGrow={report[idx].totalRunCount + 1}
-                onClick={getSuccessList}
+                onClick={() => getSuccessList}
               >
                 <Box
                   style={{
