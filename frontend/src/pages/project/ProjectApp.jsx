@@ -85,7 +85,20 @@ export default function ProjectApp() {
         <ProjectAppPassRateGraphs />
       </div>
       <div>
-        <h2>App List</h2>
+        <div style={{ display: "flex" }}>
+          <h2 style={{ flexGrow: 1 }}>App List</h2>
+          <Button variant="contained" onClick={handleOpen}>
+            Create new app
+          </Button>
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="simple-modal-title"
+            aria-describedby="simple-modal-description"
+          >
+            {body}
+          </Modal>
+        </div>
 
         <CommonTable
           head={[
@@ -120,19 +133,6 @@ export default function ProjectApp() {
             <ProjectAppTableBody key={index} app={app} />
           ))}
         />
-      </div>
-      <div style={{ textAlign: "right" }}>
-        <Button variant="contained" onClick={handleOpen}>
-          Create new app
-        </Button>
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
-        >
-          {body}
-        </Modal>
       </div>
     </>
   );
