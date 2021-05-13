@@ -1,7 +1,5 @@
 package com.tmi.service;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
@@ -9,6 +7,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tmi.encrypt.EncryptHandler;
+import com.tmi.encrypt.EncryptImpl;
 import com.tmi.entity.App;
 import com.tmi.entity.Coverage;
 import com.tmi.entity.Report;
@@ -40,6 +40,8 @@ public class DataCollectService {
 	@Autowired
 	TestRepository testRepository;
 	
+	EncryptHandler encryptImpl = new EncryptImpl();;
+	
 	
 	public Optional<CoverageRawData> getCoverageData(String id) {
 		return coverageRawDataRepository.findById(id);
@@ -50,13 +52,7 @@ public class DataCollectService {
 	}
 	
 	public Optional<App> getAppData(String gitUrl, String projectName) {
-		try {
-			return appRepository.findById(projectName + "_" + URLEncoder.encode(gitUrl,"UTF-8"));
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+		return appRepository.findById(projectName + "_" + encryptImpl.encrypt(gitUrl));
 	}
 	
 	public String dataCollect(String projectName, String gitUrl, String buildTime, String coverageKey, String [] testKeys) {
