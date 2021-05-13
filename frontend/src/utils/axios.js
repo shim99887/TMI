@@ -119,3 +119,9 @@ export const testAxios = {
     return basicGetRequest(`/test/report/${rid}`);
   },
 };
+
+export const userAxios = {
+  postLogin: (data) => {
+    return basicPostRequest(`/user/login`, data);
+  },
+};
