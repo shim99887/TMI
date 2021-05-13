@@ -76,6 +76,7 @@ export default function ReportItemContainer(props) {
 
                 <Box
                   style={{
+                    marginLeft: "1%",
                     fontSize: "125%",
                     color: "#444444",
                   }}
@@ -141,6 +142,7 @@ export default function ReportItemContainer(props) {
 
                 <Box
                   style={{
+                    marginLeft: "1%",
                     fontSize: "125%",
                     color: "#444444",
                   }}
@@ -210,6 +212,7 @@ export default function ReportItemContainer(props) {
 
                 <Box
                   style={{
+                    marginLeft: "1%",
                     fontSize: "125%",
                     color: "#444444",
                   }}
@@ -279,6 +282,7 @@ export default function ReportItemContainer(props) {
 
                 <Box
                   style={{
+                    marginLeft: "1%",
                     fontSize: "125%",
                     color: "#444444",
                   }}
