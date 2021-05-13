@@ -64,6 +64,7 @@ public class CoverageFileController {
 		
 		file.delete();
 		
+		
 		return ResponseEntity.status(HttpStatus.OK).build();	
 	}
 }
