@@ -29,7 +29,7 @@ public class CoverageFileController {
 	ReportRepository reportRepository;
 	
 	@PostMapping
-	ResponseEntity<Boolean> coverageFileSave(String projectName, String gitUrl, String buildTime, MultipartFile zipFile) {
+	ResponseEntity<String> coverageFileSave(String projectName, String gitUrl, String buildTime, MultipartFile zipFile) {
 		
 		String appId = appRepository.findApp(projectName, gitUrl).getId();
 		
@@ -60,11 +60,11 @@ public class CoverageFileController {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
 		
-		ZipUtil.unpack(file, new File(storagePath + "/" + appId + "/" + buildTime.replace(":", "") + "/"));
+		ZipUtil.unpack(file, new File(filePath));
 		
-		file.delete();
+		//file.delete();
 		
 		
-		return ResponseEntity.status(HttpStatus.OK).build();	
+		return new ResponseEntity<>(file.getAbsolutePath(),HttpStatus.OK);
 	}
 }
