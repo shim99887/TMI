@@ -29,6 +29,7 @@ public class AppController {
 
     @Autowired
     private ProjectRepository projectRepository;
+    
 
     @GetMapping
     List<App> getAllApp() {
@@ -54,7 +55,9 @@ public class AppController {
     @PostMapping("/project/{id}")
     App postAppAtProject(@RequestBody App app, @PathVariable long id) {
         Project project = projectRepository.findById(id).get();
-        System.out.println(UUID.randomUUID().toString());
+        if(repo.findApp(app.getTitle(), app.getGitUrl()) != null) {
+        	throw new AppDuplicatedException(app.getTitle(), app.getGitUrl());
+        }
         app.setId(UUID.randomUUID().toString());
 		app.setProject(project);
 		app.setRegDate(new Date());
