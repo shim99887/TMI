@@ -2,6 +2,7 @@ package com.tmi.controller.app;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tmi.encrypt.EncryptHandler;
-import com.tmi.encrypt.EncryptImpl;
 import com.tmi.entity.App;
 import com.tmi.entity.Project;
 import com.tmi.repository.AppRepository;
@@ -30,8 +29,6 @@ public class AppController {
 
     @Autowired
     private ProjectRepository projectRepository;
-    
-    EncryptHandler encryptImpl = new EncryptImpl();
 
     @GetMapping
     List<App> getAllApp() {
@@ -57,7 +54,8 @@ public class AppController {
     @PostMapping("/project/{id}")
     App postAppAtProject(@RequestBody App app, @PathVariable long id) {
         Project project = projectRepository.findById(id).get();
-        app.setId(app.getTitle() + "_" + encryptImpl.encrypt(app.getGitUrl()));
+        System.out.println(UUID.randomUUID().toString());
+        app.setId(UUID.randomUUID().toString());
 		app.setProject(project);
 		app.setRegDate(new Date());
         

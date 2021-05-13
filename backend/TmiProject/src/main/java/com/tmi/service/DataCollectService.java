@@ -7,8 +7,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.tmi.encrypt.EncryptHandler;
-import com.tmi.encrypt.EncryptImpl;
 import com.tmi.entity.App;
 import com.tmi.entity.Coverage;
 import com.tmi.entity.Report;
@@ -40,8 +38,6 @@ public class DataCollectService {
 	@Autowired
 	TestRepository testRepository;
 	
-	EncryptHandler encryptImpl = new EncryptImpl();;
-	
 	
 	public Optional<CoverageRawData> getCoverageData(String id) {
 		return coverageRawDataRepository.findById(id);
@@ -51,12 +47,13 @@ public class DataCollectService {
 		return testRawDataRepository.findById(id);
 	}
 	
-	public Optional<App> getAppData(String gitUrl, String projectName) {
-		return appRepository.findById(projectName + "_" + encryptImpl.encrypt(gitUrl));
+	public App getAppData(String gitUrl, String projectName) {
+		//return appRepository.findById(projectName + "_" + encryptImpl.encrypt(gitUrl));
+		return appRepository.findApp(projectName, gitUrl);
 	}
 	
 	public String dataCollect(String projectName, String gitUrl, String buildTime, String coverageKey, String [] testKeys) {
-		Optional<App> appData = getAppData(gitUrl, projectName);
+		App appData = getAppData(gitUrl, projectName);
 //		if(appData.get() == null) {
 //			return "This is not registered app.";
 //		}
@@ -75,7 +72,7 @@ public class DataCollectService {
         
         Report report = new Report(datetime, totalLineCovMissed, totalLineCovCovered, totalBranchCovMissed, totalBranchCovCovered, 0, 0, 0, 0, 0);
 		
-		report.setApp(appData.get());
+		report.setApp(appData);
 		
 		reportRepository.save(report);
 		
