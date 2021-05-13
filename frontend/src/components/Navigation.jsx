@@ -9,6 +9,7 @@ import {
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
 // import MyBreadcrumbs from "./Breadcrumbs";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Navigation({ logout, history }) {
   const classes = useStyles();
+  const user = useSelector((state) => state.user);
 
   return (
     <div className={classes.root}>
@@ -58,6 +60,7 @@ function Navigation({ logout, history }) {
               </Link>
             </Button>
           </Grid>
+          <Typography>{user.info}</Typography>
           <Button
             onClick={() => {
               logout();

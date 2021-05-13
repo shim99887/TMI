@@ -1,7 +1,6 @@
 import { Container } from "@material-ui/core";
 import React, { useState } from "react";
 import { Route, Redirect } from "react-router-dom";
-import AuthRoute from "./components/AuthRoute";
 import Navigation from "./components/Navigation";
 import About from "./pages/About";
 import Login from "./pages/login/Login";
@@ -10,23 +9,22 @@ import ProjectApp from "./pages/project/ProjectApp";
 import Application from "./pages/application/Application";
 import ApplicationDetail from "./pages/application/ApplicationDetail";
 import "./App.css";
-import { loginCheck } from "./components/user/auth";
-import LogoutButton from "./components/user/logoutButton";
+import { useDispatch, useSelector } from "react-redux";
+import { LOG_OUT } from "./redux/user";
 
 function App() {
-  const [user, setUser] = useState(null);
-  const authenticated = user != null;
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const logout = () => dispatch(LOG_OUT());
 
-  const login = ({ id, password }) => setUser(loginCheck({ id, password }));
-  const logout = () => setUser(null);
+  console.log(user);
 
   return (
     <>
-      {authenticated ? (
+      {user.isLoggedIn ? (
         <>
           <Redirect to="/project" />
           <Navigation logout={logout} />
-          {/* <LogoutButton logout={logout} /> */}
           <Container
             style={{ backgroundColor: "white", height: "100vh", padding: 10 }}
           >
@@ -39,12 +37,7 @@ function App() {
           </Container>
         </>
       ) : (
-        <Route
-          path="/"
-          render={(props) => (
-            <Login authenticated={authenticated} login={login} {...props} />
-          )}
-        />
+        <Route path="/" component={Login} />
       )}
     </>
   );

@@ -3,29 +3,13 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { Redirect } from "react-router-dom";
-
-// function Copyright() {
-//   return (
-//     <Typography variant="body2" color="textSecondary" align="center">
-//       {"Copyright © "}
-//       <Link color="inherit" href="https://material-ui.com/">
-//         Your Website
-//       </Link>{" "}
-//       {new Date().getFullYear()}
-//       {"."}
-//     </Typography>
-//   );
-// }
+import { userAxios } from "../../utils/axios";
+import { useDispatch, useSelector } from "react-redux";
+import { LOG_IN } from "../../redux/user";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -47,23 +31,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Login({ authenticated, login, location }) {
+export default function Login() {
   const classes = useStyles();
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
+  // const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
-  const handleClick = () => {
-    try {
-      login({ id, password });
-    } catch (e) {
+  async function loginTest() {
+    const response = await userAxios.postLogin({
+      id: id,
+      pwd: password,
+    });
+    if (response.id) dispatch(LOG_IN(response.uid));
+    else {
       alert("Failed to login");
       setId("");
       setPassword("");
     }
-  };
-
-  //   const { from } = location.state || { from: { pathname: "/project" } };
-  //   if (authenticated) return <Redirect to={from} />;
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -88,6 +74,9 @@ export default function Login({ authenticated, login, location }) {
             autoFocus
             value={id}
             onChange={({ target: { value } }) => setId(value)}
+            onKeyPress={(e) => {
+              if (e.key == "Enter") loginTest();
+            }}
           />
           <TextField
             variant="outlined"
@@ -101,38 +90,21 @@ export default function Login({ authenticated, login, location }) {
             autoComplete="current-password"
             value={password}
             onChange={({ target: { value } }) => setPassword(value)}
+            onKeyPress={(e) => {
+              if (e.key == "Enter") loginTest();
+            }}
           />
-          {/* <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          /> */}
           <Button
-            type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={handleClick}
+            onClick={loginTest}
           >
             Log In
           </Button>
-          {/* <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid> */}
         </form>
       </div>
-      {/* <Box mt={8}>
-        <Copyright />
-      </Box> */}
     </Container>
   );
 }

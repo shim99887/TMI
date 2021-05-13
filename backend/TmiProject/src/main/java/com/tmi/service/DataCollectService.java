@@ -47,12 +47,13 @@ public class DataCollectService {
 		return testRawDataRepository.findById(id);
 	}
 	
-	public Optional<App> getAppData(String gitUrl, String projectName) {
-		return appRepository.findById(gitUrl + "_" + projectName);
+	public App getAppData(String gitUrl, String projectName) {
+		//return appRepository.findById(projectName + "_" + encryptImpl.encrypt(gitUrl));
+		return appRepository.findApp(projectName, gitUrl);
 	}
 	
 	public String dataCollect(String projectName, String gitUrl, String buildTime, String coverageKey, String [] testKeys) {
-		Optional<App> appData = getAppData(gitUrl, projectName);
+		App appData = getAppData(gitUrl, projectName);
 //		if(appData.get() == null) {
 //			return "This is not registered app.";
 //		}
@@ -71,7 +72,7 @@ public class DataCollectService {
         
         Report report = new Report(datetime, totalLineCovMissed, totalLineCovCovered, totalBranchCovMissed, totalBranchCovCovered, 0, 0, 0, 0, 0);
 		
-		report.setApp(appData.get());
+		report.setApp(appData);
 		
 		reportRepository.save(report);
 		
@@ -116,8 +117,9 @@ public class DataCollectService {
 			for(TestCase testcase : testRawData.getTestCaseList()) {
 				Test test = new Test();
 				test.setReport(report);
-				test.setElapsedTime(testcase.getTestTime());
 				test.setName(testcase.getTestCaseName());
+				test.setElapsedTime(testcase.getTestTime());
+				totalElapsedTime += testcase.getTestTime();
 				if(testcase.isFail() && !testcase.getFailDescription().equals("skipped")) {
 					test.setType("fail");
 					totalFailCount++;
