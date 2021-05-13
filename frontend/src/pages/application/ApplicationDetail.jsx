@@ -16,9 +16,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ReportDetail() {
+export default function ReportDetail({ params }) {
   const styles = useStyles();
-  const params = useParams();
+  // const params = useParams();
   const [idx, setIdx] = useState(-1);
   const [report, setReport] = useState([]);
   const [test, setTest] = useState([]);

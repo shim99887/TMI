@@ -8,6 +8,7 @@ import { Box, Button, colors, makeStyles, Modal } from "@material-ui/core";
 import CreateAppForm from "../../components/form/CreateAppForm";
 import ProjectAppPassRateGraphs from "../../components/project/ProjectAppPassRateGraphs";
 import TotalCoverageDoughnutGraph from "../../components/graph/TotalCoverageDoughnutGraph";
+import ApplicationDetail from "../application/ApplicationDetail";
 
 function getModalStyle() {
   const top = 50;
@@ -21,9 +22,18 @@ function getModalStyle() {
 }
 
 const useStyles = makeStyles((theme) => ({
-  paper: {
+  createAppForm: {
     position: "absolute",
     width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: "2px solid #000",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+  testDetail: {
+    position: "absolute",
+    width: "60vw",
+    height: "90vh",
     backgroundColor: theme.palette.background.paper,
     border: "2px solid #000",
     boxShadow: theme.shadows[5],
@@ -34,17 +44,27 @@ const useStyles = makeStyles((theme) => ({
 export default function ProjectApp() {
   const params = useParams();
   const [appList, setAppList] = useState([]);
-  const [open, setOpen] = React.useState(false);
+  const [modalCreateAppFromOpen, setModalCreateAppFormOpen] =
+    React.useState(false);
+  const [modalTestDetailOpen, setModalTestDetailOpen] = React.useState(false);
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
 
-  const handleOpen = () => {
-    setOpen(true);
+  const handleModalCreateAppFromOpen = () => {
+    setModalCreateAppFormOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleModalCreateAppFromClose = () => {
+    setModalCreateAppFormOpen(false);
+  };
+
+  const handleModalTestDetailOpen = () => {
+    setModalTestDetailOpen(true);
+  };
+
+  const handleModalTestDetailClose = () => {
+    setModalTestDetailOpen(false);
   };
 
   // dummy test
@@ -53,9 +73,15 @@ export default function ProjectApp() {
     { id: 2, title: "test2" },
   ];
 
-  const body = (
-    <div style={modalStyle} className={classes.paper}>
-      <CreateAppForm handleClose={handleClose} />
+  const modalCreateAppFrom = (
+    <div style={modalStyle} className={classes.createAppForm}>
+      <CreateAppForm onClose={handleModalCreateAppFromClose} />
+    </div>
+  );
+
+  const modalTestDetail = (
+    <div style={modalStyle} className={classes.testDetail}>
+      <ApplicationDetail params={{ id: "uniqueKey1" }} />
     </div>
   );
 
@@ -85,11 +111,14 @@ export default function ProjectApp() {
       <div>
         <div style={{ display: "flex" }}>
           <h2 style={{ flexGrow: 1 }}>App List</h2>
-          <Button variant="contained" onClick={handleOpen}>
+          <Button variant="contained" onClick={handleModalCreateAppFromOpen}>
             Create new app
           </Button>
-          <Modal open={open} onClose={handleClose}>
-            {body}
+          <Modal
+            open={modalCreateAppFromOpen}
+            onClose={handleModalCreateAppFromClose}
+          >
+            {modalCreateAppFrom}
           </Modal>
         </div>
 
@@ -127,6 +156,12 @@ export default function ProjectApp() {
           ))}
         />
       </div>
+      <Button onClick={() => handleModalTestDetailOpen()}>
+        Test Detail Example
+      </Button>
+      <Modal open={modalTestDetailOpen} onClose={handleModalTestDetailClose}>
+        {modalTestDetail}
+      </Modal>
     </>
   );
 }
