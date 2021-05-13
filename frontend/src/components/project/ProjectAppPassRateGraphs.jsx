@@ -11,7 +11,7 @@ import {
 import DoughnutGraph from "../graph/DoughnutGraph";
 import BarGraph from "../graph/BarGraph";
 
-export default function ProjectReportGraphs({ data }) {
+export default function ProjectAppPassRateGraphs({ data }) {
   const [instructionCov, setInstructionCov] = useState({
     covered: 0,
     missed: 0,
@@ -30,16 +30,10 @@ export default function ProjectReportGraphs({ data }) {
     ],
     datasets: [
       {
-        label: "Instruction Cov.",
+        label: "Pass Rate",
         // yAxisID: "B",
-        data: [15, 38, 68, 85, 93],
-        borderColor: colors.deepPurple[500],
-      },
-      {
-        label: "Branch Cov.",
-        // yAxisID: "B",
-        data: [5, 40, 55, 79, 88],
-        borderColor: colors.indigo[500],
+        data: [45, 68, 65, 89, 93],
+        borderColor: colors.blue[500],
       },
       // {
       //   type: "bar",
@@ -113,14 +107,14 @@ export default function ProjectReportGraphs({ data }) {
 
   return (
     <>
-      <Card variant="outlined">
-        <CardHeader title="Project Summary" />
+      <Card variant="outlined" style={{ margin: "10px" }}>
+        <CardHeader title="Pass Rate Summary" />
         <Divider />
         <Grid container spacing={2} style={{ justifyContent: "space-around" }}>
           <CardContent>
             <Line
-              height="300px"
-              width="650px"
+              height="200px"
+              width="500px"
               data={dataLineGraph}
               options={optionsLineGraph}
             />

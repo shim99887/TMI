@@ -38,15 +38,6 @@ const basicPostRequest = async (url, data, config) => {
   }
 };
 
-export class ProjectAxios extends BaseAxios {
-  all() {
-    return this.basicGetRequest("/project");
-  }
-  one(id) {
-    return this.basicGetRequest(`/project/${id}`);
-  }
-}
-
 export class AppAxios extends BaseAxios {
   getAll() {
     return this.basicGetRequest("/app");
@@ -58,6 +49,18 @@ export class AppAxios extends BaseAxios {
     return this.basicGetRequest(`/app/project/${pid}`);
   }
 }
+
+export const projectAxios = {
+  getAll: () => {
+    return basicGetRequest(`/project`);
+  },
+  getOne: (id) => {
+    return basicGetRequest(`/project/${id}`);
+  },
+  postProject: (data) => {
+    return basicPostRequest(`/project`, data);
+  },
+};
 
 export const appAxios = {
   getAll: () => {

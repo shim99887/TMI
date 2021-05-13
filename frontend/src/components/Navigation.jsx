@@ -1,19 +1,76 @@
-import { colors } from "@material-ui/core";
+import {
+  AppBar,
+  Button,
+  Grid,
+  makeStyles,
+  Toolbar,
+  Typography,
+} from "@material-ui/core";
 import React from "react";
-import { Link } from "react-router-dom";
-import MyBreadcrumbs from "./Breadcrumbs";
+import { Link, withRouter } from "react-router-dom";
+// import MyBreadcrumbs from "./Breadcrumbs";
 
-export default function Navigation() {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  linkButton: {
+    flexGrow: 5,
+  },
+  title: {
+    flexGrow: 1,
+  },
+}));
+
+function Navigation({ logout, history }) {
+  const classes = useStyles();
+
   return (
-    <>
-      <nav style={{ backgroundColor: colors.blue[500], padding: 5 }}>
-        <Link to="/">Home</Link>
-        {/* <Link to="/dashboard">Dashboard</Link> */}
-        <Link to="/project">Project</Link>
-        <Link to="/app">Test Job</Link>
-        <Link to="/about">About</Link>
-      </nav>
-      <MyBreadcrumbs />
-    </>
+    <div className={classes.root}>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" className={classes.title}>
+            TMI
+          </Typography>
+          <Grid className={classes.linkButton}>
+            <Button color="inherit">
+              <Link
+                style={{ textDecoration: "none", color: "inherit" }}
+                to="/project"
+              >
+                Project
+              </Link>
+            </Button>
+            <Button color="inherit">
+              <Link
+                style={{ textDecoration: "none", color: "inherit" }}
+                to="/app"
+              >
+                Test Job
+              </Link>
+            </Button>
+            <Button color="inherit">
+              <Link
+                style={{ textDecoration: "none", color: "inherit" }}
+                to="/about"
+              >
+                About
+              </Link>
+            </Button>
+          </Grid>
+          <Button
+            onClick={() => {
+              logout();
+              history.push("/");
+            }}
+            color="inherit"
+          >
+            Logout
+          </Button>
+        </Toolbar>
+      </AppBar>
+    </div>
   );
 }
+
+export default withRouter(Navigation);

@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import ProjectReportGraphs from "../../components/project/ProjectReportGraphs";
+import ProjectAppCoverageGraphs from "../../components/project/ProjectAppCoverageGraphs";
 import { appAxios } from "../../utils/axios";
 import CommonTable from "../../components/table/CommonTable";
 import ProjectAppTableBody from "../../components/table/ProjectAppTableBody";
-import { Button, Grid, makeStyles, Modal } from "@material-ui/core";
+import {
+  Box,
+  Button,
+  colors,
+  Grid,
+  makeStyles,
+  Modal,
+} from "@material-ui/core";
 import CreateAppForm from "../../components/form/CreateAppForm";
+import ProjectAppPassRateGraphs from "../../components/project/ProjectAppPassRateGraphs";
 
 function getModalStyle() {
   const top = 50;
@@ -71,8 +79,10 @@ export default function ProjectApp() {
     <>
       <h2>{params.id} PJT</h2>
 
-      <div>
-        <ProjectReportGraphs appList={appList} />
+      <div style={{ display: "flex", justifyContent: "space-around" }}>
+        {/* sample graphs */}
+        <ProjectAppCoverageGraphs />
+        <ProjectAppPassRateGraphs />
       </div>
       <div>
         <h2>App List</h2>
@@ -81,9 +91,29 @@ export default function ProjectApp() {
           head={[
             "App Name",
             "Build Datetime",
-            "Line Cov.(%)",
-            "Branch Cov.(%)",
-            "Pass Rate(%)",
+            <>
+              Line Cov.(%)
+              <Box>
+                <small style={{ color: colors.blue[500] }}>Covered</small> /{" "}
+                <small style={{ color: colors.red[500] }}>Missed</small>
+              </Box>
+            </>,
+            <>
+              Branch Cov.(%)
+              <Box>
+                <small style={{ color: colors.blue[500] }}>Covered</small> /{" "}
+                <small style={{ color: colors.red[500] }}>Missed</small>
+              </Box>
+            </>,
+            <>
+              Pass Rate(%)
+              <Box>
+                <small style={{ color: colors.blue[500] }}>Pass</small> /{" "}
+                <small style={{ color: colors.red[500] }}>Fail</small> /{" "}
+                <small style={{ color: colors.orange[500] }}>Error</small> /{" "}
+                <small style={{ color: colors.purple[500] }}>Skip</small>
+              </Box>
+            </>,
             "Elapsed Time(sec.)",
           ]}
           body={appList.map((app, index) => (

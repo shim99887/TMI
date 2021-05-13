@@ -115,10 +115,15 @@ public class TmiMojo extends AbstractMojo {
 		jacocoXmlBody.add("xmlFile", multipartFile.getResource());
 		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(jacocoXmlBody, headers);
 		String serverUrl = "http://k4a2011.p.ssafy.io:8080/api/data";
+		//String serverUrl = "http://localhost:8080/api/data";
 		//RestTemplate restTemplate = new RestTemplate();
 		//ResponseEntity<String> xmlResponse = restTemplate.exchange(serverUrl, HttpMethod.POST, requestEntity, String.class);
-		String projectName = restTemplate.postForObject(serverUrl,requestEntity,String.class);
-		getLog().info("project name: " + projectName);
+		String responseStr = restTemplate.postForObject(serverUrl,requestEntity,String.class);
+		String [] splitStr = responseStr.split(" ");
+		String projectName = splitStr[0];
+		String coverageKey = splitStr[1];
+		getLog().info("project name: " + splitStr[0]);
+
 
 
 		//junit txt 파일 전송
@@ -172,8 +177,31 @@ public class TmiMojo extends AbstractMojo {
 		restTemplate = new RestTemplate(Arrays.asList(jackson, resource, formHttpMessageConverter));
 		requestEntity = new HttpEntity<>(junitTxtBody, headers);
 		String junitServerUrl = "http://k4a2011.p.ssafy.io:8080/api/junit/data";
-		ResponseEntity<Boolean> response = restTemplate.exchange(junitServerUrl, HttpMethod.POST, requestEntity, Boolean.class);
+		//String junitServerUrl = "http://localhost:8080/api/junit/data";
+		String [] keyArr = restTemplate.postForObject(junitServerUrl,requestEntity,String[].class);
+		//ResponseEntity<Boolean> response = restTemplate.exchange(junitServerUrl, HttpMethod.POST, requestEntity, Boolean.class);
 		
-		getLog().info("junit txt response code: " + response.getStatusCode());
+		//getLog().info("junit txt response code: " + response.getStatusCode());
+		getLog().info("jacoco xml key " + coverageKey);
+		for(int i=1;i<keyArr.length;i++){
+			getLog().info("junit data key " + keyArr[i]);
+		}
+		String buildTime = keyArr[0];
+		MultiValueMap<String, Object> dataSendBody = new LinkedMultiValueMap<>();
+		restTemplate = new RestTemplate();
+		dataSendBody.add("projectName",projectName);
+		dataSendBody.add("gitUrl",gitUrl);
+		dataSendBody.add("buildTime",buildTime);
+		dataSendBody.add("coverageKey", coverageKey);
+		for(int i=1;i<keyArr.length;i++){
+			dataSendBody.add("testKeys",keyArr[i]);
+		}
+
+		requestEntity = new HttpEntity<>(dataSendBody, headers);
+		String mainServerUrl = "https://k4a201.p.ssafy.io/api/data";
+		//String mainServerUrl = "http://localhost:3000/api/data";
+		//String mainServerUrl = "http://localhost:3000/data";
+		Boolean isOk = restTemplate.postForObject(mainServerUrl, requestEntity, Boolean.class);
+		getLog().info("data send " + isOk);
 	}
 }

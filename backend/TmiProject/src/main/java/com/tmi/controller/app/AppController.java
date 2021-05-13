@@ -1,15 +1,24 @@
 package com.tmi.controller.app;
 
-import com.tmi.controller.test.TestNotFoundException;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.tmi.entity.App;
 import com.tmi.entity.Project;
 import com.tmi.repository.AppRepository;
 import com.tmi.repository.ProjectRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Date;
-import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -45,9 +54,11 @@ public class AppController {
     @PostMapping("/project/{id}")
     App postAppAtProject(@RequestBody App app, @PathVariable long id) {
         Project project = projectRepository.findById(id).get();
-        app.setId("test");
-        app.setProject(project);
-        app.setRegDate(new Date());
+        System.out.println(UUID.randomUUID().toString());
+        app.setId(UUID.randomUUID().toString());
+		app.setProject(project);
+		app.setRegDate(new Date());
+        
         return repo.save(app);
     }
 

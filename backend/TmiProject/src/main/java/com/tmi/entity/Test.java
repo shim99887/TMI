@@ -1,12 +1,15 @@
 package com.tmi.entity;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.*;
-
-import java.io.Serializable;
+import lombok.Data;
 
 @Entity
 @Data
@@ -15,7 +18,7 @@ public class Test {
 
     // PK
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     // FK
@@ -27,7 +30,7 @@ public class Test {
     private String type;
     private String errorType;
     private String errorMessage;
-    private Integer elapsedTime;
+    private int elapsedTime;
 
     public Test() {
     }
