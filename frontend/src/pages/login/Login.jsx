@@ -38,13 +38,15 @@ export default function Login() {
   // const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
-  async function loginTest() {
+  async function login() {
     const response = await userAxios.postLogin({
       id: id,
       pwd: password,
     });
-    if (response.id) dispatch(LOG_IN(response.uid));
-    else {
+    if (response) {
+      delete response.password;
+      dispatch(LOG_IN(response));
+    } else {
       alert("Failed to login");
       setId("");
       setPassword("");
@@ -75,7 +77,7 @@ export default function Login() {
             value={id}
             onChange={({ target: { value } }) => setId(value)}
             onKeyPress={(e) => {
-              if (e.key == "Enter") loginTest();
+              if (e.key == "Enter") login();
             }}
           />
           <TextField
@@ -91,7 +93,7 @@ export default function Login() {
             value={password}
             onChange={({ target: { value } }) => setPassword(value)}
             onKeyPress={(e) => {
-              if (e.key == "Enter") loginTest();
+              if (e.key == "Enter") login();
             }}
           />
           <Button
@@ -99,7 +101,7 @@ export default function Login() {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={loginTest}
+            onClick={login}
           >
             Log In
           </Button>
