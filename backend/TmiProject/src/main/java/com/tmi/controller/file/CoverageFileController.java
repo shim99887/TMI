@@ -2,6 +2,8 @@ package com.tmi.controller.file;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,8 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.zeroturnaround.zip.ZipUtil;
 
+import com.tmi.entity.Coverage;
+import com.tmi.entity.Report;
 import com.tmi.repository.AppRepository;
 import com.tmi.repository.ReportRepository;
+import com.tmi.service.CoverageService;
+import com.tmi.service.ReportService;
 
 @RestController
 @CrossOrigin("*")
@@ -27,6 +33,11 @@ public class CoverageFileController {
 	AppRepository appRepository;
 	@Autowired
 	ReportRepository reportRepository;
+	@Autowired
+	CoverageService coverageService;
+	@Autowired
+	ReportService reportService;
+
 	
 	@PostMapping
 	ResponseEntity<String> coverageFileSave(String projectName, String gitUrl, String buildTime, MultipartFile zipFile) {
@@ -62,8 +73,32 @@ public class CoverageFileController {
 		
 		ZipUtil.unpack(file, new File(filePath));
 		
-		//file.delete();
+		file.delete();
 		
+		List<Report> reportList = reportService.readAllReportsInApp(appId);
+		
+		Long reportId = 0L;
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		for(Report report : reportList) {
+			String datetime = report.getDatetime().format(formatter);
+			if(datetime.equals(buildTime)) {
+				reportId = report.getId();
+				break;
+			}
+		}
+		
+		List<Coverage> coverageList = coverageService.readAllCoveragesInReport(reportId);
+		
+		for(Coverage coverage : coverageList) {
+			File htmlFile = new File(filePath + "/" + coverage.getPackageName() + "/" + coverage.getClassName() + ".html");
+			
+			if(htmlFile.exists()) {
+				coverage.setHighlightHtml(htmlFile.getAbsolutePath());
+			}
+			
+			coverageService.saveCoverage(coverage);
+		}
 		
 		return new ResponseEntity<>(file.getAbsolutePath(),HttpStatus.OK);
 	}
