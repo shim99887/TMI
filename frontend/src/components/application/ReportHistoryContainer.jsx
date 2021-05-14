@@ -26,25 +26,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const CircleButton = styled.button`
+  background-color: ${(props) => props.color || "#22DD22"};
+  margin-top: 50%;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: ${(props) => props.size || "75%"};
+  text-align: center;
+  color: white;
+  cursor: pointer;
+  &:hover {
+    boxshadow: 1px 1px 10px 3px #cccccc;
+  }
+`;
+
 export default function ReportHistoryContatiner(props) {
   const styles = useStyles();
   let time = props.date.split("T");
   let date = time[0].split("-");
-
-  const CircleButton = styled.button`
-    background-color: ${(props) => props.color};
-    margin-top: 50%;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    font-size: ${(props) => props.size || "75%"};
-    text-align: center;
-    color: white;
-    cursor: pointer;
-    &:hover {
-      boxshadow: 1px 1px 10px 3px #cccccc;
-    }
-  `;
 
   //props.percentage에 따라서 색을 다르게 출력
   return (
