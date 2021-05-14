@@ -232,7 +232,7 @@ public class TmiMojo extends AbstractMojo {
 
 		String zipServerUrl = "https://k4a201.p.ssafy.io/api/file";
 		//String zipServerUrl = "http://localhost:3000/api/file";
-		isOk = restTemplate.postForObject(zipServerUrl, requestEntity, Boolean.class);
-		getLog().info("zip file send " + isOk);
+		responseStr = restTemplate.postForObject(zipServerUrl, requestEntity, String.class);
+		getLog().info("zip file send " + responseStr);
 	}
 }
