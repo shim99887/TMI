@@ -16,43 +16,58 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ReportDetail() {
+export default function ReportDetail({ params }) {
   const styles = useStyles();
-  const params = useParams();
+  // const params = useParams();
   const [idx, setIdx] = useState(-1);
   const [report, setReport] = useState([]);
-  const [test, setTest] = useState([]);
+  const [tests, setTests] = useState([]);
+  const [searchField, setSearchField] = useState("");
+  const [filteredTests, setFilteredTests] = useState([]);
+  const [condition, setCondition] = useState([]);
   // axios.get() Project의 ReportList 반환받는다
   // Success, Fail, Error, Skip 눌렀을 때
   useEffect(async () => {
     const reportResponse = await reportAxios.getListByAppId(params.id);
-
     setReport(reportResponse);
-    return () => {};
   }, []);
 
-  const reports = report.map((data, index) => (
-    <Box onClick={() => getReportData(data.id)} key={index}>
-      <ReportHistoryContainer
-        testCount={data.id}
-        date={data.datetime}
-      ></ReportHistoryContainer>
-    </Box>
-  ));
+  useEffect(() => {
+    setFilteredTests(() => tests.filter(testFilter));
+  }, [searchField, condition, tests]);
 
-  async function getReportData(id) {
+  async function getReportData(id, index) {
     await testAxios
       .getListByReportId(id)
       .then((res) => {
-        setTest(res);
-        setIdx(id - 1);
+        setTests(res);
+        setIdx(index);
+        setCondition("1111");
+        console.log(id);
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
-  const tests = test.map((data, index) => (
+  const reports = report.map((data, index) => (
+    <Box onClick={() => getReportData(data.id, index)} key={index}>
+      <ReportHistoryContainer
+        testCount={data.id}
+        date={data.datetime}
+        percent={
+          data.totalRunCount /
+          (data.totalRunCount +
+            data.totalErrorCount +
+            data.totalFailCount +
+            data.totalSkipCount)
+        }
+        targetPercent={0.7}
+      ></ReportHistoryContainer>
+    </Box>
+  ));
+
+  const testList = filteredTests.map((data, index) => (
     <Box
       style={{
         marginTop: "1%",
@@ -70,23 +85,95 @@ export default function ReportDetail() {
     </Box>
   ));
 
+  function testFilter(obj) {
+    if (
+      obj.type == "pass" &&
+      condition[0] == "1" &&
+      obj.name.toLowerCase().includes(searchField.toLowerCase())
+    )
+      return true;
+    if (
+      obj.type == "fail" &&
+      condition[1] == "1" &&
+      obj.name.toLowerCase().includes(searchField.toLowerCase())
+    )
+      return true;
+    if (
+      obj.type == "error" &&
+      condition[2] == "1" &&
+      obj.name.toLowerCase().includes(searchField.toLowerCase())
+    )
+      return true;
+    if (
+      obj.type == "skip" &&
+      condition[3] == "1" &&
+      obj.name.toLowerCase().includes(searchField.toLowerCase())
+    )
+      return true;
+    return false;
+  }
   return (
     <Box>
-      <Grid container spacing={3}>
-        <Grid
-          className={styles.container}
-          style={{ flexDirection: "column" }}
-          item
-          xs={2}
+      <Box alignItems="center" textAlign="center">
+        <Box
+          style={{
+            marginTop: "1%",
+            marginBottom: "3%",
+            fontSize: "200%",
+            maxWidth: "20%",
+          }}
         >
-          {reports}
-        </Grid>
-        <Grid item xs={10}>
-          <Box display="flex" justifyContent="space-between">
-            <Box border="1px solid black">
-              <Input placeholder="Search"></Input>
-            </Box>
+          Main Server
+        </Box>
+        <Box
+          display="flex"
+          flexDirection="Column"
+          marginLeft="3%"
+          marginRight="3%"
+        >
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            zIndex="1"
+            position="relative"
+            marginLeft="5%"
+            marginRight="5%"
+          >
+            {reports}
           </Box>
+          <Box
+            style={{
+              borderTop: "2px solid black",
+              zIndex: "0",
+              position: "relative",
+              top: "-66px",
+            }}
+          ></Box>
+          <Box
+            style={{
+              height: "14px",
+              borderLeft: "2px solid black",
+              borderRight: "2px solid black",
+              zIndex: "0",
+              position: "relative",
+              top: "-74px",
+            }}
+          ></Box>
+        </Box>
+      </Box>
+      <Box className={styles.container} marginLeft="3%" marginRight="3%">
+        <Grid item xs={12}>
+          {idx >= 0 && (
+            <Box display="flex" justifyContent="space-between" marginTop="3%">
+              Report #{report[idx].id} - {report[idx].datetime.split("T")[0]}{" "}
+              {report[idx].datetime.split("T")[1]}
+              <input
+                type="search"
+                placeholder="searchField"
+                onChange={(e) => setSearchField(e.target.value)}
+              ></input>
+            </Box>
+          )}
           {idx >= 0 && (
             <Box
               className={styles.container}
@@ -96,7 +183,7 @@ export default function ReportDetail() {
             >
               <Box
                 flexGrow={report[idx].totalRunCount + 1}
-                onClick={getSuccessList}
+                onClick={getPassList}
               >
                 <Box
                   style={{
@@ -172,25 +259,33 @@ export default function ReportDetail() {
               </Box>
             </Box>
           )}
-          {tests}
+          {testList}
         </Grid>
-      </Grid>
+      </Box>
     </Box>
   );
 
-  function getSuccessList() {
-    console.log("axios.get getSuccessList");
+  function getPassList() {
+    if (condition[0] == "1")
+      setCondition("0" + condition[1] + condition[2] + condition[3]);
+    else setCondition("1" + condition[1] + condition[2] + condition[3]);
   }
 
-  function getFailList() {
-    console.log("axios.get getFailList");
+  function getFailList(e) {
+    if (condition[1] == "1")
+      setCondition(condition[0] + "0" + condition[2] + condition[3]);
+    else setCondition(condition[0] + "1" + condition[2] + condition[3]);
   }
 
-  function getErrorList() {
-    console.log("axios.get getErrorList");
+  function getErrorList(e) {
+    if (condition[2] == "1")
+      setCondition(condition[0] + condition[1] + "0" + condition[3]);
+    else setCondition(condition[0] + condition[1] + "1" + condition[3]);
   }
 
-  function getSkipList() {
-    console.log("axios.get getSkipList");
+  function getSkipList(e) {
+    if (condition[3] == "1")
+      setCondition(condition[0] + condition[1] + condition[2] + "0");
+    else setCondition(condition[0] + condition[1] + condition[2] + "1");
   }
 }

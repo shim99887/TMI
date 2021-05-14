@@ -68,11 +68,12 @@
 			<artifactId>mongo-java-driver</artifactId>
 			<version>3.12.7</version>
 		</dependency>
-		<!-- bcrypt -->
+		
+		<!-- zip file -->
 		<dependency>
-			<groupId>org.mindrot</groupId>
-			<artifactId>jbcrypt</artifactId>
-			<version>0.3m</version>
+			<groupId>org.zeroturnaround</groupId>
+			<artifactId>zt-zip</artifactId>
+			<version>1.6</version>
 		</dependency>
 		<!-- MatterMost Exception Handler for Json -->
 		<dependency>

@@ -13,7 +13,7 @@ export default function CommonTable({ head, body }) {
   console.log(body);
   return (
     <TableContainer component={Paper}>
-      <Table aria-label="simple table">
+      <Table aria-label="simple table" size="small">
         <TableHead>
           <TableRow>
             <TableCell />

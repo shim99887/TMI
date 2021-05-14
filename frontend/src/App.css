@@ -3,6 +3,34 @@
   padding: 0;
 }
 
-body {
+html, body {
   background-color: #eeeeee;
+  height: 100%
+}
+
+.flux {
+  background-color: red;
+  margin-top: "50%";
+  width: "30px";
+  height: "30px";
+  border-radius: "50%";
+  font-size: "75%";
+  color: "#FFFFFF";
+}
+
+.flux {
+  animation: flux 1s linear infinite;
+  -moz-animation: flux 1s linear infinite;
+  -webkit-animation: flux 1s linear infinite;
+  -o-animation: flux 1s linear infinite;
+}
+
+@keyframes flux {
+  0%,
+  100% {
+    background-color: #CC0000;
+  }
+  50% {
+    background-color: #FF0000;
+  }
 }

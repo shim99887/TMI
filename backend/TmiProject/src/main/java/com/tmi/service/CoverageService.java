@@ -1,17 +1,18 @@
 package com.tmi.service;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.tmi.dto.CoveragePostDto;
 import com.tmi.entity.Coverage;
 import com.tmi.entity.Report;
 import com.tmi.repository.CoverageRepository;
 import com.tmi.repository.ReportRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CoverageService {
@@ -52,5 +53,9 @@ public class CoverageService {
         // coverage.setBranchCovCovered(coveragePostDto.getBranchCovCovered());
         // coverage.setHighlightHtml(coveragePostDto.getHighlightHtml());
         return coverageRepository.save(coverage);
+    }
+    
+    public Coverage saveCoverage(Coverage coverage) {
+    	return coverageRepository.save(coverage);
     }
 }
