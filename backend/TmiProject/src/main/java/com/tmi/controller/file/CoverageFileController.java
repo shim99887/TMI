@@ -46,6 +46,8 @@ public class CoverageFileController {
 		
 		String filePath = storagePath + "/" + appId + "/" + buildTime.replace(":", "").replace(" ", "_") + "/";
 		
+		String url = "https://k4a201.p.ssafy.io/static/coverage/" + appId + "/" + buildTime.replace(":", "").replace(" ", "_") + "/";
+		
 		zipFile.getOriginalFilename();
 		File file = new File(filePath + zipFile.getOriginalFilename());
 		
@@ -94,7 +96,8 @@ public class CoverageFileController {
 			File htmlFile = new File(filePath + "/" + coverage.getPackageName() + "/" + coverage.getClassName() + ".html");
 			
 			if(htmlFile.exists()) {
-				coverage.setHighlightHtml(htmlFile.getAbsolutePath());
+				//coverage.setHighlightHtml(htmlFile.getAbsolutePath());
+				coverage.setHighlightHtml(url + "/" + coverage.getPackageName() + "/" + coverage.getClassName() + ".html");
 			}
 			
 			coverageService.saveCoverage(coverage);
