@@ -75,6 +75,11 @@
 			<artifactId>zt-zip</artifactId>
 			<version>1.6</version>
 		</dependency>
+		<!-- MatterMost Exception Handler for Json -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
     </dependencies>
 
     <build>
