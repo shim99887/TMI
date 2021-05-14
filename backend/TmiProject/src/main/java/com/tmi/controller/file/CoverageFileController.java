@@ -44,7 +44,7 @@ public class CoverageFileController {
 		
 		String appId = appRepository.findApp(projectName, gitUrl).getId();
 		
-		String filePath = storagePath + "/" + appId + "/" + buildTime.replace(":", "") + "/";
+		String filePath = storagePath + "/" + appId + "/" + buildTime.replace(":", "").replace(" ", "_") + "/";
 		
 		zipFile.getOriginalFilename();
 		File file = new File(filePath + zipFile.getOriginalFilename());
