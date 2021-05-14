@@ -7,7 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
 
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface
+UserRepository extends JpaRepository<User, Integer> {
     @Query("select m from User m where uid = :uid and password = :pwd")
     User findUser(String uid, String pwd);
 

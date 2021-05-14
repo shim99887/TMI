@@ -8,7 +8,7 @@ public interface AppService {
     List<App> getAllApp();
     List<App> getAppListByProjectId(Long pid);
     boolean deleteAppById(String id);
-    void putAppData(App app, Long id);
+    void putAppData(App app);
     App findById(String id);
     App postAppAtProject(App app, long id);
 }

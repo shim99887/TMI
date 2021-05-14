@@ -1,6 +1,7 @@
 package com.tmi.entity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
@@ -24,7 +25,7 @@ public class Project {
 
     private String title;
     private String description;
-    private String regDate;
+    private Date regDate;
 
     @ManyToOne
     @JsonIgnore

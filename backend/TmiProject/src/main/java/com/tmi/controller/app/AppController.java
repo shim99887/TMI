@@ -59,12 +59,12 @@ public class AppController {
 		return false;
 	}
 
-	@PutMapping("/{id}")
-	ResponseEntity<Boolean> putAppData(@RequestBody App app, @PathVariable Long id) {
+	@PutMapping
+	ResponseEntity<Boolean> putAppData(@RequestBody App app) {
 		if(app == null){
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}else{
-			service.putAppData(app, id);
+			service.putAppData(app);
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}

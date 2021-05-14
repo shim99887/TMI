@@ -48,16 +48,12 @@ public class AppServiceImpl implements AppService{
         return repo.save(app);
     }
 
-    public void putAppData(App app, Long id) {
-        Project project = projectRepository.findById(id).get();
-        if(repo.findApp(app.getTitle(), app.getGitUrl()) != null) {
-            throw new AppDuplicatedException(app.getTitle(), app.getGitUrl());
-        }
-        app.setId(UUID.randomUUID().toString());
-        app.setProject(project);
-        app.setRegDate(new Date());
+    public void putAppData(App app) {
+        repo.findById(app.getId()).ifPresent(selected -> {
+            selected.setDescription(app.getDescription());
+            repo.save(selected);
+        });
 
-        repo.save(app);
     }
 
     @Override
