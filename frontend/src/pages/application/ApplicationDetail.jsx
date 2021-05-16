@@ -5,6 +5,7 @@ import ReportItemContainer from "../../components/application/ReportItemContaine
 import ReportHistoryContainer from "../../components/application/ReportHistoryContainer";
 import { makeStyles } from "@material-ui/core/styles";
 import { reportAxios, testAxios } from "../../utils/axios";
+import styled from "styled-components";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -206,6 +207,9 @@ export default function ApplicationDetail(props) {
               style={{ cursor: "pointer" }}
             >
               <Box
+                className={
+                  condition[0] == "1" ? "typeButtonActive" : "typeButton"
+                }
                 flexGrow={reportHistory[idx].totalRunCount + 1}
                 onClick={getPassList}
               >
@@ -225,6 +229,9 @@ export default function ApplicationDetail(props) {
                 </Box>
               </Box>
               <Box
+                className={
+                  condition[1] == "1" ? "typeButtonActive" : "typeButton"
+                }
                 flexGrow={reportHistory[idx].totalFailCount + 1}
                 onClick={getFailList}
               >
@@ -244,6 +251,9 @@ export default function ApplicationDetail(props) {
                 </Box>
               </Box>
               <Box
+                className={
+                  condition[2] == "1" ? "typeButtonActive" : "typeButton"
+                }
                 flexGrow={reportHistory[idx].totalErrorCount + 1}
                 onClick={getErrorList}
               >
@@ -263,6 +273,9 @@ export default function ApplicationDetail(props) {
                 </Box>
               </Box>
               <Box
+                className={
+                  condition[3] == "1" ? "typeButtonActive" : "typeButton"
+                }
                 flexGrow={reportHistory[idx].totalSkipCount + 1}
                 onClick={getSkipList}
               >
