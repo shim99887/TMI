@@ -38,6 +38,24 @@ const basicPostRequest = async (url, data, config) => {
   }
 };
 
+const basicPutRequest = async (url, data, config) => {
+  try {
+    const response = await request.put(url, data, config);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+const basicDeleteRequest = async (url, config) => {
+  try {
+    const response = await request.delete(url, config);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
+
 export class AppAxios extends BaseAxios {
   getAll() {
     return this.basicGetRequest("/app");
@@ -60,6 +78,12 @@ export const projectAxios = {
   postProject: (did, data) => {
     return basicPostRequest(`/project/${did}`, data);
   },
+  putProject: (id, data) => {
+    return basicPutRequest(`/project/${id}`, data);
+  },
+  deleteProject: (id) => {
+    return basicDeleteRequest(`/project/${id}`);
+  },
 };
 
 export const appAxios = {
@@ -76,18 +100,6 @@ export const appAxios = {
     return basicPostRequest(`/app/project/${id}`, data);
   },
 };
-
-// export class ReportAxios extends BaseAxios {
-//   all() {
-//     return this.basicGetRequest("/report");
-//   }
-//   getOne(id) {
-//     return this.basicGetRequest(`/report/${id}`);
-//   }
-//   getListByAppId(aid) {
-//     return this.basicGetRequest(`/report/app/${aid}`);
-//   }
-// }
 
 export const reportAxios = {
   all: () => {
