@@ -11,8 +11,10 @@ import {
 } from "@material-ui/core";
 import { Doughnut } from "react-chartjs-2";
 
-export default function TotalCoverageDoughnutGraph({ data, title }) {
+export default function TotalDoughnutGraph({ data, title }) {
   const dataDoughnutGraph = {
+    // labels: ["Covered", "Missed"],
+    // text: "text",
     datasets: [
       {
         data,
@@ -25,6 +27,7 @@ export default function TotalCoverageDoughnutGraph({ data, title }) {
       },
     ],
   };
+
   return (
     <Box>
       <Typography

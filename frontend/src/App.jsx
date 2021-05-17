@@ -28,6 +28,7 @@ function App() {
             style={{
               backgroundColor: "white",
               padding: 20,
+              minHeight: "100vh",
               // maxWidth: "75%",
             }}
           >
