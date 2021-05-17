@@ -5,6 +5,7 @@ import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GeneratorType;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -22,5 +23,11 @@ public class User {
     String uid;
     String password;
     String name;
-    int department_id;
+
+    @Column(columnDefinition = "varchar(20) default 'user'")
+    String role;
+
+    @ManyToOne
+    @JsonIgnore
+    private Department department;
 }

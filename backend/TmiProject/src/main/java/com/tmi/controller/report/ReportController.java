@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.tmi.dto.ReportPostDto;
 import com.tmi.entity.Report;
-import com.tmi.service.CoverageService;
 import com.tmi.service.ReportService;
+import com.tmi.service.ReportServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,25 +15,26 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/report")
 public class ReportController {
     @Autowired
-    private ReportService reportService;
+    private ReportService service;
 
     @GetMapping()
-    List<Report> allReport() {
-        return reportService.readAllReports();
+    List<Report> getAllReport() {
+        return service.getAllReport();
     }
 
     @GetMapping("/{id}")
-    Report oneReport(@PathVariable Long id) {
-        return reportService.readOneReport(id);
+    Report findReportById(@PathVariable Long id) {
+        return service.findReportById(id);
     }
 
     @GetMapping("/app/{aid}")
     List<Report> allReportByAppId(@PathVariable String aid) {
-        return reportService.readAllReportsInApp(aid);
+        return service.readAllReportsInApp(aid);
     }
 
-    @PostMapping()
-    Report createReport(@RequestBody ReportPostDto dto) {
-        return reportService.createReport(dto);
+    @PostMapping("/{aid}")
+    Report createReport(@RequestBody Report report, @PathVariable String aid) {
+        System.out.println(aid);
+        return service.createReport(report, aid);
     }
 }
