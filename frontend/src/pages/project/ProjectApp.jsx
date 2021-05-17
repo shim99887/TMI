@@ -59,6 +59,13 @@ const columns = [
     headerName: "Recent Build Datetime",
     type: "date",
     flex: 1,
+    renderCell: (params) => (
+      <>
+        {params.getValue("recentDatetime") && (
+          <div>{datetime(params.getValue("recentDatetime"))}</div>
+        )}
+      </>
+    ),
   },
   {
     field: "lineCov",
@@ -290,7 +297,6 @@ export default function ProjectApp() {
                 setSelectedTotalPassRate(newSelectedTotalPassRate);
               }}
               onCellClick={async (cell, event) => {
-
                 if (cell.field !== "__check__") {
                   event.preventDefault();
                   event.stopPropagation();
