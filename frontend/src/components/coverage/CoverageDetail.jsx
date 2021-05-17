@@ -7,9 +7,10 @@ import {
 import datetime from "../../utils/moment";
 import { AppBar, IconButton, Toolbar, Typography } from "@material-ui/core";
 import { useState } from "react";
-import { coverageAxios } from "../../utils/axios";
+import { coverageAxios, testAxios } from "../../utils/axios";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import CloseIcon from "@material-ui/icons/Close";
+import TestDetail from "../../components/test/TestDetail";
 
 // totalBranchCovCovered: 40
 // totalBranchCovMissed: 60
@@ -26,9 +27,7 @@ const columns = [
     field: "datetime",
     headerName: "Build Datetime",
     flex: 1,
-    type: "date",
-
-    // valueGetter: (params) => params,
+    renderCell: (params) => <div>{datetime(params.getValue("datetime"))}</div>,
   },
   {
     field: "lineCov",
@@ -42,9 +41,9 @@ const columns = [
       const total = covered + missed;
 
       if (total) {
-        return Math.round((covered / total) * 10000) / 100;
+        return Math.round((covered / total) * 10000) / 100 + " %";
       }
-      return 100;
+      return 100 + " %";
     },
   },
   {
@@ -70,9 +69,9 @@ const columns = [
       const total = covered + missed;
 
       if (total) {
-        return Math.round((covered / total) * 10000) / 100;
+        return Math.round((covered / total) * 10000) / 100 + " %";
       }
-      return 100;
+      return 100 + " %";
     },
   },
   {
@@ -87,6 +86,28 @@ const columns = [
     flex: 1,
     type: "number",
   },
+  {
+    field: "passRate",
+    headerName: "Pass Rate(%)",
+    flex: 1,
+    type: "number",
+    valueGetter: (params) => {
+      const run = params.getValue("totalRunCount");
+
+      if (run) {
+        return (
+          (run /
+            (run +
+              params.getValue("totalFailCount") +
+              params.getValue("totalErrorCount") +
+              params.getValue("totalSkipCount"))) *
+            100 +
+          " %"
+        );
+      }
+      return 0 + " %";
+    },
+  },
 ];
 
 function CustomToolbar() {
@@ -97,10 +118,11 @@ function CustomToolbar() {
   );
 }
 
-export default function CoverageDetail({ title, data, close }) {
+export default function CoverageDetail({ aid, title, data, close }) {
   const [classDetail, setClassDetail] = useState(false);
   const [classDetailData, setClassDetailData] = useState([]);
   const [selectedReport, setSelectedReport] = useState({});
+  const [testDetail, setTestDetail] = useState(false);
 
   return (
     <>
@@ -121,7 +143,8 @@ export default function CoverageDetail({ title, data, close }) {
                 <ArrowBackIcon />
               </IconButton>
               <Typography variant="h6" style={{ flexGrow: 1 }}>
-                {title} history group by class &gt; {selectedReport.datetime}
+                {title} history group by class &gt;{" "}
+                {datetime(selectedReport.datetime)}
               </Typography>
               <IconButton
                 edge="start"
@@ -158,9 +181,9 @@ export default function CoverageDetail({ title, data, close }) {
                     const total = covered + missed;
 
                     if (total) {
-                      return Math.round((covered / total) * 10000) / 100;
+                      return Math.round((covered / total) * 10000) / 100 + " %";
                     }
-                    return 100;
+                    return 100 + " %";
                   },
                 },
                 {
@@ -186,9 +209,9 @@ export default function CoverageDetail({ title, data, close }) {
                     const total = covered + missed;
 
                     if (total) {
-                      return Math.round((covered / total) * 10000) / 100;
+                      return Math.round((covered / total) * 10000) / 100 + " %";
                     }
-                    return 100;
+                    return 100 + " %";
                   },
                 },
                 {
@@ -211,6 +234,44 @@ export default function CoverageDetail({ title, data, close }) {
               }}
             />
           </div>
+        </>
+      ) : testDetail ? (
+        <>
+          <AppBar position="static">
+            <Toolbar>
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                onClick={() => {
+                  setTestDetail(false);
+                  setSelectedReport({});
+                }}
+              >
+                <ArrowBackIcon />
+              </IconButton>
+              <Typography variant="h6" style={{ flexGrow: 1 }}>
+                {title} history &gt;{" "}
+              </Typography>
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                onClick={() => {
+                  setTestDetail(false);
+                  setSelectedReport({});
+                  close();
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+            </Toolbar>
+          </AppBar>
+          <TestDetail
+            aid={aid}
+            id={selectedReport.id}
+            title={title}
+          ></TestDetail>
         </>
       ) : (
         <>
@@ -243,12 +304,20 @@ export default function CoverageDetail({ title, data, close }) {
               columns={columns}
               onCellClick={async (cell, event) => {
                 event.preventDefault();
-                const responseData =
-                  await coverageAxios.getCoverageListByReportId(cell.row.id);
-                console.log(responseData);
-                setClassDetailData(responseData);
-                setClassDetail(true);
-                setSelectedReport(cell.row);
+                if (cell.field == "passRate") {
+                  console.log(cell.row.id);
+                  console.log(cell.row);
+                  setTestDetail(true);
+                  setSelectedReport(cell.row);
+                } else {
+                  const responseData = await coverageAxios.getCoverageListByReportId(
+                    cell.row.id
+                  );
+                  console.log(responseData);
+                  setClassDetailData(responseData);
+                  setClassDetail(true);
+                  setSelectedReport(cell.row);
+                }
               }}
             />
           </div>

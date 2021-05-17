@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
-import ReportItemContainer from "../../components/application/ReportItemContainer";
-import ReportHistoryContainer from "../../components/application/ReportHistoryContainer";
+import TestItemContainer from "./TestItemContainer";
+import ReportHistoryContainer from "./ReportHistoryContainer";
 import { makeStyles } from "@material-ui/core/styles";
 import { reportAxios, testAxios } from "../../utils/axios";
+import datetime from "../../utils/moment";
 import styled from "styled-components";
 
 const useStyles = makeStyles((theme) => ({
@@ -15,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ApplicationDetail(props) {
+export default function TestDetail(props) {
   const styles = useStyles();
   const [idx, setIdx] = useState(-1);
   const [report, setReport] = useState([]);
@@ -26,21 +27,19 @@ export default function ApplicationDetail(props) {
   const [condition, setCondition] = useState([]);
 
   useEffect(async () => {
-    const reportResponse = await reportAxios.getListByAppId(
-      "4de2e824-12fa-4d01-b397-2effb62f81f8"
-    ); // props.id
-
+    console.log(props.id);
+    const reportResponse = await reportAxios.getListByAppId(props.aid);
     setReport(reportResponse);
 
     let selectedReportList = [];
     for (let i = 0; i < reportResponse.length; i++) {
-      // props.idx - 1
-      if (i == 6) {
-        for (let j = i - 7 < 0 ? 0 : i - 7; j <= i; j++) {
+      if (reportResponse[i].id == props.id) {
+        for (let j = i; j <= i + 6; j++) {
+          if (reportResponse.length <= j) continue;
           if (selectedReportList.length >= 7) break; // max length
 
           let string = JSON.stringify(reportResponse[j]);
-          string = string.replace("}", `,"idx":${j}}`);
+          string = string.replace("}", `,"index":${j}}`);
           selectedReportList.push(JSON.parse(string));
         }
         break;
@@ -49,8 +48,6 @@ export default function ApplicationDetail(props) {
     console.log(selectedReportList);
 
     setReportHistory(selectedReportList);
-
-    setIdx(0);
   }, []);
 
   useEffect(() => {
@@ -62,6 +59,7 @@ export default function ApplicationDetail(props) {
       .getListByReportId(id)
       .then((res) => {
         setTests(res);
+        console.log(index);
         setIdx(index);
         setCondition("1111");
         console.log(id);
@@ -71,10 +69,15 @@ export default function ApplicationDetail(props) {
       });
   }
 
-  const reports = reportHistory.map((data, index) => (
-    <Box onClick={() => getReportData(data.id, data.idx)} key={index}>
+  const reports = reportHistory.map((data, id) => (
+    <Box
+      onClick={() =>
+        getReportData(data.id, data.index - reportHistory[0].index)
+      }
+      key={id}
+    >
       <ReportHistoryContainer
-        testCount={report.length - data.idx}
+        testCount={report.length - data.index}
         date={data.datetime}
         percent={
           data.totalRunCount == 0
@@ -98,7 +101,7 @@ export default function ApplicationDetail(props) {
       }}
       key={index}
     >
-      <ReportItemContainer
+      <TestItemContainer
         name={data.name}
         time={data.elapsedTime}
         resultType={data.type}
@@ -146,7 +149,7 @@ export default function ApplicationDetail(props) {
             maxWidth: "20%",
           }}
         >
-          Main Server
+          {props.title}
         </Box>
         <Box
           display="flex"
@@ -188,10 +191,11 @@ export default function ApplicationDetail(props) {
         <Grid item xs={12}>
           {idx >= 0 && (
             <Box display="flex" justifyContent="space-between" marginTop="3%">
-              Report #{report.length - reportHistory[idx].idx} -{" "}
-              {reportHistory[idx].datetime.split("T")[0]}{" "}
-              {reportHistory[idx].datetime.split("T")[1]} (
-              {reportHistory[idx].totalElapsedTime} ms)
+              <Box>
+                Report #{report.length - reportHistory[idx].index} -{" "}
+                {datetime(reportHistory[idx].datetime)} (
+                {reportHistory[idx].totalElapsedTime} ms)
+              </Box>
               <input
                 type="search"
                 placeholder="filter"
@@ -296,7 +300,8 @@ export default function ApplicationDetail(props) {
               </Box>
             </Box>
           )}
-          {testList}
+          {/* 스크롤 가능하게 만들기 */}
+          <Box>{testList}</Box>
         </Grid>
       </Box>
     </Box>

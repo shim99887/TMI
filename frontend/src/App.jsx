@@ -6,8 +6,7 @@ import About from "./pages/About";
 import Login from "./pages/login/Login";
 import Project from "./pages/project/Project";
 import ProjectApp from "./pages/project/ProjectApp";
-import Application from "./pages/application/Application";
-import ApplicationDetail from "./pages/application/ApplicationDetail";
+import TestDetail from "./components/test/TestDetail";
 import "./App.css";
 import { useDispatch, useSelector } from "react-redux";
 import { LOG_OUT } from "./redux/user";
@@ -28,16 +27,14 @@ function App() {
           <Container
             style={{
               backgroundColor: "white",
-              height: "100vh",
-              padding: 10,
+              padding: 20,
+              // maxWidth: "75%",
             }}
           >
             <div style={{ height: 64 }} />
             {/* <Route path="/" exact component={() => <div>Home</div>} /> */}
             <Route path="/project" exact component={Project} />
             <Route path="/project/:id" component={ProjectApp} />
-            <Route path="/app" exact component={Application} />
-            <Route path="/app/:id" component={ApplicationDetail} />
             <Route path="/about" component={About} />
           </Container>
         </>

@@ -5,10 +5,10 @@ import {
   makeStyles,
   Toolbar,
   Typography,
+  Box,
 } from "@material-ui/core";
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
-// import MyBreadcrumbs from "./Breadcrumbs";
 import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -46,21 +46,16 @@ function Navigation({ logout, history }) {
             <Button color="inherit">
               <Link
                 style={{ textDecoration: "none", color: "inherit" }}
-                to="/app"
-              >
-                Test Job
-              </Link>
-            </Button>
-            <Button color="inherit">
-              <Link
-                style={{ textDecoration: "none", color: "inherit" }}
                 to="/about"
               >
                 About
               </Link>
             </Button>
           </Grid>
-          <Typography>{user.info.name}</Typography>
+          <Box borderRight="1px solid #D7D7D7" paddingRight="7px">
+            <Typography>{user.info.name}</Typography>
+          </Box>
+
           <Button
             onClick={() => {
               logout();
