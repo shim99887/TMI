@@ -26,6 +26,7 @@ const columns = [
     field: "datetime",
     headerName: "Build Datetime",
     flex: 1,
+    type: "date",
 
     // valueGetter: (params) => params,
   },
@@ -34,6 +35,7 @@ const columns = [
     headerName: "Line Cov.(%)",
     description: "Line Coverage (Covered / Missed)",
     flex: 1,
+    type: "number",
     valueGetter: (params) => {
       const covered = params.getValue("totalLineCovCovered");
       const missed = params.getValue("totalLineCovMissed");
@@ -45,12 +47,23 @@ const columns = [
       return 100;
     },
   },
-  { field: "totalLineCovCovered", headerName: "Line Covered", flex: 1 },
-  { field: "totalLineCovMissed", headerName: "Line Missed", flex: 1 },
+  {
+    field: "totalLineCovCovered",
+    headerName: "Line Covered",
+    flex: 1,
+    type: "number",
+  },
+  {
+    field: "totalLineCovMissed",
+    headerName: "Line Missed",
+    flex: 1,
+    type: "number",
+  },
   {
     field: "branchCov",
     headerName: "Branch Cov.(%)",
     flex: 1,
+    type: "number",
     valueGetter: (params) => {
       const covered = params.getValue("totalBranchCovCovered");
       const missed = params.getValue("totalBranchCovMissed");
@@ -66,11 +79,13 @@ const columns = [
     field: "totalBranchCovCovered",
     headerName: "Branch Covered",
     flex: 1,
+    type: "number",
   },
   {
     field: "totalBranchCovMissed",
     headerName: "Branch Missed",
     flex: 1,
+    type: "number",
   },
 ];
 
@@ -135,6 +150,7 @@ export default function CoverageDetail({ title, data, close }) {
                   field: "lineCov",
                   headerName: "Line Cov.(%)",
                   description: "Line Coverage (Covered / Missed)",
+                  type: "number",
                   flex: 1,
                   valueGetter: (params) => {
                     const covered = params.getValue("lineCovCovered");
@@ -150,16 +166,19 @@ export default function CoverageDetail({ title, data, close }) {
                 {
                   field: "lineCovCovered",
                   headerName: "Line Covered",
+                  type: "number",
                   flex: 1,
                 },
                 {
                   field: "lineCovMissed",
                   headerName: "Line Missed",
+                  type: "number",
                   flex: 1,
                 },
                 {
                   field: "branchCov",
                   headerName: "Branch Cov.(%)",
+                  type: "number",
                   flex: 1,
                   valueGetter: (params) => {
                     const covered = params.getValue("branchCovCovered");
@@ -176,11 +195,13 @@ export default function CoverageDetail({ title, data, close }) {
                   field: "branchCovCovered",
                   headerName: "Branch Covered",
                   flex: 1,
+                  type: "number",
                 },
                 {
                   field: "branchCovMissed",
                   headerName: "Branch Missed",
                   flex: 1,
+                  type: "number",
                 },
               ]}
               onCellClick={async (cell, event) => {
