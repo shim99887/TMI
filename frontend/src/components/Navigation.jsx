@@ -46,14 +46,6 @@ function Navigation({ logout, history }) {
             <Button color="inherit">
               <Link
                 style={{ textDecoration: "none", color: "inherit" }}
-                to="/app"
-              >
-                Test Job
-              </Link>
-            </Button>
-            <Button color="inherit">
-              <Link
-                style={{ textDecoration: "none", color: "inherit" }}
                 to="/about"
               >
                 About
