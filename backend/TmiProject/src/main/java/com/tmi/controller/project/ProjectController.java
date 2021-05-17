@@ -1,57 +1,55 @@
 package com.tmi.controller.project;
 
 import com.tmi.entity.Project;
-import com.tmi.repository.ProjectRepository;
-import io.swagger.annotations.ApiOperation;
+import com.tmi.entity.User;
+import com.tmi.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/project")
 public class ProjectController {
 
-    private final ProjectRepository repository;
-
     @Autowired
-    public ProjectController(ProjectRepository repository) {
-        this.repository = repository;
-    }
+    private ProjectService service;
 
     @GetMapping()
-    List<Project> all() {
-        return repository.findAll();
+    ResponseEntity<List<Project>> getAllProject() {
+        return new ResponseEntity<>(service.getAllProject(), HttpStatus.OK);
     }
 
-    @PostMapping()
-    Project newProject(@RequestBody Project newProject) {
-        return repository.save(newProject);
+    @PostMapping("/{did}")
+    ResponseEntity<Project> postNewProject(@RequestBody Project newProject, @PathVariable int did) {
+        Project project = service.postNewProject(newProject, did);
+        if(project == null){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }else{
+            return new ResponseEntity<>(project, HttpStatus.OK);
+        }
     }
 
     @GetMapping("/{id}")
-    Project one(@PathVariable Long id) {
-        return repository.findById(id).orElseThrow(() -> new ProjectNotFoundException(id));
+    Project getProjectById(@PathVariable Long id) {
+        Project project = service.getProjectById(id);
+        if(project == null){
+            return null;
+        }else{
+            return project;
+        }
     }
 
     @PutMapping("/{id}")
-    Project replaceProject(@RequestBody Project newProject, @PathVariable Long id) {
-        return repository.findById(id).map(Project -> {
-            Project.setTitle(newProject.getTitle());
-            Project.setDescription(newProject.getDescription());
-            Project.setRegDate(newProject.getRegDate());
-            Project.setDepartment(newProject.getDepartment());
-            return repository.save(Project);
-        }).orElseGet(() -> {
-            newProject.setId(id);
-            return repository.save(newProject);
-        });
+    void putProject(@RequestBody Project newProject, @PathVariable Long id) {
+        service.putProject(newProject, id);
     }
 
     @DeleteMapping("/{id}")
     void deleteProject(@PathVariable Long id) {
-        repository.deleteById(id);
+        service.deleteProject(id);
     }
 }

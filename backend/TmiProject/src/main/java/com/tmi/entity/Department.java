@@ -1,5 +1,6 @@
 package com.tmi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,10 +16,21 @@ import java.util.List;
 @Table(name = "department")
 public class Department {
     @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     String name;
 
-    @OneToMany
-    @JoinColumn(name = "department_id")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "department")
+    @JsonIgnore
     private List<User> user;
+
+    public void addUser(User user){
+        this.getUser().add(user);
+        user.setDepartment(this);
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "department")
+    @JsonIgnore
+    private List<Project> projects;
 }

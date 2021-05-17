@@ -1,49 +1,16 @@
 package com.tmi.service;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.tmi.dto.ReportPostDto;
-import com.tmi.entity.App;
 import com.tmi.entity.Report;
-import com.tmi.repository.AppRepository;
-import com.tmi.repository.ReportRepository;
 
-@Service
-public class ReportService {
-    @Autowired
-    private AppRepository appRepository;
+import java.util.List;
 
-    @Autowired
-    private ReportRepository reportRepository;
+public interface ReportService {
+    List<Report> getAllReport();
 
-    public List<Report> readAllReports() {
-        return reportRepository.findAllByOrderByIdDesc();
-    }
+    Report findReportById(long id);
 
-    public Report readOneReport(long id) {
-        Report report = reportRepository.findById(id).get();
-        return report;
-    }
+    List<Report> readAllReportsInApp(String aid);
 
-    public List<Report> readAllReportsInApp(String aid) {
-        // , Sort.by(Sort.Direction.DESC, "aid")
-        App app = appRepository.findById(aid).get();
-        List<Report> reports = app.getReports();
-        reports = reports.stream().sorted(Comparator.comparing(Report::getId).reversed()).collect(Collectors.toList());
-        return reports;
-    }
-
-    public Report createReport(ReportPostDto reportPostDto) {
-        Optional<App> app = appRepository.findById(reportPostDto.getAppId());
-        Report report = reportPostDto.toEntity();
-        report.setApp(app.get());
-
-        return reportRepository.save(report);
-    }
+    Report createReport(Report report, String appId);
 }
