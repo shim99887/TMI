@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 import CreateAppForm from "../../components/form/CreateAppForm";
 import ProjectAppPassRateGraphs from "../../components/graph/ProjectAppPassRateGraphs";
-import TotalCoverageDoughnutGraph from "../../components/graph/TotalCoverageDoughnutGraph";
+import TotalDoughnutGraph from "../../components/graph/TotalDoughnutGraph";
 import datetime from "../../utils/moment";
 import {
   DataGrid,
@@ -213,11 +213,11 @@ export default function ProjectApp() {
           </Button>
         </div>
         <Typography variant="h6">{project.description}</Typography>
-        <Typography variant="small">담당부서: {project.department}</Typography>
+        {/* <Typography variant="small">담당부서: {project.department}</Typography>
         <br></br>
         <Typography variant="small">
           등록일: {datetime(project.regDate)}{" "}
-        </Typography>{" "}
+        </Typography>{" "} */}
       </div>
       <div style={{ display: "flex" }}>
         <div
@@ -228,18 +228,15 @@ export default function ProjectApp() {
             marginRight: 15,
           }}
         >
-          <TotalCoverageDoughnutGraph
+          <TotalDoughnutGraph
             data={selectedTotalLineCoverage}
-            title="Line Coverage"
+            title="Line Cov."
           />
-          <TotalCoverageDoughnutGraph
+          <TotalDoughnutGraph
             data={selectedTotalBranchCoverage}
-            title="Branch Coverage"
+            title="Branch Cov."
           />
-          <TotalCoverageDoughnutGraph
-            data={selectedTotalPassRate}
-            title="Pass Rate"
-          />
+          <TotalDoughnutGraph data={selectedTotalPassRate} title="Pass Rate" />
         </div>
         <div style={{ flexGrow: 1 }}>
           <div style={{ height: "75vh", width: "100%" }}>
