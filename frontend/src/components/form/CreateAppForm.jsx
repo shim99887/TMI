@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CreateAppForm({ onClose }) {
+export default function CreateAppForm({ close, appList, setAppList }) {
   const params = useParams();
   const [appName, setAppName] = useState("");
   const [gitUrl, setGitUrl] = useState("");
@@ -26,6 +26,8 @@ export default function CreateAppForm({ onClose }) {
         title: appName,
         gitUrl,
       });
+      setAppList([...appList, response]);
+      close();
     }
   }
 
