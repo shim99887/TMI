@@ -59,6 +59,13 @@ const columns = [
     headerName: "Recent Build Datetime",
     type: "date",
     flex: 1,
+    renderCell: (params) => (
+      <>
+        {params.getValue("recentDatetime") && (
+          <div>{datetime(params.getValue("recentDatetime"))}</div>
+        )}
+      </>
+    ),
   },
   {
     field: "lineCov",
@@ -143,12 +150,18 @@ export default function ProjectApp() {
   const [selectedAppId, setSelectedAppId] = useState("");
   const [selectionModel, setSelectionModel] = useState([]);
   const [selectedTotalLineCoverage, setSelectedTotalLineCoverage] = useState([
-    100, 0,
+    100,
+    0,
   ]);
-  const [selectedTotalBranchCoverage, setSelectedTotalBranchCoverage] =
-    useState([100, 0]);
+  const [
+    selectedTotalBranchCoverage,
+    setSelectedTotalBranchCoverage,
+  ] = useState([100, 0]);
   const [selectedTotalPassRate, setSelectedTotalPassRate] = useState([
-    100, 0, 0, 0,
+    100,
+    0,
+    0,
+    0,
   ]);
 
   const classes = useStyles();
@@ -286,7 +299,6 @@ export default function ProjectApp() {
                 setSelectedTotalPassRate(newSelectedTotalPassRate);
               }}
               onCellClick={async (cell, event) => {
-
                 if (cell.field !== "__check__") {
                   event.preventDefault();
                   event.stopPropagation();
