@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ReportErrorContainer(props) {
+export default function TestErrorContainer(props) {
   const styles = useStyles();
 
   return (

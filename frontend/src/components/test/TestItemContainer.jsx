@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import ReportErrorContainer from "./ReportErrorContainer";
+import TestErrorContainer from "./TestErrorContainer";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
       </Accordion> */
 }
 
-export default function ReportItemContainer(props) {
+export default function TestItemContainer(props) {
   const styles = useStyles();
 
   const [open, setOpen] = React.useState(false);
@@ -106,18 +106,14 @@ export default function ReportItemContainer(props) {
                     marginBottom: "1%",
                   }}
                 >
-                  <ReportErrorContainer
-                    name="Type"
-                    content={props.errorType}
-                  ></ReportErrorContainer>
-                  <ReportErrorContainer
-                    name="Message"
+                  <TestErrorContainer
+                    name="ErrorMessage"
                     content={props.errorMessage}
-                  ></ReportErrorContainer>
-                  <ReportErrorContainer
+                  ></TestErrorContainer>
+                  <TestErrorContainer
                     name="ResultType"
                     content={props.resultType}
-                  ></ReportErrorContainer>
+                  ></TestErrorContainer>
                 </Box>
               ) : null}
             </Box>
@@ -176,18 +172,18 @@ export default function ReportItemContainer(props) {
                     marginBottom: "1%",
                   }}
                 >
-                  <ReportErrorContainer
+                  <TestErrorContainer
                     name="Type"
                     content={props.errorType}
-                  ></ReportErrorContainer>
-                  <ReportErrorContainer
+                  ></TestErrorContainer>
+                  <TestErrorContainer
                     name="Message"
                     content={props.errorMessage}
-                  ></ReportErrorContainer>
-                  <ReportErrorContainer
+                  ></TestErrorContainer>
+                  <TestErrorContainer
                     name="ResultType"
                     content={props.resultType}
-                  ></ReportErrorContainer>
+                  ></TestErrorContainer>
                 </Box>
               ) : null}
             </Box>
@@ -246,18 +242,18 @@ export default function ReportItemContainer(props) {
                     marginBottom: "1%",
                   }}
                 >
-                  <ReportErrorContainer
+                  <TestErrorContainer
                     name="Type"
                     content={props.errorType}
-                  ></ReportErrorContainer>
-                  <ReportErrorContainer
+                  ></TestErrorContainer>
+                  <TestErrorContainer
                     name="Message"
                     content={props.errorMessage}
-                  ></ReportErrorContainer>
-                  <ReportErrorContainer
+                  ></TestErrorContainer>
+                  <TestErrorContainer
                     name="ResultType"
                     content={props.resultType}
-                  ></ReportErrorContainer>
+                  ></TestErrorContainer>
                 </Box>
               ) : null}
             </Box>
@@ -312,18 +308,18 @@ export default function ReportItemContainer(props) {
                     marginBottom: "1%",
                   }}
                 >
-                  <ReportErrorContainer
+                  <TestErrorContainer
                     name="Type"
                     content={props.errorType}
-                  ></ReportErrorContainer>
-                  <ReportErrorContainer
+                  ></TestErrorContainer>
+                  <TestErrorContainer
                     name="Message"
                     content={props.errorMessage}
-                  ></ReportErrorContainer>
-                  <ReportErrorContainer
+                  ></TestErrorContainer>
+                  <TestErrorContainer
                     name="ResultType"
                     content={props.resultType}
-                  ></ReportErrorContainer>
+                  ></TestErrorContainer>
                 </Box>
               ) : null}
             </Box>

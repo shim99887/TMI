@@ -13,7 +13,7 @@ import {
 import CreateAppForm from "../../components/form/CreateAppForm";
 import ProjectAppPassRateGraphs from "../../components/graph/ProjectAppPassRateGraphs";
 import TotalCoverageDoughnutGraph from "../../components/graph/TotalCoverageDoughnutGraph";
-import ApplicationDetail from "../application/ApplicationDetail";
+import datetime from "../../utils/moment";
 import {
   DataGrid,
   GridToolbarContainer,
@@ -137,10 +137,10 @@ export default function ProjectApp() {
   const [project, setProject] = useState({});
   const [appList, setAppList] = useState([]);
   const [modalCreateAppFromOpen, setModalCreateAppFormOpen] = useState(false);
-  const [modalTestDetailOpen, setModalTestDetailOpen] = useState(false);
   const [modalCoverageDetailOpen, setModalCoverageDetailOpen] = useState(false);
   const [coverageDetailData, setCoverageDetailData] = useState([]);
   const [selectedAppTitle, setSelectedAppTitle] = useState("");
+  const [selectedAppId, setSelectedAppId] = useState("");
   const [selectionModel, setSelectionModel] = useState([]);
   const [selectedTotalLineCoverage, setSelectedTotalLineCoverage] = useState([
     0, 0,
@@ -150,6 +150,7 @@ export default function ProjectApp() {
   const [selectedTotalPassRate, setSelectedTotalPassRate] = useState([
     0, 0, 0, 0,
   ]);
+
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = useState(getModalStyle);
@@ -164,18 +165,13 @@ export default function ProjectApp() {
     </div>
   );
 
-  const modalTestDetail = (
-    <div style={modalStyle} className={classes.testDetail}>
-      <ApplicationDetail params={{ id: "uniqueKey1" }} />
-    </div>
-  );
-
   const modalCoverageDetail = (
     <div style={modalStyle} className={classes.testDetail}>
       <CoverageDetail
         close={() => setModalCoverageDetailOpen(false)}
         data={coverageDetailData}
         title={selectedAppTitle}
+        aid={selectedAppId}
       />
     </div>
   );
@@ -210,10 +206,11 @@ export default function ProjectApp() {
           </Button>
         </div>
         <Typography variant="h6">{project.description}</Typography>
-        <Typography component="small">
-          담당부서: {project.department}
-        </Typography>
-        <Typography component="small">등록일: {project.regDate}</Typography>{" "}
+        <Typography variant="small">담당부서: {project.department}</Typography>
+        <br></br>
+        <Typography variant="small">
+          등록일: {datetime(project.regDate)}{" "}
+        </Typography>{" "}
       </div>
       <div style={{ display: "flex" }}>
         <div
@@ -240,6 +237,7 @@ export default function ProjectApp() {
         <div style={{ flexGrow: 1 }}>
           <div style={{ height: "75vh", width: "100%" }}>
             <DataGrid
+              className="dataGrid"
               components={{
                 Toolbar: CustomToolbar,
               }}
@@ -292,6 +290,7 @@ export default function ProjectApp() {
                 setSelectedTotalPassRate(newSelectedTotalPassRate);
               }}
               onCellClick={async (cell, event) => {
+
                 if (cell.field !== "__check__") {
                   event.preventDefault();
                   event.stopPropagation();
@@ -301,6 +300,7 @@ export default function ProjectApp() {
                   );
                   setCoverageDetailData(responseData);
                   setSelectedAppTitle(cell.row.title);
+                  setSelectedAppId(cell.row.id);
                 }
               }}
               on
@@ -308,25 +308,15 @@ export default function ProjectApp() {
           </div>
         </div>
       </div>
-      <Button variant="contained" onClick={() => setModalTestDetailOpen(true)}>
-        Test Detail Example
-      </Button>
       <Modal
-        open={
-          modalCreateAppFromOpen ||
-          modalTestDetailOpen ||
-          modalCoverageDetailOpen
-        }
+        open={modalCreateAppFromOpen || modalCoverageDetailOpen}
         onClose={() => {
           setModalCreateAppFormOpen(false);
-          setModalTestDetailOpen(false);
           setModalCoverageDetailOpen(false);
         }}
       >
         {modalCreateAppFromOpen ? (
           modalCreateAppFrom
-        ) : modalTestDetailOpen ? (
-          modalTestDetail
         ) : modalCoverageDetailOpen ? (
           modalCoverageDetail
         ) : (
