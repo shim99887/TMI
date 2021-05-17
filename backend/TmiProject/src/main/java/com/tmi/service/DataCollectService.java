@@ -152,7 +152,7 @@ public class DataCollectService {
 		app.setRecentTotalErrorCount(totalErrorCount);
 		app.setRecentTotalFailCount(totalFailCount);
 		app.setRecentTotalSkipCount(totalSkipCount);
-		app.setRecentTotalSkipCount(totalRunCount);
+		app.setRecentTotalRunCount(totalRunCount);
 		
 		reportRepository.save(report);
 		
