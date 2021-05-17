@@ -81,7 +81,7 @@ const columns = [
       if (total) {
         return Math.round((covered / total) * 10000) / 100;
       }
-      return 100;
+      return;
     },
   },
   {
@@ -97,7 +97,7 @@ const columns = [
       if (total) {
         return Math.round((covered / total) * 10000) / 100;
       }
-      return 100;
+      return;
     },
   },
   {
@@ -115,7 +115,7 @@ const columns = [
       if (total) {
         return Math.round((pass / total) * 10000) / 100;
       }
-      return 100;
+      return;
     },
   },
 ];
@@ -150,18 +150,12 @@ export default function ProjectApp() {
   const [selectedAppId, setSelectedAppId] = useState("");
   const [selectionModel, setSelectionModel] = useState([]);
   const [selectedTotalLineCoverage, setSelectedTotalLineCoverage] = useState([
-    100,
-    0,
+    0, 0,
   ]);
-  const [
-    selectedTotalBranchCoverage,
-    setSelectedTotalBranchCoverage,
-  ] = useState([100, 0]);
+  const [selectedTotalBranchCoverage, setSelectedTotalBranchCoverage] =
+    useState([0, 0]);
   const [selectedTotalPassRate, setSelectedTotalPassRate] = useState([
-    100,
-    0,
-    0,
-    0,
+    0, 0, 0, 0,
   ]);
 
   const classes = useStyles();
@@ -170,7 +164,11 @@ export default function ProjectApp() {
 
   const modalCreateAppFrom = (
     <div style={modalStyle} className={classes.createAppForm}>
-      <CreateAppForm onClose={() => setModalCreateAppFormOpen(false)} />
+      <CreateAppForm
+        close={() => setModalCreateAppFormOpen(false)}
+        appList={appList}
+        setAppList={setAppList}
+      />
     </div>
   );
 
