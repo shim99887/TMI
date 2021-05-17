@@ -54,12 +54,12 @@ const useStyles = makeStyles((theme) => ({
 
 const columns = [
   { field: "title", headerName: "App Name", flex: 1 },
-  { field: "datetime", headerName: "Build Datetime", flex: 1 },
-  { field: "lastName", headerName: "Line Cov.(%)", flex: 1 },
+  { field: "datetime", headerName: "Build Datetime", type: "date", flex: 1 },
+  { field: "lastName", headerName: "Line Cov.(%)", type: "number", flex: 1 },
   {
     field: "branchCov",
     headerName: "Branch Cov.(%)",
-    // type: "number",
+    type: "number",
     flex: 1,
   },
   {
@@ -67,10 +67,7 @@ const columns = [
     headerName: "Pass Rate(%)",
     description: "This column has a value getter and is not sortable.",
     // sortable: false,
-    valueGetter: (params) =>
-      `${params.getValue("firstName") || ""} ${
-        params.getValue("lastName") || ""
-      }`,
+    type: "number",
     flex: 1,
   },
 ];
