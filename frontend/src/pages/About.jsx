@@ -217,7 +217,7 @@ export default function About() {
       description: "백엔드",
     },
     {
-      url: "u",
+      url: "../assets/images/about/P6.jpg",
       title: "강세준",
       description: "-",
     },

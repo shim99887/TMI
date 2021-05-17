@@ -72,9 +72,31 @@ export default function Project() {
       title: data.title,
       description: data.description,
     });
-    let dataToAdd = [...projectList];
-    dataToAdd.push(response);
-    setProjectList(dataToAdd);
+    let dataAdd = [...projectList];
+    dataAdd.push(response);
+    setProjectList(dataAdd);
+  }
+
+  async function updateRow(data) {
+    const response = await projectAxios.putProject(data.id, {
+      title: data.title,
+      description: data.description,
+    });
+    let dataUpdate = [...projectList];
+    dataUpdate.map((du) => {
+      if (du.id == data.id) {
+        du.title = data.title;
+        du.description = data.description;
+      }
+      return du;
+    });
+    setProjectList(dataUpdate);
+  }
+
+  async function deleteRow(data) {
+    const response = await projectAxios.deleteProject(data.id);
+    let dataDelete = [...projectList];
+    setProjectList(dataDelete.filter((dd) => dd.id !== data.id));
   }
 
   const history = useHistory();
@@ -89,28 +111,6 @@ export default function Project() {
     }
     return () => {};
   }, []);
-
-  const handleRowUpdate = (newData, oldData, resolve) => {
-    let errorList = [];
-    if (!newData.title) {
-      errorList.push("Please enter title");
-    }
-    if (!newData.description) {
-      errorList.push("Please enter description");
-    }
-
-    if (errorList.length < 1) {
-      const dataUpdate = [...projectList];
-      const index = oldData.tableData.id;
-      dataUpdate[index] = newData;
-      setProjectList([...dataUpdate]);
-      resolve();
-    } else {
-      setErrorMessages(errorList);
-      setIserror(true);
-      resolve();
-    }
-  };
 
   const handleRowAdd = (newData, resolve) => {
     let errorList = [];
@@ -131,11 +131,27 @@ export default function Project() {
     }
   };
 
+  const handleRowUpdate = (newData, oldData, resolve) => {
+    let errorList = [];
+    if (!newData.title) {
+      errorList.push("Please enter title");
+    }
+    if (!newData.description) {
+      errorList.push("Please enter description");
+    }
+
+    if (errorList.length < 1) {
+      updateRow(newData);
+      resolve();
+    } else {
+      setErrorMessages(errorList);
+      setIserror(true);
+      resolve();
+    }
+  };
+
   const handleRowDelete = (oldData, resolve) => {
-    const dataDelete = [...projectList];
-    const index = oldData.tableData.id;
-    dataDelete.splice(index, 1);
-    setProjectList([...dataDelete]);
+    deleteRow(oldData);
     resolve();
   };
 
@@ -159,25 +175,36 @@ export default function Project() {
               columns={columns}
               data={projectList}
               icons={tableIcons}
-              editable={{
-                onRowUpdate: (newData, oldData) =>
-                  new Promise((resolve) => {
-                    handleRowUpdate(newData, oldData, resolve);
-                  }),
-                onRowAdd: (newData) =>
-                  new Promise((resolve) => {
-                    handleRowAdd(newData, resolve);
-                  }),
-                onRowDelete: (oldData) =>
-                  new Promise((resolve) => {
-                    handleRowDelete(oldData, resolve);
-                  }),
-              }}
+              editable={
+                user.info.role == "admin"
+                  ? {
+                      onRowAdd: (newData) =>
+                        new Promise((resolve) => {
+                          handleRowAdd(newData, resolve);
+                        }),
+                      onRowUpdate: (newData, oldData) =>
+                        new Promise((resolve) => {
+                          handleRowUpdate(newData, oldData, resolve);
+                        }),
+                      onRowDelete: (oldData) =>
+                        new Promise((resolve) => {
+                          handleRowDelete(oldData, resolve);
+                        }),
+                    }
+                  : {
+                      onRowAdd: (newData) =>
+                        new Promise((resolve) => {
+                          handleRowAdd(newData, resolve);
+                        }),
+                    }
+              }
               onRowClick={(evt, selectedRow) =>
                 history.push("/project/" + selectedRow.id)
               }
               options={{
                 actionsColumnIndex: -1,
+                minBodyHeight: "75vh",
+                maxBodyHeight: "75vh",
               }}
             />
           </Grid>
