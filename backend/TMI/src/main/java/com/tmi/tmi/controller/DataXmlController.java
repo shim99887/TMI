@@ -358,7 +358,7 @@ public class DataXmlController {
 				coverage.setPackageList(packageList);
 				//System.out.println("id " + coverageRepository.save(coverage).get_id());
 				
-				return new ResponseEntity<>(report.getString("name") + " " + coverageRepository.save(coverage).get_id(), HttpStatus.OK);
+				return new ResponseEntity<>(report.getString("name") + "^" + coverageRepository.save(coverage).get_id(), HttpStatus.OK);
 
 			} catch (Exception e) {
 				e.printStackTrace();

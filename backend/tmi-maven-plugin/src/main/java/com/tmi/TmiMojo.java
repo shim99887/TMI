@@ -120,7 +120,7 @@ public class TmiMojo extends AbstractMojo {
 		//RestTemplate restTemplate = new RestTemplate();
 		//ResponseEntity<String> xmlResponse = restTemplate.exchange(serverUrl, HttpMethod.POST, requestEntity, String.class);
 		String responseStr = restTemplate.postForObject(serverUrl,requestEntity,String.class);
-		String [] splitStr = responseStr.split(" ");
+		String [] splitStr = responseStr.split("^");
 		String projectName = splitStr[0];
 		String coverageKey = splitStr[1];
 		getLog().info("project name: " + splitStr[0]);
@@ -183,10 +183,10 @@ public class TmiMojo extends AbstractMojo {
 		//ResponseEntity<Boolean> response = restTemplate.exchange(junitServerUrl, HttpMethod.POST, requestEntity, Boolean.class);
 		
 		//getLog().info("junit txt response code: " + response.getStatusCode());
-//		getLog().info("jacoco xml key " + coverageKey);
-//		for(int i=1;i<keyArr.length;i++){
-//			getLog().info("junit data key " + keyArr[i]);
-//		}
+		getLog().info("jacoco xml key " + coverageKey);
+		for(int i=1;i<keyArr.length;i++){
+			getLog().info("junit data key " + keyArr[i]);
+		}
 		String buildTime = keyArr[0];
 		MultiValueMap<String, Object> dataSendBody = new LinkedMultiValueMap<>();
 		restTemplate = new RestTemplate();
@@ -199,8 +199,8 @@ public class TmiMojo extends AbstractMojo {
 		}
 
 		requestEntity = new HttpEntity<>(dataSendBody, headers);
-		String mainServerUrl = "https://k4a201.p.ssafy.io/api/data";
-		//String mainServerUrl = "http://localhost:3000/api/data";
+		//String mainServerUrl = "https://k4a201.p.ssafy.io/api/data";
+		String mainServerUrl = "http://localhost:3000/api/data";
 		Boolean isOk = restTemplate.postForObject(mainServerUrl, requestEntity, Boolean.class);
 		getLog().info("data send " + isOk);
 
@@ -230,8 +230,8 @@ public class TmiMojo extends AbstractMojo {
 
 		zipFile.delete();
 
-		String zipServerUrl = "https://k4a201.p.ssafy.io/api/file";
-		//String zipServerUrl = "http://localhost:3000/api/file";
+		//String zipServerUrl = "https://k4a201.p.ssafy.io/api/file";
+		String zipServerUrl = "http://localhost:3000/api/file";
 		responseStr = restTemplate.postForObject(zipServerUrl, requestEntity, String.class);
 		getLog().info("zip file send " + responseStr);
 	}
