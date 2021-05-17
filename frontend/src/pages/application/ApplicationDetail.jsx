@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Box from "@material-ui/core/Box";
-import Input from "@material-ui/core/Input";
 import Grid from "@material-ui/core/Grid";
 import ReportItemContainer from "../../components/application/ReportItemContainer";
 import ReportHistoryContainer from "../../components/application/ReportHistoryContainer";
 import { makeStyles } from "@material-ui/core/styles";
 import { reportAxios, testAxios } from "../../utils/axios";
-import { useParams } from "react-router";
+import styled from "styled-components";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -16,20 +15,42 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ReportDetail({ params }) {
+export default function ApplicationDetail(props) {
   const styles = useStyles();
-  // const params = useParams();
   const [idx, setIdx] = useState(-1);
   const [report, setReport] = useState([]);
+  const [reportHistory, setReportHistory] = useState([]);
   const [tests, setTests] = useState([]);
   const [searchField, setSearchField] = useState("");
   const [filteredTests, setFilteredTests] = useState([]);
   const [condition, setCondition] = useState([]);
-  // axios.get() Project의 ReportList 반환받는다
-  // Success, Fail, Error, Skip 눌렀을 때
+
   useEffect(async () => {
-    const reportResponse = await reportAxios.getListByAppId(params.id);
+    const reportResponse = await reportAxios.getListByAppId(
+      "4de2e824-12fa-4d01-b397-2effb62f81f8"
+    ); // props.id
+
     setReport(reportResponse);
+
+    let selectedReportList = [];
+    for (let i = 0; i < reportResponse.length; i++) {
+      // props.idx - 1
+      if (i == 6) {
+        for (let j = i - 7 < 0 ? 0 : i - 7; j <= i; j++) {
+          if (selectedReportList.length >= 7) break; // max length
+
+          let string = JSON.stringify(reportResponse[j]);
+          string = string.replace("}", `,"idx":${j}}`);
+          selectedReportList.push(JSON.parse(string));
+        }
+        break;
+      }
+    }
+    console.log(selectedReportList);
+
+    setReportHistory(selectedReportList);
+
+    setIdx(0);
   }, []);
 
   useEffect(() => {
@@ -50,17 +71,19 @@ export default function ReportDetail({ params }) {
       });
   }
 
-  const reports = report.map((data, index) => (
-    <Box onClick={() => getReportData(data.id, index)} key={index}>
+  const reports = reportHistory.map((data, index) => (
+    <Box onClick={() => getReportData(data.id, data.idx)} key={index}>
       <ReportHistoryContainer
-        testCount={data.id}
+        testCount={report.length - data.idx}
         date={data.datetime}
         percent={
-          data.totalRunCount /
-          (data.totalRunCount +
-            data.totalErrorCount +
-            data.totalFailCount +
-            data.totalSkipCount)
+          data.totalRunCount == 0
+            ? 0
+            : data.totalRunCount /
+              (data.totalRunCount +
+                data.totalErrorCount +
+                data.totalFailCount +
+                data.totalSkipCount)
         }
         targetPercent={0.7}
       ></ReportHistoryContainer>
@@ -165,11 +188,13 @@ export default function ReportDetail({ params }) {
         <Grid item xs={12}>
           {idx >= 0 && (
             <Box display="flex" justifyContent="space-between" marginTop="3%">
-              Report #{report[idx].id} - {report[idx].datetime.split("T")[0]}{" "}
-              {report[idx].datetime.split("T")[1]}
+              Report #{report.length - reportHistory[idx].idx} -{" "}
+              {reportHistory[idx].datetime.split("T")[0]}{" "}
+              {reportHistory[idx].datetime.split("T")[1]} (
+              {reportHistory[idx].totalElapsedTime} ms)
               <input
                 type="search"
-                placeholder="searchField"
+                placeholder="filter"
                 onChange={(e) => setSearchField(e.target.value)}
               ></input>
             </Box>
@@ -182,7 +207,10 @@ export default function ReportDetail({ params }) {
               style={{ cursor: "pointer" }}
             >
               <Box
-                flexGrow={report[idx].totalRunCount + 1}
+                className={
+                  condition[0] == "1" ? "typeButtonActive" : "typeButton"
+                }
+                flexGrow={reportHistory[idx].totalRunCount + 1}
                 onClick={getPassList}
               >
                 <Box
@@ -197,11 +225,14 @@ export default function ReportDetail({ params }) {
                     backgroundColor: "#22DD22",
                   }}
                 >
-                  {report[idx].totalRunCount}
+                  {reportHistory[idx].totalRunCount}
                 </Box>
               </Box>
               <Box
-                flexGrow={report[idx].totalFailCount + 1}
+                className={
+                  condition[1] == "1" ? "typeButtonActive" : "typeButton"
+                }
+                flexGrow={reportHistory[idx].totalFailCount + 1}
                 onClick={getFailList}
               >
                 <Box
@@ -216,11 +247,14 @@ export default function ReportDetail({ params }) {
                     backgroundColor: "#FFAA00",
                   }}
                 >
-                  {report[idx].totalFailCount}
+                  {reportHistory[idx].totalFailCount}
                 </Box>
               </Box>
               <Box
-                flexGrow={report[idx].totalErrorCount + 1}
+                className={
+                  condition[2] == "1" ? "typeButtonActive" : "typeButton"
+                }
+                flexGrow={reportHistory[idx].totalErrorCount + 1}
                 onClick={getErrorList}
               >
                 <Box
@@ -235,11 +269,14 @@ export default function ReportDetail({ params }) {
                     backgroundColor: "#FF0000",
                   }}
                 >
-                  {report[idx].totalErrorCount}
+                  {reportHistory[idx].totalErrorCount}
                 </Box>
               </Box>
               <Box
-                flexGrow={report[idx].totalSkipCount + 1}
+                className={
+                  condition[3] == "1" ? "typeButtonActive" : "typeButton"
+                }
+                flexGrow={reportHistory[idx].totalSkipCount + 1}
                 onClick={getSkipList}
               >
                 <Box
@@ -254,7 +291,7 @@ export default function ReportDetail({ params }) {
                     backgroundColor: "#AAAAAA",
                   }}
                 >
-                  {report[idx].totalSkipCount}
+                  {reportHistory[idx].totalSkipCount}
                 </Box>
               </Box>
             </Box>

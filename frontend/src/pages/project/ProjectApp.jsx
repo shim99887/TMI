@@ -1,15 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import ProjectAppCoverageGraphs from "../../components/project/ProjectAppCoverageGraphs";
-import { appAxios, coverageAxios, reportAxios } from "../../utils/axios";
-import CommonTable from "../../components/table/CommonTable";
-import ProjectAppTableBody from "../../components/table/ProjectAppTableBody";
-import { Box, Button, colors, makeStyles, Modal } from "@material-ui/core";
+import ProjectAppCoverageGraphs from "../../components/graph/ProjectAppCoverageGraphs";
+import { appAxios, projectAxios, reportAxios } from "../../utils/axios";
+import {
+  Box,
+  Button,
+  colors,
+  makeStyles,
+  Modal,
+  Typography,
+} from "@material-ui/core";
 import CreateAppForm from "../../components/form/CreateAppForm";
-import ProjectAppPassRateGraphs from "../../components/project/ProjectAppPassRateGraphs";
+import ProjectAppPassRateGraphs from "../../components/graph/ProjectAppPassRateGraphs";
 import TotalCoverageDoughnutGraph from "../../components/graph/TotalCoverageDoughnutGraph";
 import ApplicationDetail from "../application/ApplicationDetail";
-import { DataGrid } from "@material-ui/data-grid";
+import {
+  DataGrid,
+  GridToolbarContainer,
+  GridToolbarExport,
+} from "@material-ui/data-grid";
 import CoverageDetail from "../../components/coverage/CoverageDetail";
 
 function getModalStyle() {
@@ -43,43 +52,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const head = [
-  "App Name",
-  "Build Datetime",
-  <>
-    Line Cov.(%)
-    <Box>
-      <small style={{ color: colors.blue[500] }}>Covered</small> /{" "}
-      <small style={{ color: colors.red[500] }}>Missed</small>
-    </Box>
-  </>,
-  <>
-    Branch Cov.(%)
-    <Box>
-      <small style={{ color: colors.blue[500] }}>Covered</small> /{" "}
-      <small style={{ color: colors.red[500] }}>Missed</small>
-    </Box>
-  </>,
-  <>
-    Pass Rate(%)
-    <Box>
-      <small style={{ color: colors.blue[500] }}>Pass</small> /{" "}
-      <small style={{ color: colors.red[500] }}>Fail</small> /{" "}
-      <small style={{ color: colors.orange[500] }}>Error</small> /{" "}
-      <small style={{ color: colors.purple[500] }}>Skip</small>
-    </Box>
-  </>,
-  "Elapsed Time(sec.)",
-];
-
 const columns = [
   { field: "title", headerName: "App Name", flex: 1 },
-  { field: "datetime", headerName: "Build Datetime", flex: 1 },
-  { field: "lastName", headerName: "Line Cov.(%)", flex: 1 },
+  { field: "datetime", headerName: "Build Datetime", type: "date", flex: 1 },
+  { field: "lastName", headerName: "Line Cov.(%)", type: "number", flex: 1 },
   {
     field: "branchCov",
     headerName: "Branch Cov.(%)",
-    // type: "number",
+    type: "number",
     flex: 1,
   },
   {
@@ -87,21 +67,28 @@ const columns = [
     headerName: "Pass Rate(%)",
     description: "This column has a value getter and is not sortable.",
     // sortable: false,
-    valueGetter: (params) =>
-      `${params.getValue("firstName") || ""} ${
-        params.getValue("lastName") || ""
-      }`,
+    type: "number",
     flex: 1,
   },
 ];
 
+function CustomToolbar() {
+  return (
+    <GridToolbarContainer>
+      <GridToolbarExport />
+    </GridToolbarContainer>
+  );
+}
+
 export default function ProjectApp() {
   const params = useParams();
+  const [project, setProject] = useState({});
   const [appList, setAppList] = useState([]);
   const [modalCreateAppFromOpen, setModalCreateAppFormOpen] = useState(false);
   const [modalTestDetailOpen, setModalTestDetailOpen] = useState(false);
   const [modalCoverageDetailOpen, setModalCoverageDetailOpen] = useState(false);
   const [coverageDetailData, setCoverageDetailData] = useState([]);
+  const [selectedAppTitle, setSelectedAppTitle] = useState("");
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = useState(getModalStyle);
@@ -120,12 +107,19 @@ export default function ProjectApp() {
 
   const modalCoverageDetail = (
     <div style={modalStyle} className={classes.testDetail}>
-      <CoverageDetail data={coverageDetailData} />
+      <CoverageDetail
+        close={() => setModalCoverageDetailOpen(false)}
+        data={coverageDetailData}
+        title={selectedAppTitle}
+      />
     </div>
   );
 
   useEffect(async () => {
     try {
+      const project = await projectAxios.getOne(params.id);
+      setProject(project);
+      console.log(project);
       const responseData = await appAxios.getAppByProjectId(params.id);
       setAppList(responseData);
       console.log(responseData);
@@ -136,20 +130,11 @@ export default function ProjectApp() {
   }, []);
   return (
     <>
-      <h2>{params.id} PJT</h2>
-
-      {/* sample graphs */}
-      <div style={{ display: "flex", justifyContent: "space-around" }}>
-        <TotalCoverageDoughnutGraph data={[90, 10]} title="Current Coverage" />
-        <ProjectAppCoverageGraphs title="Coverage Trend" />
-      </div>
-      <div style={{ display: "flex", justifyContent: "space-around" }}>
-        <TotalCoverageDoughnutGraph data={[90, 10]} title="Current Pass Rate" />
-        <ProjectAppPassRateGraphs title="Pass Rate Trend" />
-      </div>
-      <div>
+      <div style={{ marginBottom: 15 }}>
         <div style={{ display: "flex" }}>
-          <h2 style={{ flexGrow: 1 }}>App List</h2>
+          <Typography style={{ flexGrow: 1 }} variant="h4">
+            {project.title}
+          </Typography>
           <Button
             variant="contained"
             onClick={() => setModalCreateAppFormOpen(true)}
@@ -157,25 +142,52 @@ export default function ProjectApp() {
             Create new app
           </Button>
         </div>
-        <div style={{ height: 400, width: "100%" }}>
-          <DataGrid
-            rows={appList}
-            columns={columns}
-            pageSize={5}
-            checkboxSelection
-            onCellClick={async (cell, event) => {
-              event.preventDefault();
-              setModalCoverageDetailOpen(true);
-              const responseData = await reportAxios.getListByAppId(
-                cell.row.id
-              );
-              console.log(responseData);
-              setCoverageDetailData(responseData);
-            }}
+        <Typography variant="h6">{project.description}</Typography>
+        <Typography variant="small">담당부서: {project.department}</Typography>
+        <Typography variant="small">등록일: {project.regDate}</Typography>{" "}
+      </div>
+      <div style={{ display: "flex" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-evenly",
+            marginRight: 15,
+          }}
+        >
+          <TotalCoverageDoughnutGraph
+            data={[90, 10]}
+            title="Current Coverage"
+          />
+          <TotalCoverageDoughnutGraph
+            data={[90, 10]}
+            title="Current Pass Rate"
           />
         </div>
+        <div style={{ flexGrow: 1 }}>
+          <div style={{ height: "75vh", width: "100%" }}>
+            <DataGrid
+              components={{
+                Toolbar: CustomToolbar,
+              }}
+              rows={appList}
+              columns={columns}
+              pageSize={5}
+              checkboxSelection
+              onCellClick={async (cell, event) => {
+                event.preventDefault();
+                setModalCoverageDetailOpen(true);
+                const responseData = await reportAxios.getListByAppId(
+                  cell.row.id
+                );
+                setCoverageDetailData(responseData);
+                setSelectedAppTitle(cell.row.title);
+              }}
+            />
+          </div>
+        </div>
       </div>
-      <Button onClick={() => setModalTestDetailOpen(true)}>
+      <Button variant="contained" onClick={() => setModalTestDetailOpen(true)}>
         Test Detail Example
       </Button>
       <Modal
