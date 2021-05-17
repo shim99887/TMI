@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useParams, forwardRef } from "react";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
   Grid,
   // Card,
@@ -55,53 +56,6 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
 
-// const cardStyles = makeStyles({
-//   button: { width: "25%" },
-//   card: { width: "100%" },
-// });
-
-// function AppList(props) {
-//   const { pid, history } = props;
-//   const cardClass = cardStyles();
-
-//   // const params = useParams();
-//   const [appData, setAppData] = useState([]);
-
-//   useEffect(async () => {
-//     try {
-//       const responseData = await appAxios.getAppByProjectId(pid);
-//       setAppData(responseData);
-//       console.log(responseData);
-//     } catch (error) {
-//       console.error(error);
-//     }
-//     return () => {};
-//   }, []);
-
-//   return (
-//     <>
-//       <Grid container spacing={0}>
-//         {appData.map((app) => (
-//           <ButtonBase
-//             className={cardClass.button}
-//             onClick={(event) => {
-//               // history.push(`/testjob/${pid}/${testJob.testId}`);
-//             }}
-//           >
-//             <Card className={cardClass.card}>
-//               <CardContent>
-//                 <Typography align="left">Status: 😀</Typography>
-//                 <Typography align="left">ID: {app.id}</Typography>
-//                 <Typography align="left">Name: {app.title}</Typography>
-//               </CardContent>
-//             </Card>
-//           </ButtonBase>
-//         ))}
-//       </Grid>
-//     </>
-//   );
-// }
-
 export default function Project() {
   var columns = [
     { title: "ID", field: "id", editable: "never" },
@@ -109,12 +63,12 @@ export default function Project() {
     { title: "Descrption", field: "description" },
   ];
   const [projectList, setProjectList] = useState();
-
+  const user = useSelector((state) => state.user);
   const [iserror, setIserror] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
 
   async function addRow(data) {
-    const response = await projectAxios.postProject({
+    const response = await projectAxios.postProject(user.info.department.id, {
       title: data.title,
       description: data.description,
     });
@@ -204,13 +158,6 @@ export default function Project() {
               title="Project List"
               columns={columns}
               data={projectList}
-              // detailPanel={(rowData) => {
-              //   return (
-              //     <div>
-              //       <AppList pid={rowData.id} history={history} />
-              //     </div>
-              //   );
-              // }}
               icons={tableIcons}
               editable={{
                 onRowUpdate: (newData, oldData) =>

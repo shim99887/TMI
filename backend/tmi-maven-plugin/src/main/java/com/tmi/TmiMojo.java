@@ -120,11 +120,11 @@ public class TmiMojo extends AbstractMojo {
 		//RestTemplate restTemplate = new RestTemplate();
 		//ResponseEntity<String> xmlResponse = restTemplate.exchange(serverUrl, HttpMethod.POST, requestEntity, String.class);
 		String responseStr = restTemplate.postForObject(serverUrl,requestEntity,String.class);
-		String [] splitStr = responseStr.split(" ");
+		String [] splitStr = responseStr.split("  ");
 		String projectName = splitStr[0];
 		String coverageKey = splitStr[1];
 		getLog().info("project name: " + splitStr[0]);
-
+		getLog().info("coverage xml key: " + splitStr[1]);
 
 
 		//junit txt 파일 전송
@@ -137,7 +137,6 @@ public class TmiMojo extends AbstractMojo {
 			}
 		};
 		File[] junitFileTextArr = dir.listFiles(filter);
-
 
 		MultiValueMap<String, Object> junitTxtBody = new LinkedMultiValueMap<>();
 		junitTxtBody.add("projectName",projectName);
@@ -174,7 +173,6 @@ public class TmiMojo extends AbstractMojo {
 
 		junitTxtBody.add("htmlFile", multipartFile.getResource());
 		
-		
 		restTemplate = new RestTemplate(Arrays.asList(jackson, resource, formHttpMessageConverter));
 		requestEntity = new HttpEntity<>(junitTxtBody, headers);
 		String junitServerUrl = "http://k4a2011.p.ssafy.io:8080/api/junit/data";
@@ -183,10 +181,10 @@ public class TmiMojo extends AbstractMojo {
 		//ResponseEntity<Boolean> response = restTemplate.exchange(junitServerUrl, HttpMethod.POST, requestEntity, Boolean.class);
 		
 		//getLog().info("junit txt response code: " + response.getStatusCode());
-//		getLog().info("jacoco xml key " + coverageKey);
-//		for(int i=1;i<keyArr.length;i++){
-//			getLog().info("junit data key " + keyArr[i]);
-//		}
+		getLog().info("jacoco xml key " + coverageKey);
+		for(int i=1;i<keyArr.length;i++){
+			getLog().info("junit data key " + keyArr[i]);
+		}
 		String buildTime = keyArr[0];
 		MultiValueMap<String, Object> dataSendBody = new LinkedMultiValueMap<>();
 		restTemplate = new RestTemplate();

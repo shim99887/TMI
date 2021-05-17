@@ -18,7 +18,8 @@ import javax.persistence.*;
 @Table(name = "user")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     String uid;
     String password;
@@ -28,6 +29,6 @@ public class User {
     String role;
 
     @ManyToOne
-    @JsonIgnore
+//    @JsonIgnore
     private Department department;
 }
