@@ -1,11 +1,12 @@
 package com.tmi.repository;
 
-import com.tmi.entity.Report;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import com.tmi.entity.Report;
 
 @Repository
 public interface ReportRepository extends JpaRepository<Report, Long> {
@@ -13,4 +14,6 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
     List<Report> findAllByAppIdOrderByIdDesc(String aid);
 
     List<Report> findAllByOrderByIdDesc();
+    
+    List<Report> findByAppIdAndDatetime(Long aid, String datetime);
 }

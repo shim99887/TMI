@@ -19,7 +19,7 @@ public class ReportServiceImpl implements ReportService{
     private ReportRepository reportRepository;
 
     public List<Report> getAllReport() {
-        return reportRepository.findAllByOrderByIdDesc();
+        return reportRepository.findAll();
     }
 
     public Report findReportById(long id) {

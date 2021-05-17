@@ -103,6 +103,7 @@ export const reportAxios = {
 
 export const coverageAxios = {
   all: (id) => basicGetRequest(`/coverage/${id}`),
+  getCoverageListByReportId: (id) => basicGetRequest(`/coverage/report/${id}`),
 };
 
 export const testAxios = {

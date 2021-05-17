@@ -23,10 +23,14 @@ function App() {
     <>
       {user.isLoggedIn ? (
         <>
-          <Redirect to="/project" />
+          {/* <Redirect to="/project" /> */}
           <Navigation logout={logout} />
           <Container
-            style={{ backgroundColor: "white", height: "100vh", padding: 10 }}
+            style={{
+              backgroundColor: "white",
+              height: "100vh",
+              padding: 10,
+            }}
           >
             <div style={{ height: 64 }} />
             {/* <Route path="/" exact component={() => <div>Home</div>} /> */}

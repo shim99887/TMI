@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Box from "@material-ui/core/Box";
-import Input from "@material-ui/core/Input";
 import Grid from "@material-ui/core/Grid";
 import ReportItemContainer from "../../components/application/ReportItemContainer";
 import ReportHistoryContainer from "../../components/application/ReportHistoryContainer";
 import { makeStyles } from "@material-ui/core/styles";
 import { reportAxios, testAxios } from "../../utils/axios";
-import { useParams } from "react-router";
+import styled from "styled-components";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -16,50 +15,82 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ReportDetail() {
+export default function ApplicationDetail(props) {
   const styles = useStyles();
-  const params = useParams();
   const [idx, setIdx] = useState(-1);
   const [report, setReport] = useState([]);
-  const [test, setTest] = useState([]);
-  // axios.get() Project의 ReportList 반환받는다
-  // Success, Fail, Error, Skip 눌렀을 때
+  const [reportHistory, setReportHistory] = useState([]);
+  const [tests, setTests] = useState([]);
+  const [searchField, setSearchField] = useState("");
+  const [filteredTests, setFilteredTests] = useState([]);
+  const [condition, setCondition] = useState([]);
+
   useEffect(async () => {
-    const reportResponse = await reportAxios.getListByAppId(params.id);
+    const reportResponse = await reportAxios.getListByAppId(
+      "4de2e824-12fa-4d01-b397-2effb62f81f8"
+    ); // props.id
+
     setReport(reportResponse);
-    return () => {};
+
+    let selectedReportList = [];
+    for (let i = 0; i < reportResponse.length; i++) {
+      // props.idx - 1
+      if (i == 6) {
+        for (let j = i - 7 < 0 ? 0 : i - 7; j <= i; j++) {
+          if (selectedReportList.length >= 7) break; // max length
+
+          let string = JSON.stringify(reportResponse[j]);
+          string = string.replace("}", `,"idx":${j}}`);
+          selectedReportList.push(JSON.parse(string));
+        }
+        break;
+      }
+    }
+    console.log(selectedReportList);
+
+    setReportHistory(selectedReportList);
+
+    setIdx(0);
   }, []);
 
-  async function getReportData(id) {
+  useEffect(() => {
+    setFilteredTests(() => tests.filter(testFilter));
+  }, [searchField, condition, tests]);
+
+  async function getReportData(id, index) {
     await testAxios
       .getListByReportId(id)
       .then((res) => {
-        setTest(res);
-        setIdx(id - 1);
+        setTests(res);
+        setIdx(index);
+        setCondition("1111");
+        console.log(id);
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
-  const reports = report.map((data, index) => (
-    <Box onClick={() => getReportData(data.id)} key={index}>
+  const reports = reportHistory.map((data, index) => (
+    <Box onClick={() => getReportData(data.id, data.idx)} key={index}>
       <ReportHistoryContainer
-        testCount={data.id}
+        testCount={report.length - data.idx}
         date={data.datetime}
         percent={
-          data.totalRunCount /
-          (data.totalRunCount +
-            data.totalErrorCount +
-            data.totalFailCount +
-            data.totalSkipCount)
+          data.totalRunCount == 0
+            ? 0
+            : data.totalRunCount /
+              (data.totalRunCount +
+                data.totalErrorCount +
+                data.totalFailCount +
+                data.totalSkipCount)
         }
         targetPercent={0.7}
       ></ReportHistoryContainer>
     </Box>
   ));
 
-  const tests = test.map((data, index) => (
+  const testList = filteredTests.map((data, index) => (
     <Box
       style={{
         marginTop: "1%",
@@ -77,21 +108,52 @@ export default function ReportDetail() {
     </Box>
   ));
 
+  function testFilter(obj) {
+    if (
+      obj.type == "pass" &&
+      condition[0] == "1" &&
+      obj.name.toLowerCase().includes(searchField.toLowerCase())
+    )
+      return true;
+    if (
+      obj.type == "fail" &&
+      condition[1] == "1" &&
+      obj.name.toLowerCase().includes(searchField.toLowerCase())
+    )
+      return true;
+    if (
+      obj.type == "error" &&
+      condition[2] == "1" &&
+      obj.name.toLowerCase().includes(searchField.toLowerCase())
+    )
+      return true;
+    if (
+      obj.type == "skip" &&
+      condition[3] == "1" &&
+      obj.name.toLowerCase().includes(searchField.toLowerCase())
+    )
+      return true;
+    return false;
+  }
   return (
     <Box>
-      <Box className={styles.container}>
+      <Box alignItems="center" textAlign="center">
         <Box
           style={{
             marginTop: "1%",
             marginBottom: "3%",
-            flexGrow: "1",
             fontSize: "200%",
             maxWidth: "20%",
           }}
         >
           Main Server
         </Box>
-        <Box display="flex" flexDirection="Column" flexGrow="3">
+        <Box
+          display="flex"
+          flexDirection="Column"
+          marginLeft="3%"
+          marginRight="3%"
+        >
           <Box
             display="flex"
             justifyContent="space-between"
@@ -121,17 +183,20 @@ export default function ReportDetail() {
             }}
           ></Box>
         </Box>
-
-        <Box flexGrow="1" maxWidth="20%" marginBottom="3%">
-          <Input placeholder="Search"></Input>
-        </Box>
       </Box>
-      <Grid className={styles.container} item>
+      <Box className={styles.container} marginLeft="3%" marginRight="3%">
         <Grid item xs={12}>
           {idx >= 0 && (
             <Box display="flex" justifyContent="space-between" marginTop="3%">
-              Report #{idx + 1} - {report[idx].datetime.split("T")[0]}{" "}
-              {report[idx].datetime.split("T")[1]}
+              Report #{report.length - reportHistory[idx].idx} -{" "}
+              {reportHistory[idx].datetime.split("T")[0]}{" "}
+              {reportHistory[idx].datetime.split("T")[1]} (
+              {reportHistory[idx].totalElapsedTime} ms)
+              <input
+                type="search"
+                placeholder="filter"
+                onChange={(e) => setSearchField(e.target.value)}
+              ></input>
             </Box>
           )}
           {idx >= 0 && (
@@ -142,8 +207,11 @@ export default function ReportDetail() {
               style={{ cursor: "pointer" }}
             >
               <Box
-                flexGrow={report[idx].totalRunCount + 1}
-                onClick={() => getSuccessList}
+                className={
+                  condition[0] == "1" ? "typeButtonActive" : "typeButton"
+                }
+                flexGrow={reportHistory[idx].totalRunCount + 1}
+                onClick={getPassList}
               >
                 <Box
                   style={{
@@ -157,11 +225,14 @@ export default function ReportDetail() {
                     backgroundColor: "#22DD22",
                   }}
                 >
-                  {report[idx].totalRunCount}
+                  {reportHistory[idx].totalRunCount}
                 </Box>
               </Box>
               <Box
-                flexGrow={report[idx].totalFailCount + 1}
+                className={
+                  condition[1] == "1" ? "typeButtonActive" : "typeButton"
+                }
+                flexGrow={reportHistory[idx].totalFailCount + 1}
                 onClick={getFailList}
               >
                 <Box
@@ -176,11 +247,14 @@ export default function ReportDetail() {
                     backgroundColor: "#FFAA00",
                   }}
                 >
-                  {report[idx].totalFailCount}
+                  {reportHistory[idx].totalFailCount}
                 </Box>
               </Box>
               <Box
-                flexGrow={report[idx].totalErrorCount + 1}
+                className={
+                  condition[2] == "1" ? "typeButtonActive" : "typeButton"
+                }
+                flexGrow={reportHistory[idx].totalErrorCount + 1}
                 onClick={getErrorList}
               >
                 <Box
@@ -195,11 +269,14 @@ export default function ReportDetail() {
                     backgroundColor: "#FF0000",
                   }}
                 >
-                  {report[idx].totalErrorCount}
+                  {reportHistory[idx].totalErrorCount}
                 </Box>
               </Box>
               <Box
-                flexGrow={report[idx].totalSkipCount + 1}
+                className={
+                  condition[3] == "1" ? "typeButtonActive" : "typeButton"
+                }
+                flexGrow={reportHistory[idx].totalSkipCount + 1}
                 onClick={getSkipList}
               >
                 <Box
@@ -214,30 +291,38 @@ export default function ReportDetail() {
                     backgroundColor: "#AAAAAA",
                   }}
                 >
-                  {report[idx].totalSkipCount}
+                  {reportHistory[idx].totalSkipCount}
                 </Box>
               </Box>
             </Box>
           )}
-          {tests}
+          {testList}
         </Grid>
-      </Grid>
+      </Box>
     </Box>
   );
 
-  function getSuccessList() {
-    console.log("axios.get getSuccessList");
+  function getPassList() {
+    if (condition[0] == "1")
+      setCondition("0" + condition[1] + condition[2] + condition[3]);
+    else setCondition("1" + condition[1] + condition[2] + condition[3]);
   }
 
-  function getFailList() {
-    console.log("axios.get getFailList");
+  function getFailList(e) {
+    if (condition[1] == "1")
+      setCondition(condition[0] + "0" + condition[2] + condition[3]);
+    else setCondition(condition[0] + "1" + condition[2] + condition[3]);
   }
 
-  function getErrorList() {
-    console.log("axios.get getErrorList");
+  function getErrorList(e) {
+    if (condition[2] == "1")
+      setCondition(condition[0] + condition[1] + "0" + condition[3]);
+    else setCondition(condition[0] + condition[1] + "1" + condition[3]);
   }
 
-  function getSkipList() {
-    console.log("axios.get getSkipList");
+  function getSkipList(e) {
+    if (condition[3] == "1")
+      setCondition(condition[0] + condition[1] + condition[2] + "0");
+    else setCondition(condition[0] + condition[1] + condition[2] + "1");
   }
 }

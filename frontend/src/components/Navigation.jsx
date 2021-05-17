@@ -60,7 +60,7 @@ function Navigation({ logout, history }) {
               </Link>
             </Button>
           </Grid>
-          <Typography>{user.info}</Typography>
+          <Typography>{user.info.name}</Typography>
           <Button
             onClick={() => {
               logout();

@@ -100,8 +100,8 @@ export default function ProjectAppPassRateGraphs({ data, title }) {
     <Box>
       <Typography variant="h5">{title}</Typography>
       <Line
-        height="250"
-        width="600"
+        height="200"
+        width="400"
         data={dataLineGraph}
         options={optionsLineGraph}
       />

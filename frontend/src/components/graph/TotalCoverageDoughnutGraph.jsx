@@ -19,12 +19,11 @@ export default function TotalCoverageDoughnutGraph({ data, title }) {
         backgroundColor: [colors.blue[500], colors.red[500]],
       },
     ],
-    labels: ["Covered", "Missed"],
   };
   return (
     <Box>
-      <Typography variant="h5">{title}</Typography>
-      <Doughnut height="250" width="250" data={dataDoughnutGraph} />
+      <Typography variant="h6">{title}</Typography>
+      <Doughnut height="200" width="200" data={dataDoughnutGraph} />
     </Box>
   );
 }

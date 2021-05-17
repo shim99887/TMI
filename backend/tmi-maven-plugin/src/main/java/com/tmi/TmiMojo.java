@@ -35,6 +35,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.zeroturnaround.zip.ZipUtil;
 
 @Mojo(name = "tmi-dependency", defaultPhase = LifecyclePhase.PACKAGE)
 public class TmiMojo extends AbstractMojo {
@@ -182,10 +183,10 @@ public class TmiMojo extends AbstractMojo {
 		//ResponseEntity<Boolean> response = restTemplate.exchange(junitServerUrl, HttpMethod.POST, requestEntity, Boolean.class);
 		
 		//getLog().info("junit txt response code: " + response.getStatusCode());
-		getLog().info("jacoco xml key " + coverageKey);
-		for(int i=1;i<keyArr.length;i++){
-			getLog().info("junit data key " + keyArr[i]);
-		}
+//		getLog().info("jacoco xml key " + coverageKey);
+//		for(int i=1;i<keyArr.length;i++){
+//			getLog().info("junit data key " + keyArr[i]);
+//		}
 		String buildTime = keyArr[0];
 		MultiValueMap<String, Object> dataSendBody = new LinkedMultiValueMap<>();
 		restTemplate = new RestTemplate();
@@ -200,8 +201,38 @@ public class TmiMojo extends AbstractMojo {
 		requestEntity = new HttpEntity<>(dataSendBody, headers);
 		String mainServerUrl = "https://k4a201.p.ssafy.io/api/data";
 		//String mainServerUrl = "http://localhost:3000/api/data";
-		//String mainServerUrl = "http://localhost:3000/data";
 		Boolean isOk = restTemplate.postForObject(mainServerUrl, requestEntity, Boolean.class);
 		getLog().info("data send " + isOk);
+
+		ZipUtil.pack(new File(targetDir + "/site/jacoco/"), new File(targetDir + "/site/jacoco.zip"));
+
+		MultiValueMap<String, Object> zipSendBody = new LinkedMultiValueMap<>();
+		zipSendBody.add("projectName",projectName);
+		zipSendBody.add("gitUrl",gitUrl);
+		zipSendBody.add("buildTime",buildTime);
+
+		File zipFile = new File(targetDir + "/site/jacoco.zip");
+		FileItem zipFileItem = null;
+		try {
+			zipFileItem = new DiskFileItem("mainFile", Files.probeContentType(zipFile.toPath()), false, zipFile.getName(), (int) zipFile.length(), zipFile.getParentFile());
+
+			InputStream input = new FileInputStream(zipFile);
+			//IOUtils.copy(input, os);
+			// Or faster..
+			IOUtils.copy(input, zipFileItem.getOutputStream());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		multipartFile = new CommonsMultipartFile(zipFileItem);
+
+		requestEntity = new HttpEntity<>(zipSendBody, headers);
+		zipSendBody.add("zipFile", multipartFile.getResource());
+
+		zipFile.delete();
+
+		String zipServerUrl = "https://k4a201.p.ssafy.io/api/file";
+		//String zipServerUrl = "http://localhost:3000/api/file";
+		responseStr = restTemplate.postForObject(zipServerUrl, requestEntity, String.class);
+		getLog().info("zip file send " + responseStr);
 	}
 }

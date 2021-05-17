@@ -26,10 +26,7 @@ public class CoverageServiceImpl implements CoverageService {
     }
 
     public List<Coverage> readAllCoveragesInReport(long id) {
-        Report report = reportRepository.findById(id).get();
-        List<Coverage> coverages = report.getCoverages();
-        coverages = coverages.stream().sorted(Comparator.comparing(Coverage::getId).reversed())
-                .collect(Collectors.toList());
+        List<Coverage> coverages = coverageRepository.readAllCoveragesInReport(id);
         return coverages;
     }
 
@@ -55,5 +52,9 @@ public class CoverageServiceImpl implements CoverageService {
         // coverage.setBranchCovCovered(coveragePostDto.getBranchCovCovered());
         // coverage.setHighlightHtml(coveragePostDto.getHighlightHtml());
         return coverageRepository.save(coverage);
+    }
+
+    public Coverage saveCoverage(Coverage coverage) {
+    	return coverageRepository.save(coverage);
     }
 }

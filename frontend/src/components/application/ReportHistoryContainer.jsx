@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
-import IconButton from "@material-ui/core/IconButton";
 import styled from "styled-components";
 
 const useStyles = makeStyles((theme) => ({
@@ -26,25 +25,46 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const CircleButton = styled.button`
+  background-color: ${(props) => props.color || "#22DD22"};
+  margin-top: 50%;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: ${(props) => props.size || "75%"};
+  text-align: center;
+  color: white;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  transition: all 0.2s ease-in-out;
+  &:before {
+    content: "";
+    background-color: rgba(255, 255, 255, 0.5);
+    height: 100%;
+    width: 3em;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: -4.5em;
+    transform: skewX(-45deg) translateX(0);
+    transition: none;
+  }
+  &:hover {
+    background-color: ${(props) => props.color || "#22DD22"};
+    color: #fff;
+  }
+  &:hover:before {
+    transform: skewX(-45deg) translateX(13.5em);
+    transition: all 0.5s ease-in-out;
+  }
+`;
+
 export default function ReportHistoryContatiner(props) {
   const styles = useStyles();
   let time = props.date.split("T");
   let date = time[0].split("-");
-
-  const CircleButton = styled.button`
-    background-color: ${(props) => props.color};
-    margin-top: 50%;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    font-size: ${(props) => props.size || "75%"};
-    text-align: center;
-    color: white;
-    cursor: pointer;
-    &:hover {
-      boxshadow: 1px 1px 10px 3px #cccccc;
-    }
-  `;
 
   //props.percentage에 따라서 색을 다르게 출력
   return (
