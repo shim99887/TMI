@@ -1,5 +1,6 @@
 package com.tmi.entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,4 +43,15 @@ public class App {
     private String description;
     private Date regDate;
     private String gitUrl;
+    
+    private LocalDateTime recent_datetime;
+    private int recent_totalLineCovMissed;
+    private int recent_totalLineCovCovered;
+    private int recent_totalBranchCovMissed;
+    private int recent_totalBranchCovCovered;
+    private int recent_totalRunCount;
+    private int recent_totalFailCount;
+    private int recent_totalSkipCount;
+    private int recent_totalErrorCount;
+    private int recent_totalElapsedTime;
 }
