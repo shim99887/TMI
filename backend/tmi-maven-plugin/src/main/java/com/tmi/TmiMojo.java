@@ -120,7 +120,7 @@ public class TmiMojo extends AbstractMojo {
 		//RestTemplate restTemplate = new RestTemplate();
 		//ResponseEntity<String> xmlResponse = restTemplate.exchange(serverUrl, HttpMethod.POST, requestEntity, String.class);
 		String responseStr = restTemplate.postForObject(serverUrl,requestEntity,String.class);
-		String [] splitStr = responseStr.split(" ");
+		String [] splitStr = responseStr.split("  ");
 		String projectName = splitStr[0];
 		String coverageKey = splitStr[1];
 		getLog().info("project name: " + splitStr[0]);
