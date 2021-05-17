@@ -44,14 +44,14 @@ public class App {
     private Date regDate;
     private String gitUrl;
     
-    private LocalDateTime recent_datetime;
-    private int recent_totalLineCovMissed;
-    private int recent_totalLineCovCovered;
-    private int recent_totalBranchCovMissed;
-    private int recent_totalBranchCovCovered;
-    private int recent_totalRunCount;
-    private int recent_totalFailCount;
-    private int recent_totalSkipCount;
-    private int recent_totalErrorCount;
-    private int recent_totalElapsedTime;
+    private LocalDateTime recentDatetime;
+    private int recentTotalLineCovMissed;
+    private int recentTotalLineCovCovered;
+    private int recentTotalBranchCovMissed;
+    private int recentTotalBranchCovCovered;
+    private int recentTotalRunCount;
+    private int recentTotalFailCount;
+    private int recentTotalSkipCount;
+    private int recentTotalErrorCount;
+    private int recentTotalElapsedTime;
 }

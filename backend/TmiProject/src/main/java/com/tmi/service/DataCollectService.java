@@ -143,16 +143,16 @@ public class DataCollectService {
 		report.setTotalRunCount(totalRunCount);
 		report.setTotalSkipCount(totalSkipCount);
 		
-		app.setRecent_datetime(datetime);
-		app.setRecent_totalBranchCovCovered(totalBranchCovCovered);
-		app.setRecent_totalBranchCovMissed(totalBranchCovMissed);
-		app.setRecent_totalElapsedTime(totalElapsedTime);
-		app.setRecent_totalLineCovCovered(totalLineCovCovered);
-		app.setRecent_totalLineCovMissed(totalLineCovMissed);
-		app.setRecent_totalErrorCount(totalErrorCount);
-		app.setRecent_totalFailCount(totalFailCount);
-		app.setRecent_totalSkipCount(totalSkipCount);
-		app.setRecent_totalRunCount(totalRunCount);
+		app.setRecentDatetime(datetime);
+		app.setRecentTotalBranchCovCovered(totalBranchCovCovered);
+		app.setRecentTotalBranchCovMissed(totalBranchCovMissed);
+		app.setRecentTotalElapsedTime(totalElapsedTime);
+		app.setRecentTotalLineCovCovered(totalLineCovCovered);
+		app.setRecentTotalLineCovMissed(totalLineCovMissed);
+		app.setRecentTotalErrorCount(totalErrorCount);
+		app.setRecentTotalFailCount(totalFailCount);
+		app.setRecentTotalSkipCount(totalSkipCount);
+		app.setRecentTotalSkipCount(totalRunCount);
 		
 		reportRepository.save(report);
 		
