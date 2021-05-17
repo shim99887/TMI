@@ -75,9 +75,9 @@ function AboutCard(props) {
     } else if (id == 1) {
       setModalProjectDetailOpen(true);
     } else if (id == 2) {
-      setModalCoverageDetailOpen(true);
-    } else if (id == 3) {
       setModalTestDetailOpen(true);
+    } else if (id == 3) {
+      setModalCoverageDetailOpen(true);
     }
   }
 

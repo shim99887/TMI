@@ -30,8 +30,8 @@ export default function TestErrorContainer(props) {
         <Box className={styles.container}>
           <Box
             style={{
-              textAlign: "top",
-              fontSize: "100%",
+              textAlign: "left",
+              fontSize: "120%",
               color: "#44FF44",
             }}
           >
@@ -40,8 +40,8 @@ export default function TestErrorContainer(props) {
 
           <Box
             style={{
-              textAlign: "bottom",
-              fontSize: "80%",
+              textAlign: "left",
+              fontSize: "100%",
               color: "#FFFFFF",
             }}
           >
