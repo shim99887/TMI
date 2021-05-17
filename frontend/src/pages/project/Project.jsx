@@ -68,10 +68,9 @@ export default function Project() {
   const [errorMessages, setErrorMessages] = useState([]);
 
   async function addRow(data) {
-    const response = await projectAxios.postProject({
+    const response = await projectAxios.postProject(user.info.department.id, {
       title: data.title,
       description: data.description,
-      department_id: user.info.department_id,
     });
     let dataToAdd = [...projectList];
     dataToAdd.push(response);
