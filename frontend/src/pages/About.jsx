@@ -29,12 +29,13 @@ function getModalStyle() {
 const useStyles = makeStyles((theme) => ({
   learnMore: {
     position: "absolute",
-    width: "90vw",
+    width: "35vw",
     height: "90vh",
     backgroundColor: theme.palette.background.paper,
     border: "2px solid #000",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
+    overflow: "scroll",
   },
 }));
 
@@ -164,13 +165,13 @@ export default function About() {
   const cardList1 = [
     {
       id: 0,
-      url: "../assets/images/Logo.png",
+      url: "../assets/images/about/Logo.png",
       title: "테스트 결과 수집 / 전송 플러그인",
       description: "nnnnnnnnnnn\nnnnnnnnnnnnn\nnnnnnnnnnn",
     },
     {
       id: 1,
-      url: "../assets/images/ProjectDetail.png",
+      url: "../assets/images/about/ProjectDetail.png",
       title: "프로젝트, App 관리",
       description: "nnnnnnnnnnn\nnnnnnnnnnnnn\nnnnnnnnnnn",
     },
@@ -178,40 +179,40 @@ export default function About() {
   const cardList2 = [
     {
       id: 2,
-      url: "../assets/images/TestDetail.png",
+      url: "../assets/images/about/TestDetail.png",
       title: "테스트 수행 이력 / Detail 리포트",
       description: "nnnnnnnnnnn\nnnnnnnnnnnnn\nnnnnnnnnnn",
     },
     {
       id: 3,
-      url: "../assets/images/CoverageDetail.png",
+      url: "../assets/images/about/CoverageDetail.png",
       title: "코드 커버리지 이력 / Detail 리포트",
       description: "nnnnnnnnnnn\nnnnnnnnnnnnn\nnnnnnnnnnn",
     },
   ];
   const cardList3 = [
     {
-      url: "../assets/images/P1.jpg",
+      url: "../assets/images/about/P1.jpg",
       title: "김영록",
       description: "백엔드",
     },
     {
-      url: "../assets/images/P2.jpg",
+      url: "../assets/images/about/P2.jpg",
       title: "백현오",
       description: "프론트엔드",
     },
     {
-      url: "../assets/images/P3.jpg",
+      url: "../assets/images/about/P3.jpg",
       title: "이병희",
       description: "프론트엔드",
     },
     {
-      url: "../assets/images/P4.jpg",
+      url: "../assets/images/about/P4.jpg",
       title: "전원표",
       description: "프론트엔드",
     },
     {
-      url: "../assets/images/P5.jpg",
+      url: "../assets/images/about/P5.jpg",
       title: "최낙훈",
       description: "백엔드",
     },
