@@ -18,6 +18,7 @@ import javax.persistence.*;
 @Table(name = "user")
 public class User {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     String uid;
@@ -28,6 +29,6 @@ public class User {
     String role;
 
     @ManyToOne
-    @JsonIgnore
+//    @JsonIgnore
     private Department department;
 }
