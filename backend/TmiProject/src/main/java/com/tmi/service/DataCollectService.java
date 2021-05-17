@@ -53,7 +53,7 @@ public class DataCollectService {
 	}
 	
 	public String dataCollect(String projectName, String gitUrl, String buildTime, String coverageKey, String [] testKeys) {
-		App appData = getAppData(gitUrl, projectName);
+		App app = getAppData(gitUrl, projectName);
 //		if(appData.get() == null) {
 //			return "This is not registered app.";
 //		}
@@ -72,7 +72,7 @@ public class DataCollectService {
         
         Report report = new Report(datetime, totalLineCovMissed, totalLineCovCovered, totalBranchCovMissed, totalBranchCovCovered, 0, 0, 0, 0, 0);
 		
-		report.setApp(appData);
+		report.setApp(app);
 		
 		reportRepository.save(report);
 		
@@ -143,7 +143,20 @@ public class DataCollectService {
 		report.setTotalRunCount(totalRunCount);
 		report.setTotalSkipCount(totalSkipCount);
 		
+		app.setRecent_datetime(datetime);
+		app.setRecent_totalBranchCovCovered(totalBranchCovCovered);
+		app.setRecent_totalBranchCovMissed(totalBranchCovMissed);
+		app.setRecent_totalElapsedTime(totalElapsedTime);
+		app.setRecent_totalLineCovCovered(totalLineCovCovered);
+		app.setRecent_totalLineCovMissed(totalLineCovMissed);
+		app.setRecent_totalErrorCount(totalErrorCount);
+		app.setRecent_totalFailCount(totalFailCount);
+		app.setRecent_totalSkipCount(totalSkipCount);
+		app.setRecent_totalRunCount(totalRunCount);
+		
 		reportRepository.save(report);
+		
+		appRepository.save(app);
 		
 		return "success";
 	}
