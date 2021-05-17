@@ -28,7 +28,7 @@ function App() {
           <Container
             style={{
               backgroundColor: "white",
-              height: "100vh",
+              minHeight: "100vh",
               padding: 10,
             }}
           >
