@@ -57,8 +57,8 @@ export const projectAxios = {
   getOne: (id) => {
     return basicGetRequest(`/project/${id}`);
   },
-  postProject: (data) => {
-    return basicPostRequest(`/project`, data);
+  postProject: (did, data) => {
+    return basicPostRequest(`/project/${did}`, data);
   },
 };
 
