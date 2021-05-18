@@ -35,9 +35,9 @@ export default function TestDetail(props) {
     let selectedReportList = [];
     for (let i = 0; i < reportResponse.length; i++) {
       if (reportResponse[i].id == props.id) {
-        for (let j = i; j <= i + 4; j++) {
+        for (let j = i; j <= i + 6; j++) {
           if (reportResponse.length <= j) continue;
-          if (selectedReportList.length >= 5) break; // max length
+          if (selectedReportList.length >= 7) break; // max length
 
           let string = JSON.stringify(reportResponse[j]);
           string = string.replace("}", `,"index":${j}}`);
@@ -144,7 +144,7 @@ export default function TestDetail(props) {
   return (
     <Box display="flex" marginTop="2%" zIndex="1">
       <Box alignItems="center" textAlign="Left">
-        <Box display="flex" marginLeft="30px" marginTop="15%" height="22%">
+        <Box display="flex" marginLeft="30px" marginTop="15%" minHeight="22%">
           <Box
             style={{
               borderLeft: "2px solid black",

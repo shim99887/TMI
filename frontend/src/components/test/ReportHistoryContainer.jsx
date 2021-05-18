@@ -15,8 +15,8 @@ const useStyles = makeStyles((theme) => ({
 
 const CircleButton = styled.button`
   background-color: ${(props) => props.color || "#22DD22"};
-  width: 40px;
-  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
   border-radius: 50%;
   font-size: ${(props) => props.size || "75%"};
   text-align: center;
@@ -87,14 +87,12 @@ export default function ReportHistoryContatiner(props) {
                 #{props.testCount}
               </CircleButton>
             )}
-            <Box display="flex" flexDirection="column">
-              <Box component="span" fontSize="70%">
+            <Box display="flex" flexDirection="column" marginLeft="5%">
+              <Box fontSize="70%">
                 {date[0][2]}
                 {date[0][3]}/{date[1]}/{date[2]}
               </Box>
-              <Box component="span" fontSize="70%">
-                {time[1]}
-              </Box>
+              <Box fontSize="70%">{time[1]}</Box>
             </Box>
           </Box>
         )}
