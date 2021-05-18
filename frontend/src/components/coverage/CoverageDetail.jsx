@@ -5,7 +5,14 @@ import {
   GridToolbarExport,
 } from "@material-ui/data-grid";
 import datetime from "../../utils/moment";
-import { AppBar, IconButton, Toolbar, Typography } from "@material-ui/core";
+import {
+  AppBar,
+  Box,
+  IconButton,
+  makeStyles,
+  Toolbar,
+  Typography,
+} from "@material-ui/core";
 import { useState } from "react";
 import { coverageAxios, testAxios } from "../../utils/axios";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
@@ -21,6 +28,15 @@ import TestDetail from "../../components/test/TestDetail";
 // totalLineCovMissed: 60
 // totalRunCount: 20
 // totalSkipCount: 2
+
+const useStyles = makeStyles((theme) => ({
+  dataGrid: {
+    cursor: "pointer",
+    "&:hover": {
+      cursor: "hand",
+    },
+  },
+}));
 
 const columns = [
   {
@@ -113,7 +129,9 @@ const columns = [
 function CustomToolbar() {
   return (
     <GridToolbarContainer>
-      <GridToolbarExport />
+      <Box marginLeft="10px">
+        <GridToolbarExport />
+      </Box>
     </GridToolbarContainer>
   );
 }
@@ -123,6 +141,7 @@ export default function CoverageDetail({ aid, title, data, close }) {
   const [classDetailData, setClassDetailData] = useState([]);
   const [selectedReport, setSelectedReport] = useState({});
   const [testDetail, setTestDetail] = useState(false);
+  const classes = useStyles();
 
   return (
     <>
@@ -161,8 +180,14 @@ export default function CoverageDetail({ aid, title, data, close }) {
               </IconButton>
             </Toolbar>
           </AppBar>
-          <div style={{ height: "90%", width: "100%" }}>
+          <div
+            style={{
+              height: "92.5%",
+              width: "100%",
+            }}
+          >
             <DataGrid
+              className={classes.dataGrid}
               components={{
                 Toolbar: CustomToolbar,
               }}
@@ -251,7 +276,7 @@ export default function CoverageDetail({ aid, title, data, close }) {
                 <ArrowBackIcon />
               </IconButton>
               <Typography variant="h6" style={{ flexGrow: 1 }}>
-                {title} history &gt;{" "}
+                {title} history
               </Typography>
               <IconButton
                 edge="start"
@@ -295,8 +320,9 @@ export default function CoverageDetail({ aid, title, data, close }) {
               </IconButton>
             </Toolbar>
           </AppBar>
-          <div style={{ height: "90%", width: "100%" }}>
+          <div style={{ height: "92.5%", width: "100%" }}>
             <DataGrid
+              className={classes.dataGrid}
               components={{
                 Toolbar: CustomToolbar,
               }}

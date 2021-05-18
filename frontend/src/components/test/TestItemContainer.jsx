@@ -121,7 +121,7 @@ export default function TestItemContainer(props) {
           {props.resultType == "fail" && (
             <Box
               style={{
-                borderLeft: "10px solid #FFCC66",
+                borderLeft: "10px solid #e53935",
                 paddingBottom: "1%",
               }}
             >
@@ -173,11 +173,7 @@ export default function TestItemContainer(props) {
                   }}
                 >
                   <TestErrorContainer
-                    name="Type"
-                    content={props.errorType}
-                  ></TestErrorContainer>
-                  <TestErrorContainer
-                    name="Message"
+                    name="ErrorMessage"
                     content={props.errorMessage}
                   ></TestErrorContainer>
                   <TestErrorContainer
@@ -191,7 +187,7 @@ export default function TestItemContainer(props) {
           {props.resultType == "error" && (
             <Box
               style={{
-                borderLeft: "10px solid #FF4444",
+                borderLeft: "10px solid #fb8c00",
                 paddingBottom: "1%",
               }}
             >
@@ -243,11 +239,7 @@ export default function TestItemContainer(props) {
                   }}
                 >
                   <TestErrorContainer
-                    name="Type"
-                    content={props.errorType}
-                  ></TestErrorContainer>
-                  <TestErrorContainer
-                    name="Message"
+                    name="ErrorMessage"
                     content={props.errorMessage}
                   ></TestErrorContainer>
                   <TestErrorContainer
@@ -261,7 +253,7 @@ export default function TestItemContainer(props) {
           {props.resultType == "skip" && (
             <Box
               style={{
-                borderLeft: "10px solid #CCCCCC",
+                borderLeft: "10px solid #9e9e9e",
                 paddingBottom: "1%",
               }}
             >
@@ -309,11 +301,7 @@ export default function TestItemContainer(props) {
                   }}
                 >
                   <TestErrorContainer
-                    name="Type"
-                    content={props.errorType}
-                  ></TestErrorContainer>
-                  <TestErrorContainer
-                    name="Message"
+                    name="ErrorMessage"
                     content={props.errorMessage}
                   ></TestErrorContainer>
                   <TestErrorContainer

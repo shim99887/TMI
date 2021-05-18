@@ -7,6 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { reportAxios, testAxios } from "../../utils/axios";
 import datetime from "../../utils/moment";
 import styled from "styled-components";
+import { colors } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -48,6 +49,8 @@ export default function TestDetail(props) {
     console.log(selectedReportList);
 
     setReportHistory(selectedReportList);
+    setIdx(0);
+    getReportData(selectedReportList[0].id, 0);
   }, []);
 
   useEffect(() => {
@@ -140,13 +143,13 @@ export default function TestDetail(props) {
   }
   return (
     <Box>
-      <Box alignItems="center" textAlign="center">
+      <Box alignItems="center" textAlign="Left">
         <Box
           style={{
             marginTop: "1%",
-            marginBottom: "3%",
+            marginBottom: "1%",
+            marginLeft: "1%",
             fontSize: "200%",
-            maxWidth: "20%",
           }}
         >
           {props.title}
@@ -154,25 +157,15 @@ export default function TestDetail(props) {
         <Box
           display="flex"
           flexDirection="Column"
-          marginLeft="3%"
-          marginRight="3%"
+          marginLeft="1%"
+          marginRight="1%"
         >
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            zIndex="1"
-            position="relative"
-            marginLeft="5%"
-            marginRight="5%"
-          >
-            {reports}
-          </Box>
           <Box
             style={{
               borderTop: "2px solid black",
               zIndex: "0",
               position: "relative",
-              top: "-66px",
+              top: "74px",
             }}
           ></Box>
           <Box
@@ -182,16 +175,26 @@ export default function TestDetail(props) {
               borderRight: "2px solid black",
               zIndex: "0",
               position: "relative",
-              top: "-74px",
+              top: "66px",
             }}
           ></Box>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            zIndex="1"
+            position="relative"
+            marginLeft="3%"
+            marginRight="3%"
+          >
+            {reports}
+          </Box>
         </Box>
       </Box>
-      <Box className={styles.container} marginLeft="3%" marginRight="3%">
+      <Box className={styles.container} marginLeft="1%" marginRight="1%">
         <Grid item xs={12}>
           {idx >= 0 && (
-            <Box display="flex" justifyContent="space-between" marginTop="3%">
-              <Box>
+            <Box display="flex" justifyContent="space-between" marginTop="1%">
+              <Box fontWeight="bold">
                 Report #{report.length - reportHistory[idx].index} -{" "}
                 {datetime(reportHistory[idx].datetime)} (
                 {reportHistory[idx].totalElapsedTime} ms)
@@ -207,7 +210,7 @@ export default function TestDetail(props) {
             <Box
               className={styles.container}
               fontSize="200%"
-              marginTop="1%"
+              marginTop="5px"
               style={{ cursor: "pointer" }}
             >
               <Box
@@ -219,7 +222,7 @@ export default function TestDetail(props) {
               >
                 <Box
                   style={{
-                    backgroundColor: "#99DD99",
+                    backgroundColor: "#77EE77",
                   }}
                 >
                   Pass
@@ -241,14 +244,14 @@ export default function TestDetail(props) {
               >
                 <Box
                   style={{
-                    backgroundColor: "#FFCC66",
+                    backgroundColor: colors.red[400],
                   }}
                 >
                   Fail
                 </Box>
                 <Box
                   style={{
-                    backgroundColor: "#FFAA00",
+                    backgroundColor: colors.red[600],
                   }}
                 >
                   {reportHistory[idx].totalFailCount}
@@ -263,14 +266,14 @@ export default function TestDetail(props) {
               >
                 <Box
                   style={{
-                    backgroundColor: "#FF4444",
+                    backgroundColor: colors.orange[400],
                   }}
                 >
                   Error
                 </Box>
                 <Box
                   style={{
-                    backgroundColor: "#FF0000",
+                    backgroundColor: colors.orange[600],
                   }}
                 >
                   {reportHistory[idx].totalErrorCount}
@@ -285,14 +288,14 @@ export default function TestDetail(props) {
               >
                 <Box
                   style={{
-                    backgroundColor: "#CCCCCC",
+                    backgroundColor: colors.grey[400],
                   }}
                 >
                   Skip
                 </Box>
                 <Box
                   style={{
-                    backgroundColor: "#AAAAAA",
+                    backgroundColor: colors.grey[500],
                   }}
                 >
                   {reportHistory[idx].totalSkipCount}
@@ -301,7 +304,15 @@ export default function TestDetail(props) {
             </Box>
           )}
           {/* 스크롤 가능하게 만들기 */}
-          <Box>{testList}</Box>
+          <div
+            style={{
+              overflowY: "scroll",
+              height: "420px",
+              position: "relative",
+            }}
+          >
+            {testList}
+          </div>
         </Grid>
       </Box>
     </Box>

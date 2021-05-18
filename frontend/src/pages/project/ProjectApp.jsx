@@ -35,20 +35,23 @@ function getModalStyle() {
 const useStyles = makeStyles((theme) => ({
   createAppForm: {
     position: "absolute",
-    width: 400,
+    width: 500,
     backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
   testDetail: {
     position: "absolute",
-    width: "90vw",
-    height: "90vh",
+    width: "90%",
+    height: "90%",
     backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
     boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
+  },
+  dataGrid: {
+    cursor: "pointer",
+    "&:hover": {
+      cursor: "hand",
+    },
   },
 }));
 
@@ -150,12 +153,18 @@ export default function ProjectApp() {
   const [selectedAppId, setSelectedAppId] = useState("");
   const [selectionModel, setSelectionModel] = useState([]);
   const [selectedTotalLineCoverage, setSelectedTotalLineCoverage] = useState([
-    0, 0,
+    0,
+    0,
   ]);
-  const [selectedTotalBranchCoverage, setSelectedTotalBranchCoverage] =
-    useState([0, 0]);
+  const [
+    selectedTotalBranchCoverage,
+    setSelectedTotalBranchCoverage,
+  ] = useState([0, 0]);
   const [selectedTotalPassRate, setSelectedTotalPassRate] = useState([
-    0, 0, 0, 0,
+    0,
+    0,
+    0,
+    0,
   ]);
 
   const classes = useStyles();
@@ -212,20 +221,28 @@ export default function ProjectApp() {
             Create new app
           </Button>
         </div>
-        <Typography variant="h6">{project.description}</Typography>
+
+        <Typography style={{ fontSize: "20px", color: "#454545" }}>
+          {project.description}
+        </Typography>
         {/* <Typography variant="small">담당부서: {project.department}</Typography>
         <br></br>
         <Typography variant="small">
           등록일: {datetime(project.regDate)}{" "}
         </Typography>{" "} */}
       </div>
-      <div style={{ display: "flex" }}>
+      <div
+        style={{
+          display: "flex",
+          marginTop: "20px  ",
+        }}
+      >
         <div
           style={{
             display: "flex",
-            flexDirection: "column",
             justifyContent: "space-evenly",
-            marginRight: 15,
+            flexDirection: "column",
+            marginRight: "40px",
           }}
         >
           <TotalDoughnutGraph
@@ -238,10 +255,10 @@ export default function ProjectApp() {
           />
           <TotalDoughnutGraph data={selectedTotalPassRate} title="Pass Rate" />
         </div>
-        <div style={{ flexGrow: 1 }}>
+        <div style={{ flexGrow: 1, marginTop: "20px" }}>
           <div style={{ height: "75vh", width: "100%" }}>
             <DataGrid
-              className="dataGrid"
+              className={classes.dataGrid}
               components={{
                 Toolbar: CustomToolbar,
               }}
@@ -306,7 +323,6 @@ export default function ProjectApp() {
                   setSelectedAppId(cell.row.id);
                 }
               }}
-              on
             />
           </div>
         </div>

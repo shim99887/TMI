@@ -52,11 +52,3 @@ html, body {
   filter: blur(3px);
   z-index: -3;
 }
-
-.dataGrid{
-  cursor: "hand"
-}
-
-.dataGrid:hover {
-  cursor: "hand"
-}

@@ -19,10 +19,10 @@ export default function TotalDoughnutGraph({ data, title }) {
       {
         data,
         backgroundColor: [
-          colors.blue[500],
-          colors.red[500],
-          colors.orange[500],
-          colors.purple[500],
+          colors.blue[600],
+          colors.red[600],
+          colors.orange[600],
+          colors.grey[500],
         ],
       },
     ],
@@ -34,17 +34,16 @@ export default function TotalDoughnutGraph({ data, title }) {
         variant="h6"
         style={{ display: "flex", justifyContent: "space-between" }}
       >
+        <span>{title}</span>
+
         <span>
           {data[0]
-            ? `${
-                Math.round(
-                  (data[0] / data.reduce((pValue, cValue) => pValue + cValue)) *
-                    10000
-                ) / 100
-              }%`
+            ? `${Math.round(
+                (data[0] / data.reduce((pValue, cValue) => pValue + cValue)) *
+                  10000
+              ) / 100}%`
             : ""}
         </span>
-        <span>{title}</span>
       </Typography>
       <Doughnut height="200" width="200" data={dataDoughnutGraph} />
     </Box>
