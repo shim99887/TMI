@@ -43,6 +43,16 @@ function Navigation({ logout, history }) {
                 Project
               </Link>
             </Button>
+
+            <Button color="inherit">
+              <Link
+                style={{ textDecoration: "none", color: "inherit" }}
+                to="/plugin"
+              >
+                Plugin
+              </Link>
+            </Button>
+
             <Button color="inherit">
               <Link
                 style={{ textDecoration: "none", color: "inherit" }}

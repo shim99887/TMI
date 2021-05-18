@@ -6,7 +6,7 @@ import About from "./pages/About";
 import Login from "./pages/login/Login";
 import Project from "./pages/project/Project";
 import ProjectApp from "./pages/project/ProjectApp";
-import TestDetail from "./components/test/TestDetail";
+import Plugin from "./components/about/Plugin";
 import "./App.css";
 import { useDispatch, useSelector } from "react-redux";
 import { LOG_OUT } from "./redux/user";
@@ -35,6 +35,7 @@ function App() {
             <div style={{ height: 64 }} />
             <Route path="/project" exact component={Project} />
             <Route path="/project/:id" component={ProjectApp} />
+            <Route path="/plugin" component={Plugin} />
             <Route path="/about" component={About} />
           </Container>
         </>
