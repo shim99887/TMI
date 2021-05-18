@@ -280,7 +280,7 @@ export default function CoverageDetail({ aid, title, data, close }) {
                 {
                   field: "className",
                   headerName: "Class",
-                  flex: 1,
+                  width: 250,
                   renderCell: (params) => (
                     <span
                       style={{ color: "blue", textDecoration: "underline" }}
@@ -302,7 +302,7 @@ export default function CoverageDetail({ aid, title, data, close }) {
                   headerName: "Line Cov.(%)",
                   description: "Line Coverage (Covered / Missed)",
                   type: "number",
-                  flex: 1,
+                  width: 160,
                   valueGetter: (params) => {
                     const covered = params.getValue("lineCovCovered");
                     const missed = params.getValue("lineCovMissed");
@@ -318,19 +318,19 @@ export default function CoverageDetail({ aid, title, data, close }) {
                   field: "lineCovCovered",
                   headerName: "Line Covered",
                   type: "number",
-                  flex: 1,
+                  width: 160,
                 },
                 {
                   field: "lineCovMissed",
                   headerName: "Line Missed",
                   type: "number",
-                  flex: 1,
+                  width: 160,
                 },
                 {
                   field: "branchCov",
                   headerName: "Branch Cov.(%)",
                   type: "number",
-                  flex: 1,
+                  width: 160,
                   valueGetter: (params) => {
                     const covered = params.getValue("branchCovCovered");
                     const missed = params.getValue("branchCovMissed");
@@ -345,13 +345,13 @@ export default function CoverageDetail({ aid, title, data, close }) {
                 {
                   field: "branchCovCovered",
                   headerName: "Branch Covered",
-                  flex: 1,
+                  width: 160,
                   type: "number",
                 },
                 {
                   field: "branchCovMissed",
                   headerName: "Branch Missed",
-                  flex: 1,
+                  width: 160,
                   type: "number",
                 },
               ]}
