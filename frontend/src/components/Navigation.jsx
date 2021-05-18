@@ -63,7 +63,9 @@ function Navigation({ logout, history }) {
             </Button>
           </Grid>
           <Box borderRight="1px solid #D7D7D7" paddingRight="7px">
-            <Typography>{user.info.name}</Typography>
+            <Typography>
+              {user.info.department.name} {user.info.name}님
+            </Typography>
           </Box>
 
           <Button
