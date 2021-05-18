@@ -232,7 +232,7 @@ export default function About() {
       <Grid container spacing={2}>
         <Grid item xs={12}></Grid>
         <Grid item xs={12}>
-          <Typography variant="h4" color="primary">
+          {/* <Typography variant="h4" color="primary">
             Introduce
           </Typography>
           <br />
@@ -253,12 +253,14 @@ export default function About() {
           </Typography>
           <Typography variant="h5" display="inline">
             nfrastructure
-          </Typography>
-          <br />
+          </Typography> */}
+          <Markdown># Test automation Management Infrastructure</Markdown>
           <br />
           <Markdown>TMI? Too Much Information? No!</Markdown>
           <br />
-          <Markdown>테스트와 커버리지 결과를 관리하는 시스템입니다.</Markdown>
+          <Markdown>
+            TMI는 테스트와 커버리지 결과를 관리하는 시스템입니다.
+          </Markdown>
           <br />
           <Markdown>
             오픈소스인 JaCoCo를 통해 Spring project의 Line Coverage, Branch
@@ -266,15 +268,19 @@ export default function About() {
             테스트 결과를 얻어옵니다.
           </Markdown>
           <br />
-          <br />
 
           <Markdown>
             {`
 - Code Coverage 란? 테스트 케이스가 얼마나 충족되었는 지를 나타내는 지표 중 하나로, 코드 자체가 얼마나 실행되었는 지를 수치를 통해 확인할 수 있습니다.
     - 예를 들어, Line Coverage는 코드 전체 100줄 중 몇 줄에 접근했는 지를 나타내는 수치이고,
-    - Branch Coverage는 소스의 조건문(분기문)의 조건이 true / false 전부 해당 되어 접근이 가능한 지를 나타내는 수치 입니다.
-- 단위 테스트란? 소스 코드의 특정 메소드, 모듈이 의도된 대로 정확한 값을 도출해 내는 지 검증하는 절차로, 모든 메소드에 대해 테스트 케이스를 작성하여 확인하는 절차를 칭합니다. Java에서는 Junit을 이용하여 assertTMI() 등의 함수를 통해 테스트 되어집니다.
-            `}
+    - Branch Coverage는 소스의 조건문(분기문)의 조건이 true / false 전부 해당 되어 접근이 가능한 지를 나타내는 수치 입니다.`}
+          </Markdown>
+          <br />
+          <Markdown>
+            - 단위 테스트란? 소스 코드의 특정 메소드, 모듈이 의도된 대로 정확한
+            값을 도출해 내는 지 검증하는 절차로, 모든 메소드에 대해 테스트
+            케이스를 작성하여 확인하는 절차를 칭합니다. Java에서는 Junit을
+            이용하여 assertTMI() 등의 함수를 통해 테스트 되어집니다.
           </Markdown>
           <br />
 
@@ -300,8 +306,13 @@ export default function About() {
             *** App 에 대한 Github / Gitlab 주소를 가지고 구별하기 때문에 Git
             repository 주소가 바뀌면 다른 App으로 인식합니다.
           </Markdown>
+          <br />
+          <br />
+          <br />
+
+          <ProjectDetail />
         </Grid>
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <br />
           <br />
           <Grid container spacing={2}>
@@ -318,7 +329,7 @@ export default function About() {
                 imageHeight={347.625}
               />
             </Grid>
-            {/* <Grid item xs={12}>
+            <Grid item xs={12}>
               <br />
               <AboutCard
                 cardList={cardList2}
@@ -326,15 +337,14 @@ export default function About() {
                 detail={1}
                 imageHeight={347.625}
               />
-            </Grid> */}
+            </Grid>
           </Grid>
-        </Grid>
+        </Grid> */}
         <Grid item xs={12}>
-          <br />
-          <br />
-          <Typography variant="h4" color="primary">
+          <Markdown># About Us</Markdown>
+          {/* <Typography variant="h4" color="primary">
             About Us
-          </Typography>
+          </Typography> */}
           <Grid item xs={12}>
             <br />
             <AboutCard
