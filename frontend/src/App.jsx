@@ -22,7 +22,7 @@ function App() {
     <>
       {user.isLoggedIn ? (
         <>
-          {/* <Redirect to="/project" /> */}
+          <Redirect to="/project" />
           <Navigation logout={logout} />
           <Container
             style={{
