@@ -235,13 +235,13 @@ export default function ProjectApp() {
         style={{
           display: "flex",
           marginTop: "20px  ",
-          flexDirection: "column",
         }}
       >
         <div
           style={{
             display: "flex",
             justifyContent: "space-evenly",
+            flexDirection: "column",
             marginRight: "40px",
           }}
         >
