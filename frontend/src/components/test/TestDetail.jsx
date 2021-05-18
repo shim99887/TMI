@@ -35,9 +35,9 @@ export default function TestDetail(props) {
     let selectedReportList = [];
     for (let i = 0; i < reportResponse.length; i++) {
       if (reportResponse[i].id == props.id) {
-        for (let j = i; j <= i + 6; j++) {
+        for (let j = i; j <= i + 4; j++) {
           if (reportResponse.length <= j) continue;
-          if (selectedReportList.length >= 7) break; // max length
+          if (selectedReportList.length >= 5) break; // max length
 
           let string = JSON.stringify(reportResponse[j]);
           string = string.replace("}", `,"index":${j}}`);
@@ -142,178 +142,176 @@ export default function TestDetail(props) {
     return false;
   }
   return (
-    <Box>
+    <Box display="flex" marginTop="2%" zIndex="1">
       <Box alignItems="center" textAlign="Left">
-        <Box
-          style={{
-            marginTop: "1%",
-            marginBottom: "1%",
-            marginLeft: "1%",
-            fontSize: "200%",
-          }}
-        >
-          {props.title}
-        </Box>
-        <Box
-          display="flex"
-          flexDirection="Column"
-          marginLeft="1%"
-          marginRight="1%"
-        >
+        <Box display="flex" marginLeft="30px" marginTop="15%" height="22%">
           <Box
             style={{
-              borderTop: "2px solid black",
+              borderLeft: "2px solid black",
               zIndex: "0",
               position: "relative",
-              top: "74px",
+              left: "70px",
             }}
           ></Box>
           <Box
             style={{
-              height: "14px",
-              borderLeft: "2px solid black",
-              borderRight: "2px solid black",
+              width: "14px",
+              borderTop: "2px solid black",
+              borderBottom: "2px solid black",
               zIndex: "0",
               position: "relative",
-              top: "66px",
+              left: "62px",
             }}
           ></Box>
           <Box
             display="flex"
             justifyContent="space-between"
+            flexDirection="column"
             zIndex="1"
             position="relative"
-            marginLeft="3%"
-            marginRight="3%"
+            left="35px"
           >
             {reports}
           </Box>
         </Box>
       </Box>
-      <Box className={styles.container} marginLeft="1%" marginRight="1%">
-        <Grid item xs={12}>
-          {idx >= 0 && (
-            <Box display="flex" justifyContent="space-between" marginTop="1%">
-              <Box fontWeight="bold">
-                Report #{report.length - reportHistory[idx].index} -{" "}
-                {datetime(reportHistory[idx].datetime)} (
-                {reportHistory[idx].totalElapsedTime} ms)
-              </Box>
-              <input
-                type="search"
-                placeholder="filter"
-                onChange={(e) => setSearchField(e.target.value)}
-              ></input>
+      <Box
+        className={styles.container}
+        width="80%"
+        marginLeft="7%"
+        marginRight="1%"
+        display="flex"
+        flexDirection="column"
+      >
+        {idx >= 0 && (
+          <Box
+            width="100%"
+            display="flex"
+            justifyContent="space-between"
+            marginTop="1%"
+          >
+            <Box fontWeight="bold">
+              Report #{report.length - reportHistory[idx].index} -{" "}
+              {datetime(reportHistory[idx].datetime)} (
+              {reportHistory[idx].totalElapsedTime} ms)
             </Box>
-          )}
-          {idx >= 0 && (
+            <input
+              type="search"
+              placeholder="filter"
+              onChange={(e) => setSearchField(e.target.value)}
+            ></input>
+          </Box>
+        )}
+        {idx >= 0 && (
+          <Box
+            className={styles.container}
+            fontSize="200%"
+            marginTop="5px"
+            style={{ cursor: "pointer" }}
+            width="100%"
+          >
             <Box
-              className={styles.container}
-              fontSize="200%"
-              marginTop="5px"
-              style={{ cursor: "pointer" }}
+              className={
+                condition[0] == "1" ? "typeButtonActive" : "typeButton"
+              }
+              flexGrow={reportHistory[idx].totalRunCount + 1}
+              onClick={getPassList}
             >
               <Box
-                className={
-                  condition[0] == "1" ? "typeButtonActive" : "typeButton"
-                }
-                flexGrow={reportHistory[idx].totalRunCount + 1}
-                onClick={getPassList}
+                style={{
+                  backgroundColor: "#77EE77",
+                }}
               >
-                <Box
-                  style={{
-                    backgroundColor: "#77EE77",
-                  }}
-                >
-                  Pass
-                </Box>
-                <Box
-                  style={{
-                    backgroundColor: "#22DD22",
-                  }}
-                >
-                  {reportHistory[idx].totalRunCount}
-                </Box>
+                Pass
               </Box>
               <Box
-                className={
-                  condition[1] == "1" ? "typeButtonActive" : "typeButton"
-                }
-                flexGrow={reportHistory[idx].totalFailCount + 1}
-                onClick={getFailList}
+                style={{
+                  backgroundColor: "#22DD22",
+                }}
               >
-                <Box
-                  style={{
-                    backgroundColor: colors.red[400],
-                  }}
-                >
-                  Fail
-                </Box>
-                <Box
-                  style={{
-                    backgroundColor: colors.red[600],
-                  }}
-                >
-                  {reportHistory[idx].totalFailCount}
-                </Box>
-              </Box>
-              <Box
-                className={
-                  condition[2] == "1" ? "typeButtonActive" : "typeButton"
-                }
-                flexGrow={reportHistory[idx].totalErrorCount + 1}
-                onClick={getErrorList}
-              >
-                <Box
-                  style={{
-                    backgroundColor: colors.orange[400],
-                  }}
-                >
-                  Error
-                </Box>
-                <Box
-                  style={{
-                    backgroundColor: colors.orange[600],
-                  }}
-                >
-                  {reportHistory[idx].totalErrorCount}
-                </Box>
-              </Box>
-              <Box
-                className={
-                  condition[3] == "1" ? "typeButtonActive" : "typeButton"
-                }
-                flexGrow={reportHistory[idx].totalSkipCount + 1}
-                onClick={getSkipList}
-              >
-                <Box
-                  style={{
-                    backgroundColor: colors.grey[400],
-                  }}
-                >
-                  Skip
-                </Box>
-                <Box
-                  style={{
-                    backgroundColor: colors.grey[500],
-                  }}
-                >
-                  {reportHistory[idx].totalSkipCount}
-                </Box>
+                {reportHistory[idx].totalRunCount}
               </Box>
             </Box>
-          )}
-          {/* 스크롤 가능하게 만들기 */}
-          <div
-            style={{
-              overflowY: "scroll",
-              height: "420px",
-              position: "relative",
-            }}
-          >
-            {testList}
-          </div>
-        </Grid>
+            <Box
+              className={
+                condition[1] == "1" ? "typeButtonActive" : "typeButton"
+              }
+              flexGrow={reportHistory[idx].totalFailCount + 1}
+              onClick={getFailList}
+            >
+              <Box
+                style={{
+                  backgroundColor: colors.red[400],
+                }}
+              >
+                Fail
+              </Box>
+              <Box
+                style={{
+                  backgroundColor: colors.red[600],
+                }}
+              >
+                {reportHistory[idx].totalFailCount}
+              </Box>
+            </Box>
+            <Box
+              className={
+                condition[2] == "1" ? "typeButtonActive" : "typeButton"
+              }
+              flexGrow={reportHistory[idx].totalErrorCount + 1}
+              onClick={getErrorList}
+            >
+              <Box
+                style={{
+                  backgroundColor: colors.orange[400],
+                }}
+              >
+                Error
+              </Box>
+              <Box
+                style={{
+                  backgroundColor: colors.orange[600],
+                }}
+              >
+                {reportHistory[idx].totalErrorCount}
+              </Box>
+            </Box>
+            <Box
+              className={
+                condition[3] == "1" ? "typeButtonActive" : "typeButton"
+              }
+              flexGrow={reportHistory[idx].totalSkipCount + 1}
+              onClick={getSkipList}
+            >
+              <Box
+                style={{
+                  backgroundColor: colors.grey[400],
+                }}
+              >
+                Skip
+              </Box>
+              <Box
+                style={{
+                  backgroundColor: colors.grey[500],
+                }}
+              >
+                {reportHistory[idx].totalSkipCount}
+              </Box>
+            </Box>
+          </Box>
+        )}
+        {/* 스크롤 가능하게 만들기 */}
+        <Box
+          style={{
+            overflowY: "auto",
+            position: "relative",
+            width: "100%",
+            maxHeight: "19%",
+            zIndex: "0",
+          }}
+        >
+          {testList}
+        </Box>
       </Box>
     </Box>
   );

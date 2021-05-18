@@ -292,11 +292,13 @@ export default function CoverageDetail({ aid, title, data, close }) {
               </IconButton>
             </Toolbar>
           </AppBar>
-          <TestDetail
-            aid={aid}
-            id={selectedReport.id}
-            title={title}
-          ></TestDetail>
+          <Box maxHeight="40%">
+            <TestDetail
+              aid={aid}
+              id={selectedReport.id}
+              title={title}
+            ></TestDetail>
+          </Box>
         </>
       ) : (
         <>

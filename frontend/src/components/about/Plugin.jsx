@@ -1,6 +1,6 @@
 import React from "react";
 import Markdown from "react-markdown";
-import { Button, Box } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
 import FileDownloadOutlinedIcon from "@material-ui/icons/FileDownloadOutlined";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vs } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -133,20 +133,19 @@ export default function Plugin() {
   const imageStyle = {};
   return (
     <>
+      <Button
+        style={{
+          position: "absolute",
+          right: "10%",
+          backgroundColor: "#FF8843",
+          color: "inherit",
+        }}
+        href="http://k4a201.p.ssafy.io/static/coverage/tmi-maven-plugin-0.0.1-SNAPSHOT.jar"
+      >
+        <FileDownloadOutlinedIcon></FileDownloadOutlinedIcon>JAR File Download
+      </Button>
       <div style={imageStyle}>
-        <Box display="flex" justifyContent="space-between" marginBottom="1%">
-          <Markdown># 1. JAR 파일을 Spring project 내 폴더에 넣는다.</Markdown>
-          <Button
-            style={{
-              backgroundColor: "#FF8843",
-              color: "inherit",
-            }}
-            href="http://k4a201.p.ssafy.io/static/coverage/tmi-maven-plugin-0.0.1-SNAPSHOT.jar"
-          >
-            <FileDownloadOutlinedIcon></FileDownloadOutlinedIcon> JAR File
-            Download
-          </Button>
-        </Box>
+        <Markdown># 1. JAR 파일을 Spring project 내 폴더에 넣는다.</Markdown>
         <img src="./assets/images/plugin/Plugin1.png" style={imageStyle} />
         <Markdown>
           ex) spring-petclinic(spring boot project) 아래 lib 폴더 안에 jar
