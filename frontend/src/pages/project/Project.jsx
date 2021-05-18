@@ -58,9 +58,23 @@ const tableIcons = {
 
 export default function Project() {
   var columns = [
-    { title: "ID", field: "id", editable: "never" },
-    { title: "Title", field: "title" },
-    { title: "Descrption", field: "description" },
+    {
+      title: "ID",
+      field: "id",
+      editable: "never",
+      cellStyle: {
+        width: "5%",
+        maxWidth: "5%",
+      },
+    },
+    {
+      title: "Title",
+      field: "title",
+    },
+    {
+      title: "Descrption",
+      field: "description",
+    },
   ];
   const [projectList, setProjectList] = useState();
   const user = useSelector((state) => state.user);
@@ -205,6 +219,8 @@ export default function Project() {
                 actionsColumnIndex: -1,
                 minBodyHeight: "75vh",
                 maxBodyHeight: "75vh",
+                pageSize: 10,
+                pageSizeOptions: [10, 20, 30],
               }}
             />
           </Grid>
