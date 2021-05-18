@@ -5,6 +5,7 @@ export default function ProjectDetail() {
   return (
     <>
       <Markdown># Project 상세 페이지</Markdown>
+      <br />
       <Markdown>## App 현황</Markdown>
       <Markdown>
         Project 상세 페이지에서는 해당 프로젝트에 속한 App의 현황을 파악할 수
@@ -12,6 +13,7 @@ export default function ProjectDetail() {
         시간을 확인할 수 있습니다.
       </Markdown>
       <img src="./assets/images/project-detail/01.png" width="100%" />
+      <br />
       <br />
       <Markdown>## App 생성</Markdown>
       <Markdown>
@@ -22,6 +24,7 @@ export default function ProjectDetail() {
       </Markdown>
       <img src="./assets/images/project-detail/02.png" width="100%" />
       <br />
+      <br />
       <Markdown>## App history</Markdown>
       <Markdown>
         하나의 App 행을 클릭하면 해당 App의 빌드 시간별 history를 확인할 수
@@ -30,12 +33,14 @@ export default function ProjectDetail() {
       </Markdown>
       <img src="./assets/images/project-detail/03.png" width="100%" />
       <br />
+      <br />
       <Markdown>## App history group by class</Markdown>
       <Markdown>
         App history 화면에서 Coverage에 해당하는 값을 누르면 해당 빌드 시간의
         Coverage를 class별로 세분화하여 확인할 수 있습니다.
       </Markdown>
       <img src="./assets/images/project-detail/04.png" width="100%" />
+      <br />
       <br />
       <Markdown>## App coverage code</Markdown>
       <Markdown>
