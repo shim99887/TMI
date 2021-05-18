@@ -46,63 +46,6 @@ const columns = [
     renderCell: (params) => <div>{datetime(params.getValue("datetime"))}</div>,
   },
   {
-    field: "lineCov",
-    headerName: "Line Cov.(%)",
-    description: "Line Coverage (Covered / Missed)",
-    flex: 1,
-    type: "number",
-    valueGetter: (params) => {
-      const covered = params.getValue("totalLineCovCovered");
-      const missed = params.getValue("totalLineCovMissed");
-      const total = covered + missed;
-
-      if (total) {
-        return Math.round((covered / total) * 10000) / 100 + " %";
-      }
-      return 100 + " %";
-    },
-  },
-  {
-    field: "totalLineCovCovered",
-    headerName: "Line Covered",
-    flex: 1,
-    type: "number",
-  },
-  {
-    field: "totalLineCovMissed",
-    headerName: "Line Missed",
-    flex: 1,
-    type: "number",
-  },
-  {
-    field: "branchCov",
-    headerName: "Branch Cov.(%)",
-    flex: 1,
-    type: "number",
-    valueGetter: (params) => {
-      const covered = params.getValue("totalBranchCovCovered");
-      const missed = params.getValue("totalBranchCovMissed");
-      const total = covered + missed;
-
-      if (total) {
-        return Math.round((covered / total) * 10000) / 100 + " %";
-      }
-      return 100 + " %";
-    },
-  },
-  {
-    field: "totalBranchCovCovered",
-    headerName: "Branch Covered",
-    flex: 1,
-    type: "number",
-  },
-  {
-    field: "totalBranchCovMissed",
-    headerName: "Branch Missed",
-    flex: 1,
-    type: "number",
-  },
-  {
     field: "passRate",
     headerName: "Pass Rate(%)",
     flex: 1,
@@ -124,6 +67,67 @@ const columns = [
       return 0 + " %";
     },
   },
+  { field: "totalRunCount", headerName: "Run", flex: 1, type: "number" },
+  { field: "totalFailCount", headerName: "Fail", flex: 1, type: "number" },
+  { field: "totalErrorCount", headerName: "Error", flex: 1, type: "number" },
+  { field: "totalSkipCount", headerName: "Skip", flex: 1, type: "number" },
+  {
+    field: "lineCov",
+    headerName: "Line Cov.(%)",
+    description: "Line Coverage (Covered / Missed)",
+    flex: 1,
+    type: "number",
+    valueGetter: (params) => {
+      const covered = params.getValue("totalLineCovCovered");
+      const missed = params.getValue("totalLineCovMissed");
+      const total = covered + missed;
+
+      if (total) {
+        return Math.round((covered / total) * 10000) / 100 + " %";
+      }
+      return 100 + " %";
+    },
+  },
+  // {
+  //   field: "totalLineCovCovered",
+  //   headerName: "Line Covered",
+  //   flex: 1,
+  //   type: "number",
+  // },
+  // {
+  //   field: "totalLineCovMissed",
+  //   headerName: "Line Missed",
+  //   flex: 1,
+  //   type: "number",
+  // },
+  {
+    field: "branchCov",
+    headerName: "Branch Cov.(%)",
+    flex: 1,
+    type: "number",
+    valueGetter: (params) => {
+      const covered = params.getValue("totalBranchCovCovered");
+      const missed = params.getValue("totalBranchCovMissed");
+      const total = covered + missed;
+
+      if (total) {
+        return Math.round((covered / total) * 10000) / 100 + " %";
+      }
+      return 100 + " %";
+    },
+  },
+  // {
+  //   field: "totalBranchCovCovered",
+  //   headerName: "Branch Covered",
+  //   flex: 1,
+  //   type: "number",
+  // },
+  // {
+  //   field: "totalBranchCovMissed",
+  //   headerName: "Branch Missed",
+  //   flex: 1,
+  //   type: "number",
+  // },
 ];
 
 function CustomToolbar() {
@@ -330,15 +334,14 @@ export default function CoverageDetail({ aid, title, data, close }) {
               columns={columns}
               onCellClick={async (cell, event) => {
                 event.preventDefault();
-                if (cell.field == "passRate") {
+                if (cell.field !== "lineCov" && cell.field !== "branchCov") {
                   console.log(cell.row.id);
                   console.log(cell.row);
                   setTestDetail(true);
                   setSelectedReport(cell.row);
                 } else {
-                  const responseData = await coverageAxios.getCoverageListByReportId(
-                    cell.row.id
-                  );
+                  const responseData =
+                    await coverageAxios.getCoverageListByReportId(cell.row.id);
                   console.log(responseData);
                   setClassDetailData(responseData);
                   setClassDetail(true);
