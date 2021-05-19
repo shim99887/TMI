@@ -260,7 +260,6 @@ export default function ProjectApp() {
         <div style={{ flexGrow: 1, marginTop: "20px" }}>
           <div style={{ height: "75vh", width: "100%" }}>
             <DataGrid
-              className={classes.dataGrid}
               components={{
                 Toolbar: CustomToolbar,
               }}
