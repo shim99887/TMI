@@ -106,8 +106,9 @@ export default function CoverageDetail({ aid, title, data, close }) {
           <span
             onClick={async (event) => {
               event.preventDefault();
-              const responseData =
-                await coverageAxios.getCoverageListByReportId(params.row.id);
+              const responseData = await coverageAxios.getCoverageListByReportId(
+                params.row.id
+              );
               setClassDetailData(responseData);
               setClassDetail(true);
               setSelectedReport(params.row);
@@ -271,7 +272,6 @@ export default function CoverageDetail({ aid, title, data, close }) {
             }}
           >
             <DataGrid
-              className={classes.dataGrid}
               components={{
                 Toolbar: CustomToolbar,
               }}
@@ -395,13 +395,11 @@ export default function CoverageDetail({ aid, title, data, close }) {
               </IconButton>
             </Toolbar>
           </AppBar>
-          <Box maxHeight="40%">
-            <TestDetail
-              aid={aid}
-              id={selectedReport.id}
-              title={title}
-            ></TestDetail>
-          </Box>
+          <TestDetail
+            aid={aid}
+            id={selectedReport.id}
+            title={title}
+          ></TestDetail>
         </>
       ) : (
         <>
@@ -427,7 +425,6 @@ export default function CoverageDetail({ aid, title, data, close }) {
           </AppBar>
           <div style={{ height: "92.5%", width: "100%" }}>
             <DataGrid
-              className={classes.dataGrid}
               components={{
                 Toolbar: CustomToolbar,
               }}
