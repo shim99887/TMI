@@ -272,13 +272,13 @@ export default function Plugin() {
   const imageStyle = {};
   return (
     <>
-      <Box width="350px" margin="0 auto" marginBottom="5%" fontSize="150%">
+      <Box width="310px" margin="0 auto" marginBottom="5%" fontSize="150%">
         <Markdown># Plugin 사용법</Markdown>
       </Box>
       <div style={imageStyle}>
         <Box display="flex" justifyContent="space-between" marginBottom="1%">
           <Markdown>
-            # 1. JAR 파일을 다운받아 Spring project 내 폴더에 넣는다.
+            ## 1. JAR 파일을 다운받아 Spring project 내 폴더에 넣는다.
           </Markdown>
           <Button
             style={{
@@ -297,96 +297,108 @@ export default function Plugin() {
           파일을 넣는다.
         </Markdown>
         <br />
-
+        <br></br>
+        <br></br>
         <Markdown>
-          # 2. pom.xml에 설정을 위한 plugin, dependency를 추가한다.
+          ## 2. pom.xml에 설정을 위한 plugin, dependency를 추가한다.
         </Markdown>
+        <br />
         <Markdown> \- spring boot project의 경우 pom.xml 설정</Markdown>
         <SyntaxHighlighter language="xml" style={vs}>
           {codeString}
         </SyntaxHighlighter>
 
+        <br />
         <Markdown>\- spring legacy project 의 경우 pom.xml 설정</Markdown>
         <SyntaxHighlighter language="xml" style={vs}>
           {codeString2}
         </SyntaxHighlighter>
         <br />
-
+        <br></br>
+        <br></br>
         <Markdown>
-          # 3. app(spring project)을 등록하기 위해 giturl과 projectname을 정확히
-          기입합니다.
+          ## 3. app(spring project)을 등록하기 위해 git repo url과 app name을
+          조회한다.
         </Markdown>
         <br />
         <br />
-        <Markdown>## [GitUrl]</Markdown>
+        <Markdown>### [GitUrl]</Markdown>
         <Markdown>
-          프로젝트 폴더 아래에 .git 폴더 아래의 config 파일을 에디터로
-          조회합니다.
+          프로젝트 폴더 아래에 .git 폴더 아래의 config 파일을 에디터로 조회한다.
         </Markdown>
-        <Markdown>- .git 폴더</Markdown>
+        <br></br>
+        <Markdown>\- .git 폴더</Markdown>
+        <br></br>
         <img src="./assets/images/plugin/Plugin2.png" style={imageStyle} />
-        <Markdown>- .git 폴더 안의 config 파일 및 내용</Markdown>
+        <br></br>
+        <br></br>
+        <Markdown>\- .git 폴더 안의 config 파일 및 내용</Markdown>
+        <br></br>
         <img src="./assets/images/plugin/Plugin3.png" style={imageStyle} />
-        <Markdown>
-          - config 파일 중 url 정보를 페이지 gitUrl에 넣어줍니다.
-        </Markdown>
-        <Markdown>(.git까지 입력해주세요!)</Markdown>
+        <br></br>
+        <br></br>
+        <Markdown>\- git repo url에 입력할 config 파일의 url</Markdown>
+        <br></br>
         <img src="./assets/images/plugin/Plugin4.png" style={imageStyle} />
-        <br />
-        <br />
-        <br />
-        <Markdown>## [app name]</Markdown>
-        <Markdown>
-          - app name은 pom.xml 중 name 부분의 값을 넣으면 됩니다!
-        </Markdown>
+        <br></br>
+        <br></br>
+        <Markdown>### [app name]</Markdown>
+        <Markdown>\- app name에 입력할 pom.xml의 name</Markdown>
+        <br></br>
         <img src="./assets/images/plugin/Plugin5.png" style={imageStyle} />
         <br />
         <br />
+        <br></br>
+        <br></br>
+        <br></br>
 
         <Markdown>
-          ## 페이지 중 PROJECT 리스트 내 PROJECT 상세 페이지에서 CREATE NEW APP
-          버튼 클릭 후
+          ## 4. PROJECT 상세 페이지에서 CREATE NEW APP을 클릭하고 app name과 git
+          repo url을 입력한다.
         </Markdown>
+        <br></br>
         <img src="./assets/images/plugin/Plugin6.png" style={imageStyle} />
-        <br />
-        <br />
-
-        <Markdown>## 위의 app name과 git repo url을 똑같이(!) 기입.</Markdown>
         <img src="./assets/images/plugin/Plugin7.png" style={imageStyle} />
-
+        <br></br>
+        <br></br>
+        <br></br>
         <Markdown>
-          ## 이후에 프로젝트 디렉토리 바로 아래 lib 폴더를 생성 후 저희의 jar
-          파일을 넣어줍니다.
+          ## 5. 프로젝트 디렉토리에 lib 폴더를 생성 후 다운받은 jar 파일을
+          넣는다.
         </Markdown>
+        <br></br>
         <img src="./assets/images/plugin/Plugin8.png" style={imageStyle} />
         <br />
         <br />
-
+        <br></br>
+        <br></br>
         <Markdown>
-          ## 마지막으로 프로젝트 폴더에서 git bash를 켠 후 아래 명령어를 통해
-          플러그인을 설치합니다.
+          ## 6. 프로젝트 디렉토리에서 git bash를 켠 후 아래 명령어를 통해
+          플러그인을 설치한다.
         </Markdown>
+        <br></br>
         <SyntaxHighlighter language="Shell" type={vs}>
           bash mvn install:install-file
           -Dfile=lib/tmi-maven-plugin-0.0.1-SNAPSHOT.jar -DgroupId=com.tmi
           -DartifactId=tmi-maven-plugin -Dversion=0.0.1-SNAPSHOT -Dpackaging=jar
         </SyntaxHighlighter>
         <img src="./assets/images/plugin/Plugin9.png" style={imageStyle} />
+        <br></br>
         <br />
         <br />
+        <br></br>
 
-        <Markdown>## 해당 프로젝트에서 빌드를 하게 되면!!!</Markdown>
+        <Markdown>
+          ## 7. 해당 프로젝트에서 빌드 시, TMI에서 현재 프로젝트의 자바
+          커버리지를 볼 수 있다.
+        </Markdown>
+        <br></br>
         <SyntaxHighlighter language="Shell" type={vs}>
           bash mvn clean package
         </SyntaxHighlighter>
         <img src="./assets/images/plugin/Plugin10.png" style={imageStyle} />
         <br />
-        <br />
-        <br />
 
-        <Markdown>
-          ## 홈페이지에서 현재 프로젝트의 자바 커버리지를 볼 수 있습니다.
-        </Markdown>
         <img src="./assets/images/plugin/Plugin11.png" style={imageStyle} />
       </div>
     </>
