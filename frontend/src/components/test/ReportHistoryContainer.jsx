@@ -59,30 +59,30 @@ export default function ReportHistoryContatiner(props) {
       <Box>
         {time.length > 0 && (
           <Box className={styles.container}>
-            {props.percent >= 0.99 && props.testCount <= 9999 && (
+            {props.percent >= 0.975 && props.testCount <= 9999 && (
               <CircleButton color="#22DD22">#{props.testCount}</CircleButton>
             )}
-            {props.percent >= 0.95 &&
-              props.percent < 0.99 &&
+            {props.percent >= 0.9 &&
+              props.percent < 0.975 &&
               props.testCount <= 9999 && (
                 <CircleButton color="#FFAA00">#{props.testCount}</CircleButton>
               )}
-            {props.percent < 0.95 && props.testCount <= 9999 && (
+            {props.percent < 0.9 && props.testCount <= 9999 && (
               <CircleButton color="#FF0000">#{props.testCount}</CircleButton>
             )}
-            {props.percent >= 0.99 && props.testCount > 9999 && (
+            {props.percent >= 0.975 && props.testCount > 9999 && (
               <CircleButton color="#22DD22" size="50%">
                 #{props.testCount}
               </CircleButton>
             )}
-            {props.percent >= 0.95 &&
+            {props.percent >= 0.9 &&
               props.testCount > 9999 &&
-              props.percent < 0.99 && (
+              props.percent < 0.975 && (
                 <CircleButton color="#FFAA00" size="50%">
                   #{props.testCount}
                 </CircleButton>
               )}
-            {props.percent < 0.95 && props.testCount > 9999 && (
+            {props.percent < 0.9 && props.testCount > 9999 && (
               <CircleButton color="#FF0000" size="50%">
                 #{props.testCount}
               </CircleButton>
