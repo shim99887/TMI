@@ -49,7 +49,7 @@ function Navigation({ logout, history }) {
                 style={{ textDecoration: "none", color: "inherit" }}
                 to="/plugin"
               >
-                Plugin
+                Plug-in
               </Link>
             </Button>
 
