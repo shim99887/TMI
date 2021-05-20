@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Markdown from "react-markdown";
 import { Button, Box } from "@material-ui/core";
 import FileDownloadOutlinedIcon from "@material-ui/icons/FileDownloadOutlined";
@@ -270,6 +270,12 @@ export default function Plugin() {
     </build>`;
 
   const imageStyle = {};
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    return () => {};
+  }, []);
+
   return (
     <>
       <Box width="330px" margin="0 auto" marginBottom="5%" fontSize="150%">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Markdown from "react-markdown";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -100,6 +100,11 @@ function AboutCard(props) {
   //     setModalCoverageDetailOpen(true);
   //   }
   // }
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    return () => {};
+  }, []);
 
   return (
     <>
