@@ -279,7 +279,7 @@ export default function About() {
             지를 나타내는 수치이고,
           </Markdown>
           <Markdown>
-            　 \- Branch Coverage는 소스의 조건문(분기문)의 조건이 true / false
+            　\- Branch Coverage는 소스의 조건문(분기문)의 조건이 true / false
             전부 해당 되어 접근이 가능한 지를 나타내는 수치 입니다.
           </Markdown>
           <br />
