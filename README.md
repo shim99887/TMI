@@ -42,6 +42,13 @@
     </ul>
 </details>
 
+<details>
+    <summary> ERD Diagram</summary>
+    <ul>
+![erd](docs/ERD diagram/erd.png)
+    </ul>
+</details>
+
 
 
 
