@@ -273,7 +273,7 @@ export default function Plugin() {
   return (
     <>
       <Box width="310px" margin="0 auto" marginBottom="5%" fontSize="150%">
-        <Markdown># Plugin 사용법</Markdown>
+        <Markdown># Plug-in 사용법</Markdown>
       </Box>
       <div style={imageStyle}>
         <Box display="flex" justifyContent="space-between" marginBottom="1%">
@@ -285,7 +285,7 @@ export default function Plugin() {
               backgroundColor: "#FF8843",
               color: "inherit",
             }}
-            href="http://k4a201.p.ssafy.io/static/coverage/tmi-maven-plugin-0.0.1-SNAPSHOT.jar"
+            href="https://k4a201.p.ssafy.io/api/download"
           >
             <FileDownloadOutlinedIcon></FileDownloadOutlinedIcon> JAR File
             Download
