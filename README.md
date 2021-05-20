@@ -31,13 +31,136 @@
     <summary> Sequence Diagram </summary>
     <ul>
 ![Test Data Collect](docs/Sequence Diagram/Test Data Collect.png)
-        
 ![Report Select](docs/Sequence Diagram/Report Select.png)
     </ul>
 </details>
+
 <details>
     <summary> Milestone</summary>
     <ul>
 ![MileStone](docs/MileStone/MileStone.png)
     </ul>
 </details>
+
+
+
+
+
+## Tech Stack
+
+![image-20210520205504176](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20210520205504176.png)
+
+
+
+
+
+## Capture Image
+
+![image-20210520205632062](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20210520205632062.png)
+
+프로젝트 목록
+
+
+
+
+
+![image-20210520205707941](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20210520205707941.png)
+
+프로젝트 내 App 목록
+
+
+
+![image-20210520205917852](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20210520205917852.png)
+
+프로젝트 history 화면
+
+
+
+![image-20210520210003896](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20210520210003896.png)
+
+Unit Test 결과
+
+
+
+![image-20210520210024283](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20210520210024283.png)
+
+![image-20210520210044200](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20210520210044200.png)
+
+커버리지 상세 화면 및 클래스 별 커버리지 화면
+
+
+
+
+
+# Build Guideline
+
+
+
+## Plug-in
+
+### 
+
+### Maven Project
+
+* Path : `/backend/tmi-maven-plugin`
+
+
+
+```
+mvn clean package
+```
+
+
+
+* 빌드 이후에 나온 jar 파일을 확인하고 싶은 프로젝트 아래 lib 폴더에 저장
+
+
+
+
+
+## Main Server
+
+
+
+
+
+### Spring Project
+
+* Path : `/backend/TmiProject`
+
+```shell
+mvn clean package
+cd target
+nohup java -jar *.jar &
+```
+
+
+
+
+
+## Data Server
+
+
+
+### Spring Project
+
+* Path : `/backend/TMI`
+
+```
+mvn clean package
+cd target
+nohup java -jar *.jar &
+```
+
+
+
+
+
+## Frontend React
+
+* Path : `/frontend`
+
+```shell
+npm i
+npm run build
+```
