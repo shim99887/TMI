@@ -272,7 +272,7 @@ export default function Plugin() {
   const imageStyle = {};
   return (
     <>
-      <Box width="310px" margin="0 auto" marginBottom="5%" fontSize="150%">
+      <Box width="330px" margin="0 auto" marginBottom="5%" fontSize="150%">
         <Markdown># Plug-in 사용법</Markdown>
       </Box>
       <div style={imageStyle}>
