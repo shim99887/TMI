@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     width: "90%",
     height: "90%",
-    overflowY: "hidden",
+    overflowY: "auto",
     overflowX: "auto",
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],

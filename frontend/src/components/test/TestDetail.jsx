@@ -303,10 +303,8 @@ export default function TestDetail(props) {
         {/* 스크롤 가능하게 만들기 */}
         <Box
           style={{
-            overflowY: "auto",
             position: "relative",
             width: "100%",
-            height: "19%",
             zIndex: "0",
           }}
         >
