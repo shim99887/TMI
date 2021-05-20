@@ -63,37 +63,40 @@
 
 ## Capture Image
 
-![projectlist](docs/Capture/projectlist.png)
-
 프로젝트 목록
 
+![projectlist](docs/Capture/projectlist.png)
 
 
 
-
-![projectdetail](docs/Capture/projectdetail.png)
 
 프로젝트 내 App 목록
 
+![projectdetail](docs/Capture/projectdetail.png)
 
 
-![projecthistory](docs/Capture/apphistory.png)
+
 
 App history 화면
 
+![projecthistory](docs/Capture/apphistory.png)
 
 
-![testhistory](docs/Capture/testdetail.png)
 
 Unit Test 결과
 
+![testhistory](docs/Capture/testhistory.png)
 
+
+
+
+커버리지 상세 화면 및 클래스 별 커버리지 화면
 
 ![coveragehistory](docs/Capture/coveragehistory.png)
 
 ![coveragedetail](docs/Capture/coveragedetail.png)
 
-커버리지 상세 화면 및 클래스 별 커버리지 화면
+
 
 
 
