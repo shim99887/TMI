@@ -94,7 +94,10 @@ export default function CoverageDetail({ aid, title, data, close }) {
               color: "blue",
               textDecoration: "underline",
               fontWeight: "bold",
-              cursor: "hand",
+              cursor: "pointer",
+              "&:hover": {
+                cursor: "hand",
+              },
             }}
           >
             Test
@@ -114,7 +117,10 @@ export default function CoverageDetail({ aid, title, data, close }) {
               color: "blue",
               textDecoration: "underline",
               fontWeight: "bold",
-              cursor: "hand",
+              cursor: "pointer",
+              "&:hover": {
+                cursor: "hand",
+              },
             }}
           >
             Coverage
@@ -284,7 +290,10 @@ export default function CoverageDetail({ aid, title, data, close }) {
                       style={{
                         color: "blue",
                         textDecoration: "underline",
-                        cursor: "hand",
+                        cursor: "pointer",
+                        "&:hover": {
+                          cursor: "hand",
+                        },
                       }}
                       onClick={(event) => {
                         event.preventDefault();

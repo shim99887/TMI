@@ -273,11 +273,14 @@ export default function About() {
             \- Code Coverage 란? 테스트 케이스가 얼마나 충족되었는 지를 나타내는
             지표 중 하나로, 코드 자체가 얼마나 실행되었는 지를 수치를 통해
             확인할 수 있습니다.
-            <br />
-            　 \- 예를 들어, Line Coverage는 코드 전체 100줄 중 몇 줄에 접근했는
+          </Markdown>
+          <Markdown>
+            　\- 예를 들어, Line Coverage는 코드 전체 100줄 중 몇 줄에 접근했는
             지를 나타내는 수치이고,
-            <br />　 \- Branch Coverage는 소스의 조건문(분기문)의 조건이 true /
-            false 전부 해당 되어 접근이 가능한 지를 나타내는 수치 입니다.
+          </Markdown>
+          <Markdown>
+            　 \- Branch Coverage는 소스의 조건문(분기문)의 조건이 true / false
+            전부 해당 되어 접근이 가능한 지를 나타내는 수치 입니다.
           </Markdown>
           <br />
           <Markdown>
