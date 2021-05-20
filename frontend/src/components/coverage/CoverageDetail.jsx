@@ -149,11 +149,10 @@ export default function CoverageDetail({ aid, title, data, close }) {
                 params.getValue("totalFailCount") +
                 params.getValue("totalErrorCount") +
                 params.getValue("totalSkipCount"))) *
-              100 +
-            " %"
+            100
           );
         }
-        return 0 + " %";
+        return 0;
       },
     },
     { field: "totalRunCount", headerName: "Run", width: 100, type: "number" },
@@ -184,9 +183,9 @@ export default function CoverageDetail({ aid, title, data, close }) {
         const total = covered + missed;
 
         if (total) {
-          return Math.round((covered / total) * 10000) / 100 + " %";
+          return Math.round((covered / total) * 10000) / 100;
         }
-        return 100 + " %";
+        return 100;
       },
     },
     {
@@ -200,9 +199,9 @@ export default function CoverageDetail({ aid, title, data, close }) {
         const total = covered + missed;
 
         if (total) {
-          return Math.round((covered / total) * 10000) / 100 + " %";
+          return Math.round((covered / total) * 10000) / 100;
         }
-        return 100 + " %";
+        return 100;
       },
     },
     // {
@@ -322,9 +321,9 @@ export default function CoverageDetail({ aid, title, data, close }) {
                     const total = covered + missed;
 
                     if (total) {
-                      return Math.round((covered / total) * 10000) / 100 + " %";
+                      return Math.round((covered / total) * 10000) / 100;
                     }
-                    return 100 + " %";
+                    return 100;
                   },
                 },
                 {
@@ -350,9 +349,9 @@ export default function CoverageDetail({ aid, title, data, close }) {
                     const total = covered + missed;
 
                     if (total) {
-                      return Math.round((covered / total) * 10000) / 100 + " %";
+                      return Math.round((covered / total) * 10000) / 100;
                     }
-                    return 100 + " %";
+                    return 100;
                   },
                 },
                 {
