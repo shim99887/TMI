@@ -37,6 +37,8 @@ const useStyles = makeStyles((theme) => ({
     border: "2px solid #000",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
+    maxWidth: "80%",
+    maxHeight: "80%",
   },
   // learnMore: {
   //   position: "absolute",
@@ -103,8 +105,8 @@ function AboutCard(props) {
     <>
       <Grid container spacing={3}>
         {props.cardList.map((data) => (
-          <Grid item xs={props.xs} style={{ paddingBottom: 5 }}>
-            <Card hegiht={490.625}>
+          <Grid item xs={props.xs}>
+            <Card>
               {props.zoom ? (
                 <CardActionArea
                   onClick={() => {
@@ -210,8 +212,8 @@ export default function About() {
       url: "../assets/images/project-detail/01.png",
       title: "App Status Report",
       description: `Project에 속한 App 현황을 볼 수 있는 페이지입니다.
-      좌측에는 선택된 App들의 현황을 그래프로 보여주고 있습니다.
-      표에서는 가장 최근 빌드된 App의 상태를 나타내 주고 있습니다.`,
+      좌측에는 선택된 App 현황을 그래프로 보여주고 있습니다.
+      표에서는 최근 빌드된 App 현황을 나타내 주고 있습니다.`,
     },
     {
       id: 1,
@@ -231,21 +233,21 @@ export default function About() {
   const cardList2 = [
     {
       id: 3,
-      url: "../assets/images/project-detail/06.png",
+      url: "../assets/images/project-detail/04.png",
       title: "Test Result Report",
       description: `Test Link를 통해 보여지는 화면입니다.
       해당 빌드의 테스트 상세 결과를 확인할 수 있습니다.`,
     },
     {
       id: 4,
-      url: "../assets/images/project-detail/04.png",
+      url: "../assets/images/project-detail/05.png",
       title: "Coverage Report",
       description: `Coverage Link를 통해 보여지는 화면입니다.
        해당 빌드 시간의 Coverage를 class별로 세분화하여 확인할 수 있습니다.`,
     },
     {
       id: 5,
-      url: "../assets/images/project-detail/05.png",
+      url: "../assets/images/project-detail/06.png",
       title: "App Coverage Code",
       description: `Class별 세분화된 표에서 Class Link를 클릭하면 해당 class의 코드의 하이라이팅된 code를 확인할 수 있습니다.`,
     },
@@ -403,7 +405,7 @@ export default function About() {
                   xs={4}
                   detail={1}
                   zoom={1}
-                  imageHeight={347.625}
+                  imageHeight={217.872}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -413,7 +415,7 @@ export default function About() {
                   xs={4}
                   detail={1}
                   zoom={1}
-                  imageHeight={347.625}
+                  imageHeight={217.872}
                 />
               </Grid>
             </Grid>
