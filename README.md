@@ -30,8 +30,8 @@
 <details>
     <summary> Sequence Diagram </summary>
     <ul>
-![Test Data Collect](docs/Sequence Diagram/Test Data Collect.png)
-![Report Select](docs/Sequence Diagram/Report Select.png)
+![Test Data Collect](docs/Sequence_Diagram/Test Data Collect.png)
+![Report Select](docs/Sequence_Diagram/Report Select.png)
     </ul>
 </details>
 
@@ -42,13 +42,20 @@
     </ul>
 </details>
 
+<details>
+    <summary> ERD Diagram</summary>
+    <ul>
+![erd](docs/ERD_diagram/erd.png)
+    </ul>
+</details>
+
 
 
 
 
 ## Tech Stack
 
-![image-20210520205504176](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20210520205504176.png)
+![tech_stack](docs/Tech_stack/tech_stack.png)
 
 
 
@@ -56,37 +63,40 @@
 
 ## Capture Image
 
-![image-20210520205632062](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20210520205632062.png)
-
 프로젝트 목록
 
+![projectlist](docs/Capture/projectlist.png)
 
 
 
-
-![image-20210520205707941](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20210520205707941.png)
 
 프로젝트 내 App 목록
 
-
-
-![image-20210520205917852](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20210520205917852.png)
-
-프로젝트 history 화면
+![projectdetail](docs/Capture/projectdetail.png)
 
 
 
-![image-20210520210003896](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20210520210003896.png)
+
+App history 화면
+
+![projecthistory](docs/Capture/apphistory.png)
+
+
 
 Unit Test 결과
 
+![testhistory](docs/Capture/testhistory.png)
 
 
-![image-20210520210024283](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20210520210024283.png)
 
-![image-20210520210044200](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20210520210044200.png)
 
 커버리지 상세 화면 및 클래스 별 커버리지 화면
+
+![coveragehistory](docs/Capture/coveragehistory.png)
+
+![coveragedetail](docs/Capture/coveragedetail.png)
+
+
 
 
 
