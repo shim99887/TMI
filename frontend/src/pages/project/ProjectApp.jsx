@@ -58,12 +58,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const columns = [
-  { field: "title", headerName: "App Name", flex: 1 },
+  { field: "title", headerName: "App Name", flex: 1.2 },
   {
     field: "recentDatetime",
     headerName: "Recent Build Datetime",
     type: "date",
-    flex: 1,
+    flex: 1.2,
     renderCell: (params) => (
       <>
         {params.getValue("recentDatetime") && (
@@ -155,18 +155,12 @@ export default function ProjectApp() {
   const [selectedAppId, setSelectedAppId] = useState("");
   const [selectionModel, setSelectionModel] = useState([]);
   const [selectedTotalLineCoverage, setSelectedTotalLineCoverage] = useState([
-    0,
-    0,
+    0, 0,
   ]);
-  const [
-    selectedTotalBranchCoverage,
-    setSelectedTotalBranchCoverage,
-  ] = useState([0, 0]);
+  const [selectedTotalBranchCoverage, setSelectedTotalBranchCoverage] =
+    useState([0, 0]);
   const [selectedTotalPassRate, setSelectedTotalPassRate] = useState([
-    0,
-    0,
-    0,
-    0,
+    0, 0, 0, 0,
   ]);
 
   const classes = useStyles();
