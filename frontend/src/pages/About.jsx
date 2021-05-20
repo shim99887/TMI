@@ -285,9 +285,9 @@ export default function About() {
   return (
     <>
       <Grid container spacing={4}>
-        <Grid item xs={12}></Grid>
+        {/* <Grid item xs={12}></Grid> */}
         <Grid item xs={12}>
-          <Paper>
+          <Paper style={{ padding: 15 }}>
             <Typography variant="h4" color="primary">
               Introduce
             </Typography>
@@ -373,7 +373,7 @@ export default function About() {
           </Paper>
         </Grid>
         <Grid item xs={12}>
-          <Paper>
+          <Paper style={{ padding: 15 }}>
             <Typography variant="h4" color="primary">
               TMI Logo
             </Typography>
@@ -390,7 +390,7 @@ export default function About() {
           </Paper>
         </Grid>
         <Grid item xs={12}>
-          <Paper>
+          <Paper style={{ padding: 15 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Typography variant="h4" color="primary">
@@ -420,7 +420,7 @@ export default function About() {
           </Paper>
         </Grid>
         <Grid item xs={12}>
-          <Paper>
+          <Paper style={{ padding: 15 }}>
             {/* <Markdown># About Us</Markdown> */}
             <Typography variant="h4" color="primary">
               About Us
