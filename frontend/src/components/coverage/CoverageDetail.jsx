@@ -408,13 +408,11 @@ export default function CoverageDetail({ aid, title, data, close }) {
               </IconButton>
             </Toolbar>
           </AppBar>
-          <Box style={{ overflowY: "scroll" }}>
-            <TestDetail
-              aid={aid}
-              id={selectedReport.id}
-              title={title}
-            ></TestDetail>
-          </Box>
+          <TestDetail
+            aid={aid}
+            id={selectedReport.id}
+            title={title}
+          ></TestDetail>
         </>
       ) : (
         <>
