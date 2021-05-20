@@ -106,9 +106,8 @@ export default function CoverageDetail({ aid, title, data, close }) {
           <span
             onClick={async (event) => {
               event.preventDefault();
-              const responseData = await coverageAxios.getCoverageListByReportId(
-                params.row.id
-              );
+              const responseData =
+                await coverageAxios.getCoverageListByReportId(params.row.id);
               setClassDetailData(responseData);
               setClassDetail(true);
               setSelectedReport(params.row);
@@ -285,28 +284,31 @@ export default function CoverageDetail({ aid, title, data, close }) {
                   field: "className",
                   headerName: "Class",
                   width: 250,
-                  renderCell: (params) => (
-                    <span
-                      style={{
-                        color: "blue",
-                        textDecoration: "underline",
-                        cursor: "pointer",
-                        "&:hover": {
-                          cursor: "hand",
-                        },
-                      }}
-                      onClick={(event) => {
-                        event.preventDefault();
-                        const newTab = window.open(
-                          params.row.highlightHtml,
-                          "_blank"
-                        );
-                        newTab.focus();
-                      }}
-                    >
-                      {params.value}
-                    </span>
-                  ),
+                  renderCell: (params) =>
+                    params.getValue("highlightHtml") ? (
+                      <span
+                        style={{
+                          color: "blue",
+                          textDecoration: "underline",
+                          cursor: "pointer",
+                          "&:hover": {
+                            cursor: "hand",
+                          },
+                        }}
+                        onClick={(event) => {
+                          event.preventDefault();
+                          const newTab = window.open(
+                            params.row.highlightHtml,
+                            "_blank"
+                          );
+                          newTab.focus();
+                        }}
+                      >
+                        {params.value}
+                      </span>
+                    ) : (
+                      <span>{params.value}</span>
+                    ),
                 },
                 {
                   field: "lineCov",
