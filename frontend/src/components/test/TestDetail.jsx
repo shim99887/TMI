@@ -306,7 +306,7 @@ export default function TestDetail(props) {
             overflowY: "auto",
             position: "relative",
             width: "100%",
-            maxHeight: "19%",
+            height: "19%",
             zIndex: "0",
           }}
         >
