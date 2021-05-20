@@ -14,6 +14,7 @@ import {
   Toolbar,
   Typography,
 } from "@material-ui/core";
+
 import { useState } from "react";
 import { coverageAxios, testAxios } from "../../utils/axios";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
@@ -31,12 +32,7 @@ import TestDetail from "../../components/test/TestDetail";
 // totalSkipCount: 2
 
 const useStyles = makeStyles((theme) => ({
-  dataGrid: {
-    cursor: "pointer",
-    "&:hover": {
-      cursor: "hand",
-    },
-  },
+  dataGrid: {},
 }));
 
 function CustomToolbar() {
@@ -98,6 +94,7 @@ export default function CoverageDetail({ aid, title, data, close }) {
               color: "blue",
               textDecoration: "underline",
               fontWeight: "bold",
+              cursor: "hand",
             }}
           >
             Test
@@ -117,6 +114,7 @@ export default function CoverageDetail({ aid, title, data, close }) {
               color: "blue",
               textDecoration: "underline",
               fontWeight: "bold",
+              cursor: "hand",
             }}
           >
             Coverage
@@ -283,7 +281,11 @@ export default function CoverageDetail({ aid, title, data, close }) {
                   width: 250,
                   renderCell: (params) => (
                     <span
-                      style={{ color: "blue", textDecoration: "underline" }}
+                      style={{
+                        color: "blue",
+                        textDecoration: "underline",
+                        cursor: "hand",
+                      }}
                       onClick={(event) => {
                         event.preventDefault();
                         const newTab = window.open(
