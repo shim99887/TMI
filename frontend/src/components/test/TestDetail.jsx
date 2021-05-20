@@ -142,7 +142,15 @@ export default function TestDetail(props) {
     return false;
   }
   return (
-    <Box display="flex" marginTop="2%" zIndex="1">
+    <Box
+      display="flex"
+      marginTop="2%"
+      zIndex="1"
+      style={{
+        height: "90%",
+        overflowY: "scroll",
+      }}
+    >
       <Box alignItems="center" textAlign="Left">
         <Box display="flex" marginLeft="30px" marginTop="15%" minHeight="22%">
           <Box
