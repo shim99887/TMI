@@ -8,7 +8,8 @@ import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vs } from "react-syntax-highlighter/dist/esm/styles/prism";
 
-const codeString = `
+const codeString =
+  `
 <properties>
 	<jacoco.version>0.8.5</jacoco.version>
 	<maven.test.failure.ignore>true</maven.test.failure.ignore>
@@ -68,7 +69,9 @@ const codeString = `
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.5</version>
+				<version>` +
+  "${jacoco.version}" +
+  `</version>
 				<executions>
 					<execution>
 						<goals>
@@ -98,6 +101,28 @@ const codeString = `
 						</goals>
 					</execution>
 				</executions>
+				<dependencies>
+            <dependency>
+                <groupId>commons-fileupload</groupId>
+                <artifactId>commons-fileupload</artifactId>
+                <version>1.4</version>
+            </dependency>
+            <dependency>
+		            <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>5.3.7</version>
+            </dependency>
+            <dependency>
+						    <groupId>com.fasterxml.jackson.core</groupId>
+						    <artifactId>jackson-databind</artifactId>
+						    <version>2.12.3</version>
+						</dependency>
+						<dependency>
+						    <groupId>org.zeroturnaround</groupId>
+						    <artifactId>zt-zip</artifactId>
+						    <version>1.14</version>
+						</dependency>
+         </dependencies>
 			</plugin>
 			<!-- other plugins... -->
 	</plugins>
@@ -137,139 +162,165 @@ const codeString = `
 				</plugin>
 			</plugins>
 		</pluginManagement>
-</build>
-`;
-const codeString2 = `
-  <properties>
-	  <jacoco.version>0.8.5</jacoco.version>
-	  <maven.test.failure.ignore>true</maven.test.failure.ignore>
-	  <!-- other properties -->
-  </properties>
+</build>`;
+const codeString2 =
+  `
+<properties>
+<jacoco.version>0.8.5</jacoco.version>
+<maven.test.failure.ignore>true</maven.test.failure.ignore>
+<!-- other properties -->
+</properties>
 
-  <dependencies>
-	  <dependency>
-			  <groupId>org.springframework</groupId>
-			  <artifactId>spring-test</artifactId>
-			  <version></version>
-			  <scope>test</scope>
-			  <exclusions>
-				  <exclusion>
-					  <groupId>org.junit.vintage</groupId>
-					  <artifactId>junit-vintage-engine</artifactId>
-				  </exclusion>
-			  </exclusions>
-	  </dependency>
-	  <dependency>
-			  <groupId>org.apache.maven.plugins</groupId>
-			  <artifactId>maven-resources-plugin</artifactId>
-			  <version>2.4.3</version>
-	  </dependency>
-  <!-- other dependencies... -->
-  </dependencies>
+<dependencies>
+<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-test</artifactId>
+		<version>` +
+  "${spring.version}" +
+  `</version>
+		<scope>test</scope>
+		<exclusions>
+			<exclusion>
+				<groupId>org.junit.vintage</groupId>
+				<artifactId>junit-vintage-engine</artifactId>
+			</exclusion>
+		</exclusions>
+</dependency>
+<dependency>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-resources-plugin</artifactId>
+		<version>2.4.3</version>
+</dependency>
+<!-- other dependencies... -->
+</dependencies>
 
-  <!-- junit report를 받기 위한 surefire report plugin report 설정 -->
-  <reporting>
-		  <plugins>
-			  <plugin>
-				  <groupId>org.apache.maven.plugins</groupId>
-				  <artifactId>maven-surefire-report-plugin</artifactId>
-				  <version>2.5</version>
-				  <configuration>
-					  <skipTests>true</skipTests> <!-- 테스트를 모두 스킵 -->
-					  <testFailureIgnore>true</testFailureIgnore> <!-- 테스트가 실패하더라도 다음단계 빌드 -->
-				  </configuration>
-			  </plugin>
-		  </plugins>
-	  </reporting>
-  <build>
-	  <plugins>
-			  <plugin>
-				  <groupId>org.apache.maven.plugins</groupId>
-				  <artifactId>maven-surefire-report-plugin</artifactId>
-				  <version>2.5</version>
-				  <executions>
-					  <execution>
-						  <id>report</id>
-						  <phase>test</phase><!-- The phase of the life cycle to be bound to -->
-						  <goals>
-							  <goal>report</goal><!-- The target of the plug-in to be bound -->
-						  </goals>
-					  </execution>
-				  </executions>
-			  </plugin>
-			  <plugin>
-				  <groupId>org.jacoco</groupId>
-				  <artifactId>jacoco-maven-plugin</artifactId>
-				  <version>0.8.5</version>
-				  <executions>
-					  <execution>
-						  <goals>
-							  <goal>prepare-agent</goal>
-						  </goals>
-					  </execution>
-					  <!-- attached to Maven test phase -->
-					  <execution>
-						  <id>report</id>
-						  <phase>package</phase>
-						  <goals>
-							  <goal>report</goal>
-						  </goals>
-					  </execution>
-				  </executions>
-			  </plugin>
-			  <!-- 중요! tmi 팀에서 만든 플러그인! -->
-			  <plugin>
-				  <groupId>com.tmi</groupId>
-				  <artifactId>tmi-maven-plugin</artifactId>
-				  <version>0.0.1-SNAPSHOT</version>
-				  <executions>
-					  <execution>
-						  <phase>package</phase>
-						  <goals>
-							  <goal>tmi-dependency</goal>
-						  </goals>
-					  </execution>
-				  </executions>
-			  </plugin>
-			  <!-- other plugins... -->
-	  </plugins>
-	  <pluginManagement>
-			  <plugins>
-				  <!--This plugin's configuration is used to store Eclipse m2e settings
-					  only. It has no influence on the Maven build itself. -->
-				  <plugin>
-					  <groupId>org.eclipse.m2e</groupId>
-					  <artifactId>lifecycle-mapping</artifactId>
-					  <version>1.0.0</version>
-					  <configuration>
-						  <lifecycleMappingMetadata>
-							  <pluginExecutions>
-								  <pluginExecution>
-									  <pluginExecutionFilter>
-										  <groupId>
-											  io.spring.javaformat
-										  </groupId>
-										  <artifactId>
-											  spring-javaformat-maven-plugin
-										  </artifactId>
-										  <versionRange>
-											  [0.0.25,)
-										  </versionRange>
-										  <goals>
-											  <goal>validate</goal>
-										  </goals>
-									  </pluginExecutionFilter>
-									  <action>
-										  <ignore></ignore>
-									  </action>
-								  </pluginExecution>
-							  </pluginExecutions>
-						  </lifecycleMappingMetadata>
-					  </configuration>
-				  </plugin>
-			  </plugins>
-		  </pluginManagement>
-  </build>`;
+<!-- junit report를 받기 위한 surefire report plugin report 설정 -->
+<reporting>
+	<plugins>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-surefire-report-plugin</artifactId>
+			<version>2.5</version>
+			<configuration>
+				<skipTests>true</skipTests> <!-- 테스트를 모두 스킵 -->
+				<testFailureIgnore>true</testFailureIgnore> <!-- 테스트가 실패하더라도 다음단계 빌드 -->
+			</configuration>
+		</plugin>
+	</plugins>
+</reporting>
+<build>
+<plugins>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-surefire-report-plugin</artifactId>
+			<version>2.5</version>
+			<executions>
+				<execution>
+					<id>report</id>
+					<phase>test</phase><!-- The phase of the life cycle to be bound to -->
+					<goals>
+						<goal>report</goal><!-- The target of the plug-in to be bound -->
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
+		<plugin>
+			<groupId>org.jacoco</groupId>
+			<artifactId>jacoco-maven-plugin</artifactId>
+			<version>` +
+  "${jacoco.version}" +
+  `</version>
+			<executions>
+				<execution>
+					<goals>
+						<goal>prepare-agent</goal>
+					</goals>
+				</execution>
+				<!-- attached to Maven test phase -->
+				<execution>
+					<id>report</id>
+					<phase>package</phase>
+					<goals>
+						<goal>report</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
+		<!-- 중요! tmi 팀에서 만든 플러그인! -->
+		<plugin>
+			<groupId>com.tmi</groupId>
+			<artifactId>tmi-maven-plugin</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<executions>
+				<execution>
+					<phase>package</phase>
+					<goals>
+						<goal>tmi-dependency</goal>
+					</goals>
+				</execution>
+			</executions>
+			<dependencies>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
+				<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>5.3.7</version>
+		</dependency>
+		<dependency>
+						<groupId>com.fasterxml.jackson.core</groupId>
+						<artifactId>jackson-databind</artifactId>
+						<version>2.12.3</version>
+					</dependency>
+					<dependency>
+						<groupId>org.zeroturnaround</groupId>
+						<artifactId>zt-zip</artifactId>
+						<version>1.14</version>
+					</dependency>
+	 </dependencies>
+		</plugin>
+		<!-- other plugins... -->
+</plugins>
+<pluginManagement>
+		<plugins>
+			<!--This plugin's configuration is used to store Eclipse m2e settings 
+				only. It has no influence on the Maven build itself. -->
+			<plugin>
+				<groupId>org.eclipse.m2e</groupId>
+				<artifactId>lifecycle-mapping</artifactId>
+				<version>1.0.0</version>
+				<configuration>
+					<lifecycleMappingMetadata>
+						<pluginExecutions>
+							<pluginExecution>
+								<pluginExecutionFilter>
+									<groupId>
+										io.spring.javaformat
+									</groupId>
+									<artifactId>
+										spring-javaformat-maven-plugin
+									</artifactId>
+									<versionRange>
+										[0.0.25,)
+									</versionRange>
+									<goals>
+										<goal>validate</goal>
+									</goals>
+								</pluginExecutionFilter>
+								<action>
+									<ignore></ignore>
+								</action>
+							</pluginExecution>
+						</pluginExecutions>
+					</lifecycleMappingMetadata>
+				</configuration>
+			</plugin>
+		</plugins>
+	</pluginManagement>
+</build>`;
 
 const tutorialSteps = [
   {
@@ -366,13 +417,13 @@ const tutorialSteps = [
 
 const useStyles = makeStyles(() => ({
   root: {
-    width: 1240,
+    maxWidth: "95vw",
     height: "83vh",
     position: "relative",
   },
   img: {
     maxHeight: "80%",
-    maxWidth: 1240,
+    maxWidth: "95%",
     overflow: "scroll",
     display: "block",
   },
