@@ -76,9 +76,8 @@ public class TmiMojo extends AbstractMojo {
 
 
 
-		// List<File> junitXmlFileList = new ArrayList<>();
+
 		File jacocoXmlFile = new File(targetDir + "/site/jacoco/jacoco.xml");
-		//File file = new File("/path/to/file");
 		FileItem fileItem = null;
 		try {
 			fileItem = new DiskFileItem("mainFile", Files.probeContentType(jacocoXmlFile.toPath()), false, jacocoXmlFile.getName(), (int) jacocoXmlFile.length(), jacocoXmlFile.getParentFile());
@@ -97,8 +96,6 @@ public class TmiMojo extends AbstractMojo {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
-//		HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
-//		httpRequestFactory.setConnectTimeout(30000);
 
 		//jacoco xml 파일 전송
 		
@@ -116,9 +113,6 @@ public class TmiMojo extends AbstractMojo {
 		jacocoXmlBody.add("xmlFile", multipartFile.getResource());
 		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(jacocoXmlBody, headers);
 		String serverUrl = "http://k4a2011.p.ssafy.io:8080/api/data";
-		//String serverUrl = "http://localhost:8080/api/data";
-		//RestTemplate restTemplate = new RestTemplate();
-		//ResponseEntity<String> xmlResponse = restTemplate.exchange(serverUrl, HttpMethod.POST, requestEntity, String.class);
 		String responseStr = restTemplate.postForObject(serverUrl,requestEntity,String.class);
 		String [] splitStr = responseStr.split("  ");
 		String projectName = splitStr[0];
@@ -178,9 +172,8 @@ public class TmiMojo extends AbstractMojo {
 		String junitServerUrl = "http://k4a2011.p.ssafy.io:8080/api/junit/data";
 		//String junitServerUrl = "http://localhost:8080/api/junit/data";
 		String [] keyArr = restTemplate.postForObject(junitServerUrl,requestEntity,String[].class);
-		//ResponseEntity<Boolean> response = restTemplate.exchange(junitServerUrl, HttpMethod.POST, requestEntity, Boolean.class);
-		
-		//getLog().info("junit txt response code: " + response.getStatusCode());
+
+
 		getLog().info("jacoco xml key " + coverageKey);
 		for(int i=1;i<keyArr.length;i++){
 			getLog().info("junit data key " + keyArr[i]);
