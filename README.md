@@ -2,6 +2,8 @@
 
 ## SSAFY X SAMSUNG SDS (기업연계 프로젝트 )
 
+[TMI Notion](https://www.notion.so/longnh214/d13c839d33b94377b138427b4d743a7a?v=4ba79c8783a9492c864e3f640ead7cde)
+
 ## 프로젝트 개요
 
 - **진행기간** : 2021.04.12 ~ (ing)
@@ -30,14 +32,147 @@
 <details>
     <summary> Sequence Diagram </summary>
     <ul>
-![Test Data Collect](docs/Sequence Diagram/Test Data Collect.png)
-        
-![Report Select](docs/Sequence Diagram/Report Select.png)
+![Test Data Collect](docs/Sequence_Diagram/Test Data Collect.png)
+![Report Select](docs/Sequence_Diagram/Report Select.png)
     </ul>
 </details>
+
 <details>
     <summary> Milestone</summary>
     <ul>
 ![MileStone](docs/MileStone/MileStone.png)
     </ul>
 </details>
+
+<details>
+    <summary> ERD Diagram</summary>
+    <ul>
+![erd](docs/ERD_diagram/erd.png)
+    </ul>
+</details>
+
+
+
+
+
+## Tech Stack
+
+![tech_stack](docs/Tech_stack/tech_stack.png)
+
+
+
+
+
+## Capture Image
+
+프로젝트 목록
+
+![projectlist](docs/Capture/projectlist.png)
+
+
+
+
+프로젝트 내 App 목록
+
+![projectdetail](docs/Capture/projectdetail.png)
+
+
+
+
+App history 화면
+
+![projecthistory](docs/Capture/apphistory.png)
+
+
+
+Unit Test 결과
+
+![testhistory](docs/Capture/testhistory.png)
+
+
+
+
+커버리지 상세 화면 및 클래스 별 커버리지 화면
+
+![coveragehistory](docs/Capture/coveragehistory.png)
+
+![coveragedetail](docs/Capture/coveragedetail.png)
+
+
+
+
+
+
+
+# Build Guideline
+
+
+
+## Plug-in
+
+### 
+
+### Maven Project
+
+* Path : `/backend/tmi-maven-plugin`
+
+
+
+```
+mvn clean package
+```
+
+
+
+* 빌드 이후에 나온 jar 파일을 확인하고 싶은 프로젝트 아래 lib 폴더에 저장
+
+
+
+
+
+## Main Server
+
+
+
+
+
+### Spring Project
+
+* Path : `/backend/TmiProject`
+
+```shell
+mvn clean package
+cd target
+nohup java -jar *.jar &
+```
+
+
+
+
+
+## Data Server
+
+
+
+### Spring Project
+
+* Path : `/backend/TMI`
+
+```
+mvn clean package
+cd target
+nohup java -jar *.jar &
+```
+
+
+
+
+
+## Frontend React
+
+* Path : `/frontend`
+
+```shell
+npm i
+npm run build
+```
