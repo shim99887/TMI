@@ -271,7 +271,7 @@ export default function About() {
     {
       url: "../assets/images/about/P3.jpg",
       title: "이병희",
-      description: "프론트엔드\nbyeonghui1543@gmail.com",
+      description: "프론트엔드\nmilk1543@naver.com",
     },
     {
       url: "../assets/images/about/P4.jpg",
@@ -281,7 +281,7 @@ export default function About() {
     {
       url: "../assets/images/about/P5.jpg",
       title: "최낙훈",
-      description: "백엔드\ncnh0214@hansung.ac.kr",
+      description: "백엔드\ncnh6123@naver.com",
     },
     {
       url: "../assets/images/about/P6.jpg",
