@@ -3,7 +3,7 @@
 ## SSAFY X SAMSUNG SDS (기업연계 프로젝트 )
 
 [TMI Notion](https://www.notion.so/longnh214/d13c839d33b94377b138427b4d743a7a?v=4ba79c8783a9492c864e3f640ead7cde)
-
+[TMI UCC] (https://youtu.be/3215TBTZJ1I)
 ## 프로젝트 개요
 
 - **진행기간** : 2021.04.12 ~ (ing)
