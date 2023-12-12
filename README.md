@@ -17,29 +17,38 @@
 <details>
     <summary> Wireframe</summary>
     <ul>
+      
 ![ProjectList.png](docs/Wireframe/ProjectList.png)
+      
 ![ProjectDetail.png](docs/Wireframe/ProjectDetail.png)
-![Test Detail.png](docs/Wireframe/Test Detail.png)
+
+![image](https://github.com/shim99887/TMI/assets/31751611/ee7fea0b-b36d-4046-82e7-ee5b2a399f6f)
+
 ![TestJobList.png](docs/Wireframe/TestJobList.png)
     </ul>
 </details>
 <details>
     <summary> Architecture </summary>
     <ul>
+      
 ![architecture.png](docs/Architecture/architecture.png)
     </ul>
 </details>
 <details>
     <summary> Sequence Diagram </summary>
     <ul>
-![Test Data Collect](docs/Sequence_Diagram/Test Data Collect.png)
-![Report Select](docs/Sequence_Diagram/Report Select.png)
-    </ul>
+      
+![image](https://github.com/shim99887/TMI/assets/31751611/70783105-9589-4cac-860e-34756480fc3a)
+
+![image](https://github.com/shim99887/TMI/assets/31751611/1fdf5e2e-cbeb-4be5-9b68-8297c4624ac4)
+
+  </ul>
 </details>
 
 <details>
     <summary> Milestone</summary>
     <ul>
+      
 ![MileStone](docs/MileStone/MileStone.png)
     </ul>
 </details>
@@ -47,6 +56,7 @@
 <details>
     <summary> ERD Diagram</summary>
     <ul>
+      
 ![erd](docs/ERD_diagram/erd.png)
     </ul>
 </details>
